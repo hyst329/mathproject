@@ -48,6 +48,10 @@ crashlytics.properties
 crashlytics-build.properties
 
 
+# Flex/Bison generated grammar
+interpreter/grammar/*.cpp
+interpreter/grammar/*.hpp
+
 ### C++ template
 # Compiled Object files
 *.slo
