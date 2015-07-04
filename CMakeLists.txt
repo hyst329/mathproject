@@ -8,8 +8,13 @@ find_package(Boost REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
 
+# Flex/Bison
+find_package(BISON REQUIRED)
+find_package(FLEX REQUIRED)
+
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 
-set(SOURCE_FILES main.cpp)
-add_executable(mathproject ${SOURCE_FILES})
+set(MP_INTERPRETER_SOURCE_FILES interpreter/main.cpp)
+add_executable(interpreter ${MP_INTERPRETER_SOURCE_FILES})
