@@ -2,7 +2,9 @@
 
 using namespace std;
 
+extern int yylex();
+
 int main() {
-    cout << "Hello, World!" << endl;
+    yylex();
     return 0;
 }
