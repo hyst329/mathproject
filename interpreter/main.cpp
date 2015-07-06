@@ -2,7 +2,7 @@
 
 using namespace std;
 
-extern int yylex();
+extern int  yylex();
 
 int main() {
     yylex();
