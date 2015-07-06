@@ -1,10 +1,11 @@
 #include <iostream>
+#include "Token.h"
 
 using namespace std;
 
-extern int yylex();
+extern int yyparse();
 
 int main() {
-    yylex();
+    yyparse();
     return 0;
 }

@@ -1,21 +1,24 @@
 %{
 #include <iostream>
+#include "mpparser.hpp"
+#include "../Token.h"
 using namespace std;
 
 extern "C" int yywrap() {
     return 1;
 }
+
 %}
 %%
 [ \t] ;
-[0-9]+\.[0-9]+ { cout << "Found a floating-point number: " << yytext << endl; }
-[0-9]+  { cout << "Found an integer: " << yytext << endl; }
-[a-zA-Z_][a-zA-Z0-9_]* { cout << "Found an identifier: " << yytext << endl; }
-[\+\-\*\/\@\^\%\=]+ { cout << "Found an operator: " << yytext << endl; }
-\; { cout << "Found a semicolon: " << yytext << endl; }
-\, { cout << "Found a comma: " << yytext << endl; }
-\( { cout << "Found left parenthese: " << yytext << endl; }
-\) { cout << "Found right parenthese: " << yytext << endl; }
-\{ { cout << "Found left brace: " << yytext << endl; }
-\} { cout << "Found right brace: " << yytext << endl; }
+[0-9]+\.[0-9]+ { cout << "Found a floating-point number: " << yytext << endl; return FLOAT; }
+[0-9]+  { cout << "Found an integer: " << yytext << endl; return FLOAT; }
+[a-zA-Z_][a-zA-Z0-9_]* { cout << "Found an identifier: " << yytext << endl; return ID; }
+[\+\-\*\/\@\^\%\=]+ { cout << "Found an operator: " << yytext << endl; return OPERATOR; }
+\; { cout << "Found a semicolon: " << yytext << endl; return SEMICOLON; }
+\, { cout << "Found a comma: " << yytext << endl; return COMMA; }
+\( { cout << "Found left parenthese: " << yytext << endl; return LEFTPAR; }
+\) { cout << "Found right parenthese: " << yytext << endl; return RIGHTPAR; }
+\{ { cout << "Found left brace: " << yytext << endl; return LEFTBRACE; }
+\} { cout << "Found right brace: " << yytext << endl; return RIGHTBRACE; }
 %%

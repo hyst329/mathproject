@@ -12,9 +12,9 @@ pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
 
-#BISON_TARGET(MPParser interpreter/grammar/mp.y ${PROJECT_SOURCE_DIR}/interpreter/grammar/mpparser.cpp)
+BISON_TARGET(MPParser interpreter/grammar/mp.y ${PROJECT_SOURCE_DIR}/interpreter/grammar/mpparser.cpp)
 FLEX_TARGET(MPScanner interpreter/grammar/mp.l ${PROJECT_SOURCE_DIR}/interpreter/grammar/mplexer.cpp)
-#ADD_FLEX_BISON_DEPENDENCY(MPScanner MPParser)
+ADD_FLEX_BISON_DEPENDENCY(MPScanner MPParser)
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
