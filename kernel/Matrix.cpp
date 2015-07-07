@@ -4,7 +4,7 @@
 
 #include "Matrix.h"
 
-Matrix::Matrix(int columns, int rows) : sizeColumn(columns), sizeRow(rows) {
+Matrix::Matrix(int rows, int columns) : sizeColumn(columns), sizeRow(rows) {
     array = new double *[rows];
     for (int i = 0; i < rows; i++) array[i] = new double[columns];
 }
