@@ -6,11 +6,14 @@
 #define MATHPROJECT_AST_H
 #include <string>
 #include <vector>
+#include "Type.h"
+#include <map>
 using namespace std;
 namespace Interpreter {
 
     struct AST {
         virtual void exec() = 0;
+        map<string, Type *> *variables;
     };
 
     struct RealAST : public AST {
@@ -54,6 +57,9 @@ namespace Interpreter {
                 :Operation(operation),IfAST(ifAST),ThenAST(thenAST),ElseAST(elseAST){};
     };
 
+    Type* getVariables(){
+        return;
+    }
 }
 
 #endif //MATHPROJECT_AST_H
