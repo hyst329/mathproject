@@ -19,8 +19,10 @@ ADD_FLEX_BISON_DEPENDENCY(MPScanner MPParser)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(MP_KERNEL_SOURCE_FILES kernel/placeholder.cpp)
-add_library(kernel STATIC ${MP_KERNEL_SOURCE_FILES} kernel/Type.cpp kernel/Type.h kernel/Matrix.cpp kernel/Matrix.h kernel/Function.cpp kernel/Function.h)
+set(MP_KERNEL_SOURCE_FILES kernel/placeholder.cpp kernel/Type.cpp kernel/Type.h kernel/Matrix.cpp kernel/Matrix.h kernel/Function.cpp kernel/Function.h)
+add_library(kernel STATIC ${MP_KERNEL_SOURCE_FILES})
 
-set(MP_INTERPRETER_SOURCE_FILES interpreter/main.cpp)
-add_executable(interpreter ${MP_INTERPRETER_SOURCE_FILES} ${BISON_MPParser_OUTPUTS} ${FLEX_MPScanner_OUTPUTS} interpreter/AST.cpp interpreter/AST.h)
+set(MP_INTERPRETER_SOURCE_FILES interpreter/main.cpp interpreter/AST.cpp interpreter/AST.h)
+add_executable(interpreter ${MP_INTERPRETER_SOURCE_FILES} ${BISON_MPParser_OUTPUTS} ${FLEX_MPScanner_OUTPUTS})
+add_dependencies(interpreter kernel)
+
