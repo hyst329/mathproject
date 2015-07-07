@@ -38,8 +38,21 @@ term: FLOAT {
     }
     | ID {
     }
+    | matrix {
+    }
+    }
     | LEFTPAR expression RIGHTPAR {
     }
     | ID LEFTPAR expression RIGHTPAR {
         }
+matrix: LEFTBRACE rowlist RIGHTBRACE {
+      }
+rowlist: rowlist SEMICOLON row {
+       }
+       | row {
+       }
+row: row COMMA term {
+   }
+   | term {
+   }
 %%
