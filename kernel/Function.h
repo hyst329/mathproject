@@ -6,15 +6,15 @@
 #define MATHPROJECT_FUNCTION_H
 
 
+#include <vector>
 #include "Type.h"
 
 class Function : Type{
-    Type operator();
+    Type *operator()(std::vector<Type *> args);
 
 public:
-    char *getType() {
-        char *text = "Function";
-        return text;
+    std::string getType() {
+        return "Function";
     }
 };
 

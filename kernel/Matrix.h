@@ -15,8 +15,13 @@ class Matrix: Type
     int sizeRow;
 
 public:
-    char* getType();
-    bool equals(Type type);
+    Matrix(int columns, int rows);
+
+    ~Matrix();
+
+    std::string getType();
+
+    bool equals(Type &type);
     double & element(int i, int j);
 
 };

@@ -5,11 +5,12 @@
 #ifndef MATHPROJECT_TYPE_H
 #define MATHPROJECT_TYPE_H
 
+#include <string>
 
 class Type {
-    virtual char* getType() = 0;
-    virtual bool equals(Type type) = 0;
+    virtual std::string getType() = 0;
 
+    virtual bool equals(Type &type) = 0;
 };
 
 
