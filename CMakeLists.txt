@@ -23,7 +23,14 @@ set(MP_KERNEL_SOURCE_FILES kernel/placeholder.cpp kernel/Type.cpp kernel/Type.h 
     kernel/Function.cpp kernel/Function.h kernel/AST.cpp kernel/AST.h)
 add_library(kernel STATIC ${MP_KERNEL_SOURCE_FILES})
 
+include_directories(${GTKMM_INCLUDE_DIRS})
+link_directories(${GTKMM_LIBRARY_DIRS})
+
 set(MP_INTERPRETER_SOURCE_FILES interpreter/main.cpp)
 add_executable(interpreter ${MP_INTERPRETER_SOURCE_FILES} ${BISON_MPParser_OUTPUTS} ${FLEX_MPScanner_OUTPUTS})
 add_dependencies(interpreter kernel)
+
+set(MP_IDE_SOURCE_FILES ide/main.cpp)
+add_executable(ide MP_IDE_SOURCE_FILES)
+target_link_libraries(ide ${GTKMM_LIBRARIES})
 
