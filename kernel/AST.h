@@ -14,8 +14,6 @@ namespace Interpreter {
     struct AST {
         virtual Type* exec() = 0;
         map<string,Type*> *variables;
-        virtual void exec() = 0;
-        map<string, Type *> *variables;
     };
     struct TypeAST:public AST {
         Type *value;
@@ -76,7 +74,7 @@ namespace Interpreter {
     };
 
     Type* getVariables(){
-        return;
+        return 0;
     }
 }
 
