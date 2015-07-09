@@ -6,12 +6,16 @@
 #define MATHPROJECT_AST_H
 #include <vector>
 #include <map>
+#include "Type.h"
+#include <map>
 using namespace std;
 namespace Interpreter {
     class Type;
     struct AST {
         virtual Type* exec() = 0;
         map<string,Type*> *variables;
+        virtual void exec() = 0;
+        map<string, Type *> *variables;
     };
     struct TypeAST:public AST {
         Type *value;
@@ -71,6 +75,9 @@ namespace Interpreter {
         }
     };
 
+    Type* getVariables(){
+        return;
+    }
 }
 
 #endif //MATHPROJECT_AST_H
