@@ -14,22 +14,35 @@ void yyerror(char* msg) {
 %token FLOAT ID OPERATOR
 %token SEMICOLON COMMA
 %token LEFTPAR RIGHTPAR LEFTBRACE RIGHTBRACE
-%token IF ELSE FUNCTION RETURN
+%token IF WHILE ELSE FUNCTION RETURN
 %%
-program: program instruction '\n' {
+program: block {
+           $$ = $1;
        }
-       | program instruction SEMICOLON {
+block: block instruction '\n' {
+       }
+       | block instruction SEMICOLON {
        }
        | instruction SEMICOLON {
        }
        | instruction {
        }
-instruction: expression OPERATOR expression {
+instruction: IF expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
+           }
+           | WHILE expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
+           }
+           | FUNCTION ID LEFTPAR arglist RIGHTPAR '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
+           }
+           |  expression OPERATOR expression {
            }
            | OPERATOR expression {
            }
            | expression {
            }
+arglist: arglist COMMA ID {
+       }
+       | ID {
+       }
 expression: term OPERATOR term {
           }
           | OPERATOR term {
