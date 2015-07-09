@@ -32,6 +32,6 @@ add_dependencies(interpreter kernel)
 target_link_libraries(interpreter kernel)
 
 set(MP_IDE_SOURCE_FILES ide/main.cpp)
-add_executable(ide MP_IDE_SOURCE_FILES)
+add_executable(ide ${MP_IDE_SOURCE_FILES})
 target_link_libraries(ide ${GTKMM_LIBRARIES})
 
