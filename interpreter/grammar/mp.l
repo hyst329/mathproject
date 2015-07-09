@@ -2,9 +2,13 @@
 %option yylineno
 %{
 #include <iostream>
+#include "../../kernel/AST.h"
+#include "../../kernel/Type.h"
+#include "../../kernel/Matrix.h"
 #include "mpparser.hpp"
 #include "../Token.h"
 using namespace std;
+using namespace Kernel;
 
 extern "C" int yywrap() {
     return 1;

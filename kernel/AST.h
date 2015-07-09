@@ -19,6 +19,14 @@ namespace Kernel {
         map<string, Type *> *variables;
     };
 
+    struct BlockAST : public AST {
+        vector<AST *> children;
+
+        Type *exec() {
+            for (AST *a: children) a->exec();
+        }
+    };
+
     struct TypeAST : public AST {
         Type *value;
 
@@ -33,11 +41,13 @@ namespace Kernel {
         std::string function;
         vector<AST *> arguments;
 
-        FunctionAST(std::string function, vector<AST *> &arguments)
+        FunctionAST(std::string function, vector<AST *> arguments = vector<AST *>())
                 : function(function), arguments(arguments) { };
-        //Type* exec() {
-        //    return function(arguments)->exec();
-        //}
+
+        Type *exec() {
+            // TODO: Add Function call
+            return 0;//function(arguments)->exec();
+        }
     };
 
     struct VarAST : public AST {
@@ -76,10 +86,6 @@ namespace Kernel {
             return 0;
         }
     };
-
-    Type *getVariables() {
-        return 0;
-    }
 }
 
 #endif //MATHPROJECT_AST_H

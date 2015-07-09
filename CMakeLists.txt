@@ -26,4 +26,5 @@ add_library(kernel STATIC ${MP_KERNEL_SOURCE_FILES})
 set(MP_INTERPRETER_SOURCE_FILES interpreter/main.cpp)
 add_executable(interpreter ${MP_INTERPRETER_SOURCE_FILES} ${BISON_MPParser_OUTPUTS} ${FLEX_MPScanner_OUTPUTS})
 add_dependencies(interpreter kernel)
+target_link_libraries(interpreter kernel)
 

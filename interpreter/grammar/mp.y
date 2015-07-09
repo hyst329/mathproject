@@ -1,13 +1,15 @@
 %{
 #include <iostream>
 #include "../../kernel/AST.h"
+#include "../../kernel/Type.h"
 #include "../../kernel/Matrix.h"
+#include <string>
+#include <vector>
 
 using namespace std;
 using namespace Kernel;
 
 extern int yylex();
-#define YYSTYPE Type*
 extern int yylineno;
 void yyerror(char* msg) {
     fprintf(stderr, "%s in line %d\n", msg, yylineno);
@@ -19,23 +21,36 @@ void yyerror(char* msg) {
 %token SEMICOLON COMMA
 %token LEFTPAR RIGHTPAR LEFTBRACE RIGHTBRACE
 %token IF WHILE ELSE FUNCTION RETURN
+%type <ast> program block instruction expression term
+%type <arglist> arglist
+%type <exprlist> exprlist
 %union
 {
-    Type* type;
-    AST* ast;
-    std::string str;
+    Type *type;
+    Kernel::AST *ast;
+    char *str;
+    std::vector<Type*> *arglist;
+    std::vector<Kernel::AST*> *exprlist;
 }
 %%
 program: block {
            $$ = $1;
        }
 block: block instruction '\n' {
+            ((BlockAST*)$1)->children.push_back($2);
+            $$ = $1;
        }
        | block instruction SEMICOLON {
+            ((BlockAST*)$1)->children.push_back($2);
+            $$ = $1;
        }
        | instruction SEMICOLON {
+            $$ = new BlockAST();
+            ((BlockAST*)$$)->children.push_back($1);
        }
        | instruction {
+            $$ = new BlockAST();
+            ((BlockAST*)$$)->children.push_back($1);
        }
 instruction: IF expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE '\n' ELSE LEFTBRACE '\n' block '\n' RIGHTBRACE {
                 $$ = new ConditionalAST($2, $6, $13);
@@ -46,15 +61,15 @@ instruction: IF expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE '\n' ELSE L
            | WHILE expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
                 $$ = new WhileLoopAST($2, $6);
            }
-           | FUNCTION ID LEFTPAR arglist RIGHTPAR '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
-                $$ = new FunctionAST($2, $4, $9);
+           | FUNCTION ID LEFTPAR exprlist RIGHTPAR '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
+                $$ = new FunctionAST($2, *$4);
            }
            | expression OPERATOR expression {
                 $$ = new FunctionAST($2);
                 // TODO : add operators
            }
            | OPERATOR expression {
-                $$ = new FunctionAST($2);
+                $$ = new FunctionAST($1);
                 // TODO : add operators
            }
            | expression {
@@ -64,26 +79,35 @@ arglist: arglist COMMA ID {
        }
        | ID {
        }
+exprlist: exprlist COMMA expression {
+        }
+        | expression {
+        }
 expression: term OPERATOR term {
+              $$ = new FunctionAST($2);
+              // TODO : add operators
           }
           | OPERATOR term {
+              $$ = new FunctionAST($1);
+              // TODO : add operators
           }
           | term {
+              $$ = $1;
           }
 term: FLOAT {
         $$ = new TypeAST($1);
     }
     | ID {
-        $$ = new TypeAST($1);
+        $$ = new VarAST($1);
     }
     | matrix {
-        $$ = new TypeAST($1);
+        //$$ = new TypeAST($1);
     }
     | LEFTPAR expression RIGHTPAR {
         $$ = $2;
     }
-    | ID LEFTPAR row RIGHTPAR {
-        $$ = new FunctionAST($1, $3);
+    | ID LEFTPAR exprlist RIGHTPAR {
+        $$ = new FunctionAST($1, *$3);
     }
 matrix: LEFTBRACE rowlist RIGHTBRACE {
       }
@@ -91,8 +115,8 @@ rowlist: rowlist SEMICOLON row {
        }
        | row {
        }
-row: row COMMA term {
+row: row COMMA expression {
    }
-   | term {
+   | expression {
    }
 %%
