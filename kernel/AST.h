@@ -10,13 +10,18 @@
 #include "Type.h"
 #include <map>
 
+
 using namespace std;
+class Function;
+
 namespace Kernel {
 
     struct AST {
         virtual Type *exec() = 0;
 
         map<string, Type *> *variables;
+        static map<string, Function*> functions;
+
     };
 
     struct BlockAST : public AST {
@@ -42,6 +47,19 @@ namespace Kernel {
         vector<AST *> arguments;
 
         FunctionAST(std::string function, vector<AST *> arguments = vector<AST *>())
+                : function(function), arguments(arguments) { };
+
+        Type *exec() {
+            // TODO: Add Function call
+            return 0;//function(arguments)->exec();
+        }
+    };
+
+    struct FunctionBodyAST : public AST {
+        Function* function;
+        vector<AST *> arguments;
+
+        FunctionAST(Function* function, vector<AST *> arguments = vector<AST *>())
                 : function(function), arguments(arguments) { };
 
         Type *exec() {

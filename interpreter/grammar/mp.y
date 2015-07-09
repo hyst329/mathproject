@@ -61,7 +61,7 @@ instruction: IF expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE '\n' ELSE L
            | WHILE expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
                 $$ = new WhileLoopAST($2, $6);
            }
-           | FUNCTION ID LEFTPAR exprlist RIGHTPAR '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
+           | FUNCTION ID LEFTPAR arglist RIGHTPAR '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
                 $$ = new FunctionAST($2, *$4);
            }
            | expression OPERATOR expression {

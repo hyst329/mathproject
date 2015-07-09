@@ -3,7 +3,9 @@
 //
 
 #include "AST.h"
+#include "Function.h"
+
 
 namespace Kernel {
-
+    //AST::functions = std::map<std::string, Function*>();
 }
