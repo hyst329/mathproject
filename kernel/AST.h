@@ -4,71 +4,54 @@
 
 #ifndef MATHPROJECT_AST_H
 #define MATHPROJECT_AST_H
+#include <string>
 #include <vector>
-#include <map>
 using namespace std;
 namespace Interpreter {
-    class Type;
+
     struct AST {
-        virtual Type* exec() = 0;
-        map<string,Type*> *variables;
+        virtual void exec() = 0;
     };
-    struct TypeAST:public AST {
-        Type *value;
-        Type *exec() {
-            return value;
-        }
-        TypeAST(Type *Value):value(Value){};
-    };
+
     struct RealAST : public AST {
         double value;
         RealAST(double Value):value(Value){};
     };
     struct GlobalAST: public AST {
-        AST *Operation;
+    private:
+        string Operation;
         vector <AST> *vast;
-        GlobalAST(AST *operation, vector <AST> *vAst)
-            :Operation(operation), vast(vAst) {};
-        //Type* exec() {
-        //    return Operation(vast)->exec();
-        //}
+    public:
+        GlobalAST(string operation, vector <AST> *vAst)
+            :Operation(operation), vast(vAst) {}
     };
-    struct BinaryAST: public AST {
-        AST *Operation;
+    class BinaryAST: public AST {
+        string Operation;
         AST *left,*right;
-        BinaryAST(AST *operation,AST *Left,AST *Right)
-                :Operation(operation),left(Left),right(Right) {};
-       // Type* exec() {
-      //      return Operation(left,right)->exec();
-        //}
+    public:
+        BinaryAST(string operation,AST *Left,AST *Right)
+                :Operation(operation),left(Left),right(Right){};
     };
-    struct UnaryAST: public AST {
-        AST *Operation;
+    class UnaryAST: public AST {
+        string Operation;
         AST *ast;
-        UnaryAST(AST *operation,AST *Ast)
+    public:
+        UnaryAST(string operation,AST *Ast)
                 :Operation(operation),ast(Ast){};
-        //Type* exec() {
-          //  return ;
-        //}
     };
-    struct VarAST : public AST {
+    class VariableAST : public AST {
         string Name;
-        VarAST(string name)
-                : Name(name) {};
-        Type *exec(){
-            return (*variables)[Name];
-        }
+
+    public:
+        VariableAST(string name)
+                : Name(name) {}
     };
-    struct ConditionalAST:public AST {
+    class ConditionalAST:public AST {
+        string Operation;
         AST *IfAST,*ThenAST,*ElseAST;
-        ConditionalAST(AST *ifAST,AST *thenAST,AST *elseAST)
-                :IfAST(ifAST),ThenAST(thenAST),ElseAST(elseAST) {};
-        Type *exec() {
-            if(IfAST->exec())
-                return ThenAST->exec();
-            else
-                return ElseAST->exec();
-        }
+    public:
+        ConditionalAST(string operation,AST *ifAST,AST *thenAST,AST *elseAST)
+                :Operation(operation),IfAST(ifAST),ThenAST(thenAST),ElseAST(elseAST){};
     };
 
 }
