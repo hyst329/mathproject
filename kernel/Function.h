@@ -11,7 +11,7 @@
 #include <map>
 
 class Function : Type{
-    Interpreter::AST *ast;
+    Kernel::AST *ast;
     map <string, Type*> mapKeeper;
 
     Type *operator()(std::vector<Type *> args);

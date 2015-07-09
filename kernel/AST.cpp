@@ -4,6 +4,6 @@
 
 #include "AST.h"
 
-namespace Interpreter {
+namespace Kernel {
 
 }

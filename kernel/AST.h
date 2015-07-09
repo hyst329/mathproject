@@ -11,7 +11,7 @@
 #include <map>
 
 using namespace std;
-namespace Interpreter {
+namespace Kernel {
 
     struct AST {
         virtual Type *exec() = 0;

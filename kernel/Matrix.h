@@ -8,7 +8,7 @@
 
 #include "Type.h"
 
-class Matrix: Type
+class Matrix : public Type
 {
     double **array;
     int sizeColumn;
@@ -17,11 +17,14 @@ class Matrix: Type
 public:
     Matrix(int columns, int rows);
 
+    Matrix(double number);
     ~Matrix();
 
     std::string getType();
 
     bool equals(Type &type);
+
+    bool isNonzero();
     double & element(int i, int j);
 
 };
