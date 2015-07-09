@@ -1,0 +1,73 @@
+function toTriangle(a) {
+	row=a.rows;
+	column=a.columns;
+	i=0;
+	while (i<row) {
+		if (a.array[i][i]==0) {
+			j=i+1;
+			while (j<row) {
+				if (a.array[j][i]!=0) {
+					k=0;
+					while (k<column) {
+						tmp=a.array[j][k];
+						a.array[j][k]=a.array[i][k];
+						a.array[i][k]=tmp;
+						k++;
+					}
+				}
+				j++;
+			}
+		}
+		if (a.array[i][i]!=0) {
+			j=i+1;
+			while (j<row) {
+				if (a.array[j][i]!=0) {
+					k=0;r=a.array[j][i]/a.array[i][i];
+					while (k<column) {
+						a.array[j][k]=a.array[j][k]-r*a.array[i][k];
+						k++;
+					}
+				}
+				j++;
+			}
+		}
+	}
+}
+function Determinate(a){
+	toTriangle(a);
+	i=0;
+	row=a.row;
+	det=1;
+	while(i<row) {
+		det=det*a[i][i];
+		i++;
+	}
+	return a;
+}
+function NumIntegration(function fun,a,b) {
+	delta=b-a;
+	intgral0=(fun(b)-fun(a))*delta;
+	delta=delta/10;
+	integral1=(fun(b)-fun(b-delta))*delta+(fun(b-delta)-fun(a))*delta;
+	
+	while (fabs(integral0-integral1)>epsilon) {
+		sumdelta=a;
+		integral0=0;
+		while(sumdelta<b) {
+			integral0=integral0+(fun(sumdelta+delta)-fun(sumdelta))*delta;
+			sumdelta=sumdelta+delta;
+		}
+		delta=delta/10;
+	}
+	return integral0;
+}
+function DerivateInPoint(function fun,x) {
+	h = 0.01, df0 = f(x), df1 = f(x + h);
+    while (fabs(df0 - df1) > epsilon)
+    {
+        df1 = df0;
+        df0 = (f(x + h) - f(x)) / h;
+        h=h/10;
+    }
+    return df0;
+}
