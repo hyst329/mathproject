@@ -13,14 +13,18 @@
 class Function : Type{
     Kernel::AST *ast;
     map <string, Type*> mapKeeper;
-
+public:
     Type *operator()(std::vector<Type *> args);
 
-    Function(){
+    Function(Kernel::AST *ast) : ast(ast) {
        ast->variables = &mapKeeper;
     }
 
-public:
+
+    virtual bool equals(Type &type);
+
+    virtual bool isNonzero();
+
     std::string getType() {
         return "Function";
     }

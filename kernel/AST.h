@@ -57,9 +57,9 @@ namespace Kernel {
 
     struct FunctionBodyAST : public AST {
         Function* function;
-        vector<AST *> arguments;
+        vector<string> arguments;
 
-        FunctionBodyAST(Function *function, vector<AST *> arguments = vector<AST *>())
+        FunctionBodyAST(Function *function, vector<string> arguments = vector<string>())
                 : function(function), arguments(arguments) { };
 
         Type *exec() {

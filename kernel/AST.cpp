@@ -7,5 +7,5 @@
 
 
 namespace Kernel {
-    //AST::functions = std::map<std::string, Function*>();
+    map<string, Function *> AST::functions = std::map<std::string, Function *>();
 }
