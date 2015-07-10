@@ -1,6 +1,7 @@
 %{
 #include <iostream>
 #include "../../kernel/AST.h"
+#include "../../kernel/Function.h"
 #include "../../kernel/Type.h"
 #include "../../kernel/Matrix.h"
 #include <string>
@@ -28,8 +29,8 @@ void yyerror(char* msg) {
 {
     Type *type;
     Kernel::AST *ast;
-    char *str;
-    std::vector<Type*> *arglist;
+    char* str;
+    std::vector<std::string> *arglist;
     std::vector<Kernel::AST*> *exprlist;
 }
 %%
@@ -62,34 +63,40 @@ instruction: IF expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE '\n' ELSE L
                 $$ = new WhileLoopAST($2, $6);
            }
            | FUNCTION ID LEFTPAR arglist RIGHTPAR '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
-                $$ = new FunctionAST($2, *$4);
+                Function* f = new Function($9);
+                AST::functions[$2] = f;
+                $$ = new FunctionBodyAST(f, *$4);
            }
            | expression OPERATOR expression {
-                $$ = new FunctionAST($2);
-                // TODO : add operators
+                std::vector<AST*> v = { $1, $3 };
+                $$ = new FunctionAST($2, v);
            }
            | OPERATOR expression {
-                $$ = new FunctionAST($1);
-                // TODO : add operators
+                std::vector<AST*> v = { $2 };
+                $$ = new FunctionAST($1, v);
            }
            | expression {
                 $$ = $1;
            }
 arglist: arglist COMMA ID {
+           $1->push_back($3);
+           $$ = $1;
        }
        | ID {
+           $$ = new std::vector<std::string>;
+           $$->push_back($1);
        }
 exprlist: exprlist COMMA expression {
         }
         | expression {
         }
 expression: term OPERATOR term {
-              $$ = new FunctionAST($2);
-              // TODO : add operators
+              std::vector<AST*> v = { $1, $3 };
+              $$ = new FunctionAST($2, v);
           }
           | OPERATOR term {
-              $$ = new FunctionAST($1);
-              // TODO : add operators
+              std::vector<AST*> v = { $2 };
+              $$ = new FunctionAST($1, v);
           }
           | term {
               $$ = $1;
