@@ -59,7 +59,7 @@ namespace Kernel {
         Function* function;
         vector<AST *> arguments;
 
-        FunctionAST(Function* function, vector<AST *> arguments = vector<AST *>())
+        FunctionBodyAST(Function *function, vector<AST *> arguments = vector<AST *>())
                 : function(function), arguments(arguments) { };
 
         Type *exec() {
