@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkWindow" id="window1">
+  <object class="GtkListStore" id="comandsHistory">
+    <columns>
+      <!-- column-name Name -->
+      <column type="gchararray"/>
+      <!-- column-name Size -->
+      <column type="gchararray"/>
+      <!-- column-name Type -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes"/>
+        <col id="1" translatable="yes"/>
+        <col id="2" translatable="yes"/>
+      </row>
+    </data>
+  </object>
+  <object class="GtkWindow" id="window_main">
     <property name="width_request">650</property>
     <property name="height_request">500</property>
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Math project</property>
     <property name="window_position">center</property>
     <property name="default_width">600</property>
     <property name="default_height">500</property>
@@ -447,11 +465,26 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkMenuItem" id="menuitem7">
+                  <object class="GtkMenuItem" id="menuitem8">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">_View</property>
+                    <property name="label" translatable="yes">_Help</property>
                     <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu" id="menu6">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkImageMenuItem" id="imagemenuitem20">
+                            <property name="label">gtk-about</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -465,6 +498,72 @@
               <object class="GtkToolbar" id="toolbar2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="toolbar_style">icons</property>
+                <property name="icon_size">1</property>
+                <child>
+                  <object class="GtkToolButton" id="toolbutton_copy1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Copy</property>
+                    <property name="label" translatable="yes">toolbutton_copy</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-copy</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="toolbutton_cut1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">toolbutton_cut</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-cut</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="toolbutton_clear">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">toolbutton_clear</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-clear</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparatorToolItem" id="separatorW">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="toolbutton_help">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Help</property>
+                    <property name="label" translatable="yes">toolbutton_help</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-help</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -473,7 +572,27 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkScrolledWindow" id="scrolledwindow2">
+                <property name="width_request">600</property>
+                <property name="height_request">600</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="shadow_type">in</property>
+                <child>
+                  <object class="GtkTextView" id="textview1">
+                    <property name="width_request">600</property>
+                    <property name="height_request">600</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="editable">False</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -511,35 +630,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkImageMenuItem" id="imagemenuitem21">
-                            <property name="label">gtk-new</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImageMenuItem" id="imagemenuitem22">
-                            <property name="label">gtk-open</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImageMenuItem" id="imagemenuitem23">
-                            <property name="label">gtk-save</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImageMenuItem" id="imagemenuitem24">
-                            <property name="label">gtk-save-as</property>
+                          <object class="GtkImageMenuItem" id="imagemenuitem_refresh1">
+                            <property name="label">gtk-refresh</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="use_underline">True</property>
@@ -553,8 +645,8 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkImageMenuItem" id="imagemenuitem25">
-                            <property name="label">gtk-quit</property>
+                          <object class="GtkImageMenuItem" id="imagemenuitem_close1">
+                            <property name="label">gtk-close</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="use_underline">True</property>
@@ -563,64 +655,6 @@
                         </child>
                       </object>
                     </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkMenuItem" id="menuitem10">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">_Edit</property>
-                    <property name="use_underline">True</property>
-                    <child type="submenu">
-                      <object class="GtkMenu" id="menu8">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkImageMenuItem" id="imagemenuitem26">
-                            <property name="label">gtk-cut</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImageMenuItem" id="imagemenuitem27">
-                            <property name="label">gtk-copy</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImageMenuItem" id="imagemenuitem28">
-                            <property name="label">gtk-paste</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImageMenuItem" id="imagemenuitem29">
-                            <property name="label">gtk-delete</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkMenuItem" id="menuitem11">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">_View</property>
-                    <property name="use_underline">True</property>
                   </object>
                 </child>
               </object>
@@ -634,6 +668,46 @@
               <object class="GtkToolbar" id="toolbar3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="toolbar_style">icons</property>
+                <property name="icon_size">1</property>
+                <child>
+                  <object class="GtkToolButton" id="toolbutton_refresh1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Refresh</property>
+                    <property name="label" translatable="yes">toolbutton_refresh</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-refresh</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparatorToolItem" id="separatorH">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="toolbutton_help1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Help</property>
+                    <property name="label" translatable="yes">toolbutton_help</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-help</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -642,7 +716,179 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkScrolledWindow" id="scrolledwindow3">
+                <property name="width_request">600</property>
+                <property name="height_request">0</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="shadow_type">in</property>
+                <child>
+                  <object class="GtkTreeView" id="treeviewHistor">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="model">comandsHistory</property>
+                    <property name="enable_grid_lines">both</property>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection" id="treeview-selection2"/>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                        <property name="title" translatable="yes">column</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertextName">
+                            <property name="background_gdk">#d1e6efa0fae0</property>
+                          </object>
+                          <attributes>
+                            <attribute name="cell-background">0</attribute>
+                            <attribute name="cell-background-gdk">0</attribute>
+                            <attribute name="cell-background-rgba">0</attribute>
+                            <attribute name="width">0</attribute>
+                            <attribute name="height">0</attribute>
+                            <attribute name="xpad">0</attribute>
+                            <attribute name="ypad">0</attribute>
+                            <attribute name="xalign">0</attribute>
+                            <attribute name="yalign">0</attribute>
+                            <attribute name="sensitive">0</attribute>
+                            <attribute name="visible">0</attribute>
+                            <attribute name="alignment">0</attribute>
+                            <attribute name="background">0</attribute>
+                            <attribute name="editable">0</attribute>
+                            <attribute name="ellipsize">0</attribute>
+                            <attribute name="family">0</attribute>
+                            <attribute name="font">0</attribute>
+                            <attribute name="language">0</attribute>
+                            <attribute name="markup">0</attribute>
+                            <attribute name="rise">0</attribute>
+                            <attribute name="scale">0</attribute>
+                            <attribute name="single-paragraph-mode">0</attribute>
+                            <attribute name="size">0</attribute>
+                            <attribute name="size-points">0</attribute>
+                            <attribute name="stretch">0</attribute>
+                            <attribute name="strikethrough">0</attribute>
+                            <attribute name="style">0</attribute>
+                            <attribute name="text">0</attribute>
+                            <attribute name="underline">0</attribute>
+                            <attribute name="variant">0</attribute>
+                            <attribute name="weight">0</attribute>
+                            <attribute name="width-chars">0</attribute>
+                            <attribute name="wrap-mode">0</attribute>
+                            <attribute name="wrap-width">0</attribute>
+                            <attribute name="foreground-rgba">0</attribute>
+                            <attribute name="max-width-chars">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                        <property name="title" translatable="yes">column</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertextSize">
+                            <property name="background_gdk">#d1e5efa0fadf</property>
+                          </object>
+                          <attributes>
+                            <attribute name="cell-background">1</attribute>
+                            <attribute name="cell-background-gdk">1</attribute>
+                            <attribute name="cell-background-rgba">1</attribute>
+                            <attribute name="width">1</attribute>
+                            <attribute name="height">1</attribute>
+                            <attribute name="xpad">1</attribute>
+                            <attribute name="ypad">1</attribute>
+                            <attribute name="xalign">1</attribute>
+                            <attribute name="yalign">1</attribute>
+                            <attribute name="sensitive">1</attribute>
+                            <attribute name="visible">1</attribute>
+                            <attribute name="alignment">1</attribute>
+                            <attribute name="background">1</attribute>
+                            <attribute name="editable">1</attribute>
+                            <attribute name="ellipsize">1</attribute>
+                            <attribute name="family">1</attribute>
+                            <attribute name="font">1</attribute>
+                            <attribute name="foreground">1</attribute>
+                            <attribute name="foreground-gdk">2</attribute>
+                            <attribute name="language">1</attribute>
+                            <attribute name="markup">1</attribute>
+                            <attribute name="rise">1</attribute>
+                            <attribute name="scale">1</attribute>
+                            <attribute name="single-paragraph-mode">1</attribute>
+                            <attribute name="size">1</attribute>
+                            <attribute name="size-points">1</attribute>
+                            <attribute name="stretch">1</attribute>
+                            <attribute name="strikethrough">1</attribute>
+                            <attribute name="style">1</attribute>
+                            <attribute name="text">1</attribute>
+                            <attribute name="underline">1</attribute>
+                            <attribute name="variant">1</attribute>
+                            <attribute name="weight">1</attribute>
+                            <attribute name="width-chars">1</attribute>
+                            <attribute name="wrap-mode">1</attribute>
+                            <attribute name="wrap-width">1</attribute>
+                            <attribute name="background-rgba">1</attribute>
+                            <attribute name="foreground-rgba">1</attribute>
+                            <attribute name="max-width-chars">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                        <property name="title" translatable="yes">column</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertextType">
+                            <property name="background_gdk">#d1e5efa0fadf</property>
+                          </object>
+                          <attributes>
+                            <attribute name="cell-background">2</attribute>
+                            <attribute name="cell-background-gdk">2</attribute>
+                            <attribute name="cell-background-rgba">2</attribute>
+                            <attribute name="width">2</attribute>
+                            <attribute name="height">2</attribute>
+                            <attribute name="xpad">2</attribute>
+                            <attribute name="ypad">2</attribute>
+                            <attribute name="xalign">2</attribute>
+                            <attribute name="yalign">2</attribute>
+                            <attribute name="sensitive">2</attribute>
+                            <attribute name="visible">2</attribute>
+                            <attribute name="alignment">2</attribute>
+                            <attribute name="background">2</attribute>
+                            <attribute name="editable">2</attribute>
+                            <attribute name="ellipsize">2</attribute>
+                            <attribute name="family">2</attribute>
+                            <attribute name="font">2</attribute>
+                            <attribute name="foreground">2</attribute>
+                            <attribute name="foreground-gdk">2</attribute>
+                            <attribute name="language">2</attribute>
+                            <attribute name="markup">2</attribute>
+                            <attribute name="rise">2</attribute>
+                            <attribute name="scale">2</attribute>
+                            <attribute name="single-paragraph-mode">2</attribute>
+                            <attribute name="size">2</attribute>
+                            <attribute name="size-points">2</attribute>
+                            <attribute name="stretch">2</attribute>
+                            <attribute name="strikethrough">2</attribute>
+                            <attribute name="style">2</attribute>
+                            <attribute name="text">2</attribute>
+                            <attribute name="underline">2</attribute>
+                            <attribute name="variant">2</attribute>
+                            <attribute name="weight">2</attribute>
+                            <attribute name="width-chars">2</attribute>
+                            <attribute name="wrap-mode">2</attribute>
+                            <attribute name="wrap-width">2</attribute>
+                            <attribute name="background-rgba">2</attribute>
+                            <attribute name="foreground-rgba">2</attribute>
+                            <attribute name="max-width-chars">2</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
             </child>
           </object>
           <packing>
