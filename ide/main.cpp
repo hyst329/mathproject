@@ -2,7 +2,7 @@
 
 int main(int argc, char **argv)
 {
-    // TODO(hyst329) : Rebuild gtkmm and check with rebuilt libraries (undefined references)
+    // TODO(hyst329) : Rebuild gtkmm under gcc 5.1.0
     Gtk::Main app(argc, argv);
     Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file(Glib::ustring("userInterface.glade"));
     Gtk::Window *w;
