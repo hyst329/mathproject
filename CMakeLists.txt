@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 project(mathproject)
 
 # Boost libraries
-# find_package(Boost REQUIRED)
+find_package(Boost REQUIRED COMPONENTS program_options)
 
 # Gtkmm
 find_package(PkgConfig REQUIRED)
