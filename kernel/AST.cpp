@@ -3,7 +3,9 @@
 //
 
 #include "AST.h"
+#include "Function.h"
 
-namespace Interpreter {
 
+namespace Kernel {
+    map<string, Function *> AST::functions = std::map<std::string, Function *>();
 }

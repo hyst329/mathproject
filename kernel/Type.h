@@ -8,9 +8,12 @@
 #include <string>
 
 class Type {
+public:
     virtual std::string getType() = 0;
 
     virtual bool equals(Type &type) = 0;
+
+    virtual bool isNonzero() = 0;
 };
 
 
