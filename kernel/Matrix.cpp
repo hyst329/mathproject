@@ -36,3 +36,18 @@ bool Matrix::isNonzero() {
             if (array[i][j]) return true;
     return false;
 }
+
+Matrix::Matrix(vector<vector<double>> &v) {
+    sizeRow = v.size();
+    sizeColumn = 0;
+    for (int i = 0; i < sizeRow; i++) {
+        if (v[i].size() > sizeColumn) sizeColumn = v[i].size();
+    }
+    array = new double *[sizeRow];
+    for (int i = 0; i < sizeRow; i++) array[i] = new double[sizeColumn];
+    for (int i = 0; i < sizeRow; i++) {
+        for (int j = 0; j < sizeColumn; j++) {
+            array[i][j] = v[i].size() > j ? v[i][j] : 0;
+        }
+    }
+}
