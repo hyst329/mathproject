@@ -31,13 +31,9 @@ void showInfo() {
     }
 }
 
-// TODO(hyst329): Deal with this undefined reference
-void *_Unwind_Resume = 0;
-void *__gxx_personality_v0 = 0;
-
-int main(int ac,char **av) {
-    Kernel::AST *a = 0;
-    yyparse(a);
+int main(int argc,char **argv) {
+    Kernel::AST *ast = 0;
+    yyparse(ast);
     options_description desc("General options");
     string path;
     desc.add_options()
@@ -48,7 +44,7 @@ int main(int ac,char **av) {
             ;
     variables_map vm;
     try {
-        parsed_options parsed = command_line_parser(ac, av).options(desc).allow_unregistered().run();
+        parsed_options parsed = command_line_parser(argc, argv).options(desc).allow_unregistered().run();
         store( parsed, vm);
         notify(vm);
     }

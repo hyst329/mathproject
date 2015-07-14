@@ -73,9 +73,9 @@ instruction: IF expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE '\n' ELSE L
            }
            | FUNCTION ID LEFTPAR arglist RIGHTPAR '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
                 Function* f = new Function($9);
-                //f->arguments = $4;
+                f->arguments = *$4;
                 AST::functions[$2] = f;
-                $$ = new FunctionBodyAST(f, *$4);
+                $$ = new FunctionBodyAST(f);
            }
            | expression OPERATOR expression {
                 std::vector<AST*> v = { $1, $3 };
