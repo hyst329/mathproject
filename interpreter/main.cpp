@@ -1,12 +1,12 @@
 #include <iostream>
-#include "Token.h"
+#include "../kernel/AST.h"
 #include <boost/program_options.hpp>
 #include <fstream>
 
 using namespace std;
 using  namespace boost::program_options;
 
-extern int yyparse();
+extern int yyparse(Kernel::AST *&);
 extern int  yylex();
 
 void showVersion() {
@@ -31,9 +31,13 @@ void showInfo() {
     }
 }
 
+// TODO(hyst329): Deal with this undefined reference
+void *_Unwind_Resume = 0;
+void *__gxx_personality_v0 = 0;
 
 int main(int ac,char **av) {
-    yyparse();
+    Kernel::AST *a = 0;
+    yyparse(a);
     options_description desc("General options");
     string path;
     desc.add_options()

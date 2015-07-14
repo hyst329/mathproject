@@ -7,6 +7,7 @@
 
 
 #include "Type.h"
+#include "AST.h"
 
 class Matrix : public Type
 {
@@ -18,6 +19,9 @@ public:
     Matrix(int columns, int rows);
 
     Matrix(double number);
+
+    Matrix(std::vector<std::vector<double>> &v);
+
     ~Matrix();
 
     std::string getType();
