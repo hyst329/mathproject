@@ -35,27 +35,38 @@ void showInfo() {
 int main(int ac,char **av) {
     yyparse();
     options_description desc("General options");
-    std::string task;
+    string path;
     desc.add_options()
             ("help,h", "Show help")
             ("version,v","Show version")
-            ("openfile,o",value<std::string>(&task),"Open file")
-            ("info,i","Show info");
+            ("openfile,o",value<string>(&path),"Open file")
+            ("info,i","Show info")
+            ;
     variables_map vm;
-    parsed_options parsed = command_line_parser(ac, av).options(desc).allow_unregistered().run();
-    store(parsed, vm);
-    notify(vm);
+    try {
+        parsed_options parsed = command_line_parser(ac, av).options(desc).allow_unregistered().run();
+        store( parsed, vm);
+        notify(vm);
+    }
+    catch(exception &a_exc) {
+        cout << "Parse error: " << a_exc.what() <<endl;
+        cout<<desc;
+        return 0;
+    }
     if (vm.count("help")) {
         cout<<desc;
     }
     if (vm.count("version")) {
         showVersion();
     }
+    int a=0;
     if (vm.count("openfile")) {
-        openFile(task);
+        openFile(path);
     }
     if (vm.count("info")) {
         showInfo();
     }
+    if (vm.empty())
+        cout<<"Command not found";
     return 0;
 }
