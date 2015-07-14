@@ -13,10 +13,12 @@
 class Function : Type{
     Kernel::AST *ast;
     map <string, Type*> mapKeeper;
+    vector<string> arguments;
+
 public:
     Type *operator()(std::vector<Type *> args);
 
-    Function(Kernel::AST *ast) : ast(ast) {
+    Function(Kernel::AST *ast, vector<string> arguments = vector<string>()) : ast(ast), arguments(arguments) {
        ast->variables = &mapKeeper;
     }
 

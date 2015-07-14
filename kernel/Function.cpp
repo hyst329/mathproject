@@ -6,6 +6,10 @@
 
 Type *Function::operator()(std::vector<Type *> args) {
     // TODO: Deal with variables
+    for(int i = 0; i  < args.size(); i++){
+
+        ast->variables->insert(make_pair(arguments[i], args[i]));
+    }
     return ast->exec();
 }
 
