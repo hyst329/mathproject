@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 project(mathproject)
 
 # Boost libraries
-find_package(Boost REQUIRED COMPONENTS program_options)
+find_package(Boost 1.58 COMPONENTS program_options REQUIRED)
 
 # Gtkmm
 find_package(PkgConfig REQUIRED)
@@ -25,13 +25,15 @@ add_library(kernel STATIC ${MP_KERNEL_SOURCE_FILES} kernel/Array.cpp kernel/Arra
 
 include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
+include_directories(${Boost_INCLUDE_DIRS})
 
 set(MP_INTERPRETER_SOURCE_FILES interpreter/main.cpp)
 add_executable(interpreter ${MP_INTERPRETER_SOURCE_FILES} ${BISON_MPParser_OUTPUTS} ${FLEX_MPScanner_OUTPUTS})
 add_dependencies(interpreter kernel)
-target_link_libraries(interpreter kernel)
+target_link_libraries(interpreter kernel ${Boost_LIBRARIES})
 
 set(MP_IDE_SOURCE_FILES ide/main.cpp)
 add_executable(ide ${MP_IDE_SOURCE_FILES})
 target_link_libraries(ide ${GTKMM_LIBRARIES})
 
+file(COPY ide/userInterface.glade DESTINATION ${PROJECT_BINARY_DIR})
