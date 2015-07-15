@@ -22,10 +22,10 @@ static std::string opMarker = "$operator";
 %token <type> FLOAT
 %token <str> ID
 %token <str> OPERATOR
-%token SEMICOLON COMMA NEWLINE
+%token SEMICOLON COMMA 
 %token LEFTPAR RIGHTPAR LEFTBRACE RIGHTBRACE
 %token IF WHILE ELSE FUNCTION RETURN
-%type <ast> program block instruction expression term
+%type <ast> program block bracedblock instruction expression term
 %type <arglist> arglist
 %type <exprlist> exprlist
 %type <row> row
@@ -47,54 +47,39 @@ static std::string opMarker = "$operator";
 program: block {
            $$ = $1;
        }
-block: block instruction NEWLINE {
+block: block instruction {
             ((BlockAST*)$1)->children.push_back($2);
             $$ = $1;
-       }
-       | block instruction SEMICOLON {
-            ((BlockAST*)$1)->children.push_back($2);
-            $$ = $1;
-       }
-       | block instruction SEMICOLON NEWLINE {
-            ((BlockAST*)$1)->children.push_back($2);
-            $$ = $1;
-       }
-       | instruction SEMICOLON {
-            $$ = new BlockAST();
-            ((BlockAST*)$$)->children.push_back($1);
-       }
-       | instruction NEWLINE {
-            $$ = new BlockAST();
-            ((BlockAST*)$$)->children.push_back($1);
-       }
-       | instruction SEMICOLON NEWLINE {
-            $$ = new BlockAST();
-            ((BlockAST*)$$)->children.push_back($1);
        }
        | instruction {
             $$ = new BlockAST();
             ((BlockAST*)$$)->children.push_back($1);
        }
-instruction: IF expression NEWLINE LEFTBRACE NEWLINE block RIGHTBRACE ELSE LEFTBRACE NEWLINE block
-             RIGHTBRACE {
-                $$ = new ConditionalAST($2, $6, $11);
+bracedblock : LEFTBRACE block RIGHTBRACE {
+                $$ = $2;
+}
+instruction: IF expression instruction ELSE instruction {
+                $$ = new ConditionalAST($2, $3, $5);
            }
-           | IF expression NEWLINE LEFTBRACE NEWLINE block RIGHTBRACE {
-                $$ = new ConditionalAST($2, $6, 0);
+           | IF expression instruction {
+                $$ = new ConditionalAST($2, $3, 0);
            }
-           | WHILE expression NEWLINE LEFTBRACE NEWLINE block RIGHTBRACE {
-                $$ = new WhileLoopAST($2, $6);
+           | WHILE expression instruction {
+                $$ = new WhileLoopAST($2, $3);
            }
-           | FUNCTION ID LEFTPAR arglist RIGHTPAR NEWLINE LEFTBRACE NEWLINE block RIGHTBRACE {
-                Function* f = new Function($9);
+           | FUNCTION ID LEFTPAR arglist RIGHTPAR instruction {
+                Function* f = new Function($6);
                 f->arguments = *$4;
                 AST::functions[$2] = f;
                 $$ = new FunctionBodyAST(f);
            }
-           | RETURN expression {
+           | RETURN expression SEMICOLON {
                 $$ = $2;
            }
-           | expression {
+           | expression SEMICOLON {
+                $$ = $1;
+           }
+           | bracedblock {
                 $$ = $1;
            }
 arglist: arglist COMMA ID {

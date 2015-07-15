@@ -37,12 +37,10 @@ add_executable(ide ${MP_IDE_SOURCE_FILES})
 target_link_libraries(ide ${GTKMM_LIBRARIES})
 
 add_custom_command(TARGET ide POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy ide/userInterface.glade
-                   ${PROJECT_BINARY_DIR}/userInterface.glade
-                   MAIN_DEPENDENCY ide/userInterface.glade)
+                   COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/ide/userInterface.glade
+                   ${PROJECT_BINARY_DIR}/userInterface.glade)
 #file(COPY ide/userInterface.glade DESTINATION ${PROJECT_BINARY_DIR})
 add_custom_command(TARGET interpreter POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy library/library.txt
-                   ${PROJECT_BINARY_DIR}/library/library.txt
-                   MAIN_DEPENDENCY library/library.txt)
+                   COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/library/library.txt
+                   ${PROJECT_BINARY_DIR}/library/library.txt)
 #file(COPY library/library.txt DESTINATION ${PROJECT_BINARY_DIR}/library)

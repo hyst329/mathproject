@@ -127,30 +127,30 @@ function ReverseMatrix(a)
                         k=0;
                         while (k<column)
                         {
-                            tmp=a.array[j][k];
-                            a.array[j][k]=a.array[i][k];
-                            a.array[i][k]=tmp;
-                            tmp=b.array[j][k];
-                            b.array[j][k]=b.array[i][k];
-                            b.array[i][k]=tmp;
+                            tmp=a(j, k);
+                            a(j, k)=a(i, k);
+                            a(i, k)=tmp;
+                            tmp=b(j, k);
+                            b(j, k)=b(i, k);
+                            b(i, k)=tmp;
                             k+=1;
                         }
                     }
                     j+=1;
                 }
             }
-            if (a.array[i][i]!=0)
+            if (a(i, i)!=0)
             {
                 j=i+1;
                 while (j<row)
                 {
-                    if (a.array[j][i]!=0)
+                    if (a(j, i)!=0)
                     {
-                        k=0;r=a.array[j][i]/a.array[i][i];
+                        k=0;r=a(j, i)/a(i, i);
                         while (k<column)
                         {
-                            a.array[j][k]=a.array[j][k]-r*a.array[i][k];
-                            b.array[j][k]=b.array[j][k]-r*b.array[i][k];
+                            a(j, k)=a(j, k)-r*a(i, k);
+                            b(j, k)=b(j, k)-r*b(i, k);
                             k+=1;
                         }
                     }
@@ -163,19 +163,19 @@ function ReverseMatrix(a)
         j=i-1;
         while (j>=0)
         {
-               if (a.array[j][i]!=0)
+               if (a(j, i)!=0)
                {
-                   k=0;r=a.array[j][i]/a.array[i][i];
+                   k=0;r=a(j, i)/a(i, i);
                   while (k<column)
                   {
-                       a.array[j][k]=a.array[j][k]-r*a.array[i][k];
-                       b.array[j][k]=b.array[j][k]-r*b.array[i][k];
+                       a(j, k)=a(j, k)-r*a(i, k);
+                       b(j, k)=b(j, k)-r*b(i, k);
                        k+=1;
                   }
                }
-             j--;
+             j-=1;
         }
-        i--;
+        i-=1;
     }
     return b;
 }

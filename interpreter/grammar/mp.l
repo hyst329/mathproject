@@ -18,11 +18,7 @@ extern void yyerror(Kernel::AST*, char*);
 
 %}
 %%
-[ \t] ;
-\n+ {
-    cout << "Found NEWLINE" << endl;
-    return NEWLINE;
-}
+[ \t\n] ;
 [0-9]+\.[0-9]+ {
     cout << "Found a floating-point number: " << yytext << endl;
     yylval.type = new Matrix(atof(yytext));
