@@ -17,8 +17,9 @@ static Kernel::AST *ast = 0;
 void showVersion() {
     cout << "Version 0.0.0 (currently versioning is not implemented)" << endl;
 };
-void openFile(string task) {
-    ;
+void translate() {
+    yyparse(ast);
+    //ast->exec();
 }
 
 void setInputFile(string filename) {
