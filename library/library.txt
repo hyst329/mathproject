@@ -1,68 +1,87 @@
-function ToTriangleMatrix(a) {
-	row=a.rows;
-	column=a.columns;
-	i=0;
-	while (i<row) {
-		if (a.array[i][i]==0) {
-			j=i+1;
-			while (j<row) {
-				if (a.array[j][i]!=0) {
-					k=0;
-					while (k<column) {
-						tmp=a.array[j][k];
-						a.array[j][k]=a.array[i][k];
-						a.array[i][k]=tmp;
-						k++;
-					}
-				}
-				j++;
-			}
-		}
-		if (a.array[i][i]!=0) {
-			j=i+1;
-			while (j<row) {
-				if (a.array[j][i]!=0) {
-					k=0;r=a.array[j][i]/a.array[i][i];
-					while (k<column) {
-						a.array[j][k]=a.array[j][k]-r*a.array[i][k];
-						k++;
-					}
-				}
-				j++;
-			}
-		}
-	}
+function ToTriangleMatrix(a)
+{
+    row=rows(a);
+    column=columns(a);
+    i=0;
+    while (i<row)
+    {
+        if (a(i,i)==0)
+        {
+            j=i+1;
+            while (j<row)
+            {
+                if (a(j,i)!=0)
+                {
+                    k=0;
+                    while (k<column)
+                    {
+                        tmp=a(j,k);
+                        a(j,k)=a(i,k);
+                        a(i,k)=tmp;
+                        k+=1;
+                    }
+                }
+                j+=1;
+            }
+        }
+        if (a(i,i)!=0)
+        {
+            j=i+1;
+            while (j<row)
+            {
+                if (a(j,i)!=0)
+                {
+                    k=0;
+                    r=a(j,i)/a(i,i);
+                    while (k<column)
+                    {
+                        a(j, k)=a(j, k)-r*a(i, k);
+                        k+=1;
+                    }
+                }
+                j+=1;
+            }
+        }
+    }
 }
-function DeterminateOfMatrix(a){
-	b=a;
-	ToTriangleMatrix(b);
-	i=0;
-	row=b.row;
-	det=1;
-	while(i<row) {
-		det=det*b.array[i][i];
-		i++;
-	}
-	return det;
+
+function DeterminateOfMatrix(a)
+{
+    b=a;
+    ToTriangleMatrix(b);
+    i=0;
+    row=rows(b);
+    det=1;
+    while(i<row)
+    {
+        det=det*b(i, i);
+        i+=1;
+    }
+    return det;
 }
-function NumIntegration(function fun,a,b) {
-	delta=b-a;
-	intgral0=(fun(b)-fun(a))*delta;
-	delta=delta/10;
-	integral1=(fun(b)-fun(b-delta))*delta+(fun(b-delta)-fun(a))*delta;
-	while (fabs(integral0-integral1)>epsilon) {
-		sumdelta=a;
-		integral0=0;
-		while(sumdelta<b) {
-			integral0=integral0+(fun(sumdelta+delta)-fun(sumdelta))*delta;
-			sumdelta=sumdelta+delta;
-		}
-		delta=delta/10;
-	}
-	return integral0;
+function NumIntegration(fun,a,b)
+{
+    delta=b-a;
+    intgral0=(fun(b)-fun(a))*delta;
+    delta=delta/10;
+    integral1=(fun(b)-fun(b-delta))*delta+(fun(b-delta)-fun(a))*delta;
+    while (fabs(integral0-integral1)>epsilon)
+    {
+        sumdelta=a;
+        integral0=0;
+        while(sumdelta<b)
+        {
+            integral0=integral0+(fun(sumdelta+delta)-fun(sumdelta))*delta;
+            sumdelta=sumdelta+delta;
+        }
+        delta=delta/10;
+    }
+    return integral0;
 }
-function DerivateInPoint(function fun,x) {
-	h = 0.01, df0 = f(x), df1 = f(x + h);
+
+function DerivateInPoint(fun,x)
+{
+    h = 0.01; df0 = f(x); df1 = f(x + h);
     while (fabs(df0 - df1) > epsilon)
     {
         df1 = df0;
@@ -71,71 +90,92 @@ function DerivateInPoint(function fun,x) {
     }
     return df0;
 }
-function ReverseMatrix(a) {
-	if (DeterminateOfMatrix(a)==0)
-		throw new exeption;
-	b=a;
-	row=a.rows;
-	column=a.columns;
-	i=0;j=0;
-	while (i<row) {
-		while (j<column) {
-			if (i!=j) {
-			b.array[i][j]=0;
-			}
-			else {
-			b.array[i][j]=1;
-			}
-		}
-	}
-	while (i<row) {
-    		if (a.array[i][i]==0) {
-    			j=i+1;
-    			while (j<row) {
-    				if (a.array[j][i]!=0) {
-    					k=0;
-    					while (k<column) {
-    						tmp=a.array[j][k];
-    						a.array[j][k]=a.array[i][k];
-    						a.array[i][k]=tmp;
-    						tmp=b.array[j][k];
+
+function ReverseMatrix(a)
+{
+    if (DeterminateOfMatrix(a)==0)
+    {
+        error(0);
+    }
+    b=a;
+    row=rows(a);
+    column=columns(a);
+    i=0;j=0;
+    while (i<row)
+    {
+        while (j<column)
+        {
+            if (i!=j)
+            {
+                b(i, j)=0;
+            }
+            else
+            {
+                b(i, j)=1;
+            }
+        }
+    }
+    while (i<row)
+    {
+            if (a(i,i)==0)
+            {
+                j=i+1;
+                while (j<row)
+                {
+                    if (a(j,i)!=0)
+                    {
+                        k=0;
+                        while (k<column)
+                        {
+                            tmp=a.array[j][k];
+                            a.array[j][k]=a.array[i][k];
+                            a.array[i][k]=tmp;
+                            tmp=b.array[j][k];
                             b.array[j][k]=b.array[i][k];
                             b.array[i][k]=tmp;
-    						k++;
-    					}
-    				}
-    				j++;
-    			}
-    		}
-    		if (a.array[i][i]!=0) {
-    			j=i+1;
-    			while (j<row) {
-    				if (a.array[j][i]!=0) {
-    					k=0;r=a.array[j][i]/a.array[i][i];
-    					while (k<column) {
-    						a.array[j][k]=a.array[j][k]-r*a.array[i][k];
-    						b.array[j][k]=b.array[j][k]-r*b.array[i][k];
-    						k++;
-    					}
-    				}
-    				j++;
-    			}
-    		}
-	}
-	while (i>=0) {
-		j=i-1;
-        while (j>=0) {
-       		if (a.array[j][i]!=0) {
-           		k=0;r=a.array[j][i]/a.array[i][i];
-          		while (k<column) {
-           			a.array[j][k]=a.array[j][k]-r*a.array[i][k];
-           			b.array[j][k]=b.array[j][k]-r*b.array[i][k];
-           			k++;
-          		}
-           	}
-         	j--;
+                            k+=1;
+                        }
+                    }
+                    j+=1;
+                }
+            }
+            if (a.array[i][i]!=0)
+            {
+                j=i+1;
+                while (j<row)
+                {
+                    if (a.array[j][i]!=0)
+                    {
+                        k=0;r=a.array[j][i]/a.array[i][i];
+                        while (k<column)
+                        {
+                            a.array[j][k]=a.array[j][k]-r*a.array[i][k];
+                            b.array[j][k]=b.array[j][k]-r*b.array[i][k];
+                            k+=1;
+                        }
+                    }
+                    j+=1;
+                }
+            }
+    }
+    while (i>=0)
+    {
+        j=i-1;
+        while (j>=0)
+        {
+               if (a.array[j][i]!=0)
+               {
+                   k=0;r=a.array[j][i]/a.array[i][i];
+                  while (k<column)
+                  {
+                       a.array[j][k]=a.array[j][k]-r*a.array[i][k];
+                       b.array[j][k]=b.array[j][k]-r*b.array[i][k];
+                       k+=1;
+                  }
+               }
+             j--;
         }
         i--;
-	}
-	return b;
+    }
+    return b;
 }

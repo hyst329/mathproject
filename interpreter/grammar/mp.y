@@ -18,6 +18,7 @@ void yyerror(Kernel::AST* a, char* msg) {
 
 static std::string opMarker = "$operator";
 %}
+%error-verbose
 %token <type> FLOAT
 %token <str> ID
 %token <str> OPERATOR
@@ -54,7 +55,19 @@ block: block instruction NEWLINE {
             ((BlockAST*)$1)->children.push_back($2);
             $$ = $1;
        }
+       | block instruction SEMICOLON NEWLINE {
+            ((BlockAST*)$1)->children.push_back($2);
+            $$ = $1;
+       }
        | instruction SEMICOLON {
+            $$ = new BlockAST();
+            ((BlockAST*)$$)->children.push_back($1);
+       }
+       | instruction NEWLINE {
+            $$ = new BlockAST();
+            ((BlockAST*)$$)->children.push_back($1);
+       }
+       | instruction SEMICOLON NEWLINE {
             $$ = new BlockAST();
             ((BlockAST*)$$)->children.push_back($1);
        }
@@ -62,28 +75,24 @@ block: block instruction NEWLINE {
             $$ = new BlockAST();
             ((BlockAST*)$$)->children.push_back($1);
        }
-instruction: IF expression NEWLINE LEFTBRACE NEWLINE block NEWLINE RIGHTBRACE NEWLINE ELSE LEFTBRACE NEWLINE block NEWLINE RIGHTBRACE {
-                $$ = new ConditionalAST($2, $6, $13);
+instruction: IF expression NEWLINE LEFTBRACE NEWLINE block RIGHTBRACE ELSE LEFTBRACE NEWLINE block
+             RIGHTBRACE {
+                $$ = new ConditionalAST($2, $6, $11);
            }
-           | IF expression NEWLINE LEFTBRACE NEWLINE block NEWLINE RIGHTBRACE {
+           | IF expression NEWLINE LEFTBRACE NEWLINE block RIGHTBRACE {
                 $$ = new ConditionalAST($2, $6, 0);
            }
-           | WHILE expression NEWLINE LEFTBRACE NEWLINE block NEWLINE RIGHTBRACE {
+           | WHILE expression NEWLINE LEFTBRACE NEWLINE block RIGHTBRACE {
                 $$ = new WhileLoopAST($2, $6);
            }
-           | FUNCTION ID LEFTPAR arglist RIGHTPAR NEWLINE LEFTBRACE NEWLINE block NEWLINE RIGHTBRACE {
+           | FUNCTION ID LEFTPAR arglist RIGHTPAR NEWLINE LEFTBRACE NEWLINE block RIGHTBRACE {
                 Function* f = new Function($9);
                 f->arguments = *$4;
                 AST::functions[$2] = f;
                 $$ = new FunctionBodyAST(f);
            }
-           | expression OPERATOR expression {
-                std::vector<AST*> v = { $1, $3 };
-                $$ = new FunctionAST(opMarker + $2, v);
-           }
-           | OPERATOR expression {
-                std::vector<AST*> v = { $2 };
-                $$ = new FunctionAST(opMarker + $1, v);
+           | RETURN expression {
+                $$ = $2;
            }
            | expression {
                 $$ = $1;
@@ -104,11 +113,11 @@ exprlist: exprlist COMMA expression {
             $$ = new std::vector<Kernel::AST*>;
             $$->push_back($1);
         }
-expression: term OPERATOR term {
+expression: expression OPERATOR expression {
               std::vector<AST*> v = { $1, $3 };
               $$ = new FunctionAST(opMarker + $2, v);
           }
-          | OPERATOR term {
+          | OPERATOR expression {
               std::vector<AST*> v = { $2 };
               $$ = new FunctionAST(opMarker + $1, v);
           }
@@ -122,7 +131,7 @@ term: FLOAT {
         $$ = new VarAST($1);
     }
     | matrix {
-        //$$ = new TypeAST($1);
+        $$ = new TypeAST($1);
     }
     | LEFTPAR expression RIGHTPAR {
         $$ = $2;

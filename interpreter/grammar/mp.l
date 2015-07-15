@@ -14,9 +14,15 @@ extern "C" int yywrap() {
     return 1;
 }
 
+extern void yyerror(Kernel::AST*, char*);
+
 %}
 %%
 [ \t] ;
+\n+ {
+    cout << "Found NEWLINE" << endl;
+    return NEWLINE;
+}
 [0-9]+\.[0-9]+ {
     cout << "Found a floating-point number: " << yytext << endl;
     yylval.type = new Matrix(atof(yytext));
@@ -52,7 +58,7 @@ return {
     yylval.str = yytext;
     return ID;
 }
-[\+\-\*\/\@\^\%\=\<\>]+ {
+[\+\-\*\/\@\^\%\=\<\>\!]+ {
     cout << "Found an operator: " << yytext << endl;
     yylval.str = yytext;
     return OPERATOR;
@@ -81,8 +87,7 @@ return {
     cout << "Found right brace: " << yytext << endl;
     return RIGHTBRACE;
 }
-\n {
-    cout << "Found NEWLINE symbol" << endl;
-    return NEWLINE;
+. {
+    yyerror(0, yytext);
 }
 %%
