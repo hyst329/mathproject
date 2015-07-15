@@ -37,3 +37,4 @@ add_executable(ide ${MP_IDE_SOURCE_FILES})
 target_link_libraries(ide ${GTKMM_LIBRARIES})
 
 file(COPY ide/userInterface.glade DESTINATION ${PROJECT_BINARY_DIR})
+file(COPY library/library.txt DESTINATION ${PROJECT_BINARY_DIR}/library)

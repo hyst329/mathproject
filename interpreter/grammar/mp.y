@@ -21,7 +21,7 @@ static std::string opMarker = "$operator";
 %token <type> FLOAT
 %token <str> ID
 %token <str> OPERATOR
-%token SEMICOLON COMMA
+%token SEMICOLON COMMA NEWLINE
 %token LEFTPAR RIGHTPAR LEFTBRACE RIGHTBRACE
 %token IF WHILE ELSE FUNCTION RETURN
 %type <ast> program block instruction expression term
@@ -46,7 +46,7 @@ static std::string opMarker = "$operator";
 program: block {
            $$ = $1;
        }
-block: block instruction '\n' {
+block: block instruction NEWLINE {
             ((BlockAST*)$1)->children.push_back($2);
             $$ = $1;
        }
@@ -62,16 +62,16 @@ block: block instruction '\n' {
             $$ = new BlockAST();
             ((BlockAST*)$$)->children.push_back($1);
        }
-instruction: IF expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE '\n' ELSE LEFTBRACE '\n' block '\n' RIGHTBRACE {
+instruction: IF expression NEWLINE LEFTBRACE NEWLINE block NEWLINE RIGHTBRACE NEWLINE ELSE LEFTBRACE NEWLINE block NEWLINE RIGHTBRACE {
                 $$ = new ConditionalAST($2, $6, $13);
            }
-           | IF expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
+           | IF expression NEWLINE LEFTBRACE NEWLINE block NEWLINE RIGHTBRACE {
                 $$ = new ConditionalAST($2, $6, 0);
            }
-           | WHILE expression '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
+           | WHILE expression NEWLINE LEFTBRACE NEWLINE block NEWLINE RIGHTBRACE {
                 $$ = new WhileLoopAST($2, $6);
            }
-           | FUNCTION ID LEFTPAR arglist RIGHTPAR '\n' LEFTBRACE '\n' block '\n' RIGHTBRACE {
+           | FUNCTION ID LEFTPAR arglist RIGHTPAR NEWLINE LEFTBRACE NEWLINE block NEWLINE RIGHTBRACE {
                 Function* f = new Function($9);
                 f->arguments = *$4;
                 AST::functions[$2] = f;

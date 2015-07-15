@@ -81,4 +81,8 @@ return {
     cout << "Found right brace: " << yytext << endl;
     return RIGHTBRACE;
 }
+\n {
+    cout << "Found NEWLINE symbol" << endl;
+    return NEWLINE;
+}
 %%
