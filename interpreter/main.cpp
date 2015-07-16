@@ -22,9 +22,9 @@ void translate() {
     yyparse(ast);
     //ast->exec();
     cout << "Functions:\n";
-    cout << "Function TTM: " << Kernel::AST::functions["ToTriangleMatrix"] << endl;
+    cout << "Function TTM: " << (int)Kernel::AST::functions["ToTriangleMatrix"] << endl;
     for (auto p: Kernel::AST::functions) {
-        cout << "Name: " << p.first << "\tValue:" << p.second << endl;
+        cout << "Name: " << p.first << "\t\tValue:" << (int)p.second << endl;
     }
 }
 

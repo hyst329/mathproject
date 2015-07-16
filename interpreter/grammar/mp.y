@@ -84,6 +84,7 @@ instruction: IF expression instruction ELSE instruction {
            | FUNCTION ID LEFTPAR arglist RIGHTPAR instruction {
                 Function* f = new Function($6);
                 f->arguments = *$4;
+                cout << "Function BODY: " << $2 << endl;
                 AST::functions[$2] = f;
                 $$ = new FunctionBodyAST(f);
                 if(yyin == stdin) {
