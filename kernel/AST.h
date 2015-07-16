@@ -103,6 +103,17 @@ namespace Kernel {
             return 0;
         }
     };
+
+    struct ReturnAST : public AST {
+        AST *returnValue;
+
+        ReturnAST(AST *returnValue) : returnValue(returnValue) { }
+
+        Type *exec() {
+            //TODO(hyst329): switch the control to main "function"
+            return returnValue->exec();
+        }
+    };
 }
 
 #endif //MATHPROJECT_AST_H

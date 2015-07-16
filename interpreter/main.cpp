@@ -20,6 +20,10 @@ void showVersion() {
 void translate() {
     yyparse(ast);
     //ast->exec();
+    cout << "Functions:\n";
+    for(auto p: Kernel::AST::functions) {
+        cout << "Name: " << p.first << "\tValue:" << p.second << endl;
+    }
 }
 
 void setInputFile(string filename) {

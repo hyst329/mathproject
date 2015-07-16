@@ -74,7 +74,7 @@ instruction: IF expression instruction ELSE instruction {
                 $$ = new FunctionBodyAST(f);
            }
            | RETURN expression SEMICOLON {
-                $$ = $2;
+                $$ = new ReturnAST($2);
            }
            | expression SEMICOLON {
                 $$ = $1;
