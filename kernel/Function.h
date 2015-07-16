@@ -15,7 +15,7 @@ class Function : Type {
     map<string, Type *> mapKeeper;
 
 public:
-    Type *operator()(std::vector<Type *> args=vector<Type *>());
+    Type *operator()(std::vector<Type *> args);
 
     Function(Kernel::AST *ast, vector<string> arguments = vector<string>()) : ast(ast), arguments(arguments) {
         ast->variables = &mapKeeper;

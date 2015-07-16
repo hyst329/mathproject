@@ -8,13 +8,11 @@
 #include <vector>
 #include <map>
 #include "Type.h"
-#include "Function.h"
-#include <map>
+
 
 
 using namespace std;
 class Function;
-
 namespace Kernel {
 
     struct AST {
@@ -42,14 +40,7 @@ namespace Kernel {
 
         TypeAST(Type *v) : value(v) { };
     };
-    vector<Type *> vAstToType(vector<AST *> initial) {
-        vector<Type *> final(initial.size());
-        int i=0;
-        for (auto x:initial) {
-            final[i]=x->exec();
-        }
-        return final;
-    }
+
     struct FunctionAST : public AST {
         std::string function;
         vector<AST *> arguments;
@@ -57,11 +48,7 @@ namespace Kernel {
         FunctionAST(std::string function, vector<AST *> arguments = vector<AST *>())
                 : function(function), arguments(arguments) { };
 
-        Type *exec() {
-            return AST().functions[function]->operator()(vAstToType(arguments));
-            // TODO: Add Function call
-           // return 0;//function(arguments)->exec();
-        }
+        Type *exec() ;
     };
 
     struct FunctionBodyAST : public AST {
@@ -69,12 +56,7 @@ namespace Kernel {
 
         FunctionBodyAST(Function *function)
                 : function(function){ };
-
-        Type *exec() {
-            return function->operator()();
-            // TODO: Add Function call
-            //return 0;//function(arguments)->exec();
-        }
+        Type *exec();
     };
 
     struct VarAST : public AST {
