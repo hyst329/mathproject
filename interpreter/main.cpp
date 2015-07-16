@@ -10,20 +10,33 @@ extern int yyparse(Kernel::AST *&);
 
 extern int yylex();
 
-extern FILE *yyin;
+extern FILE *yyin, *yyout;
 
 static Kernel::AST *ast = 0;
 
 void showVersion() {
     cout << "Version 0.0.0 (currently versioning is not implemented)" << endl;
 };
+
 void translate() {
     yyparse(ast);
     //ast->exec();
     cout << "Functions:\n";
-    for(auto p: Kernel::AST::functions) {
+    cout << "Function TTM: " << Kernel::AST::functions["ToTriangleMatrix"] << endl;
+    for (auto p: Kernel::AST::functions) {
         cout << "Name: " << p.first << "\tValue:" << p.second << endl;
     }
+}
+
+void interactive() {
+    yyin = stdin;
+    yyout = 0;
+    do {
+        //ast->exec();
+        cout << ">>> ";
+        ast = 0;
+        yyparse(ast);
+    } while (ast);
 }
 
 void setInputFile(string filename) {
@@ -36,7 +49,8 @@ int main(int argc, char **argv) {
     desc.add_options()
             ("help,h", "Show this help message")
             ("version,v", "Show version")
-            ("input-file,i", value<string>(&path), "Input file name");
+            ("interactive,i", "Run in interactive mode")
+            ("input-file,I", value<string>(&path), "Input file name");
     positional_options_description pos;
     pos.add("input-file", -1);
     variables_map vm;
@@ -61,6 +75,10 @@ int main(int argc, char **argv) {
         setInputFile(path);
         cout << "Translating file " << path << "...\n";
         translate();
+    }
+    if (vm.count("interactive")) {
+        cout << "Running in interactive mode...\n";
+        interactive();
     }
     if (vm.empty()) {
         cout << "No options specified!" << endl;

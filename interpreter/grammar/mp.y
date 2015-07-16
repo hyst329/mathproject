@@ -16,6 +16,8 @@ void yyerror(Kernel::AST* a, char* msg) {
     fprintf(stderr, "%s in line %d\n", msg, yylineno);
 }
 
+extern FILE* yyin;
+
 static std::string opMarker = "$operator";
 %}
 %error-verbose
@@ -45,7 +47,7 @@ static std::string opMarker = "$operator";
 %parse-param {Kernel::AST *&result}
 %%
 program: block {
-           $$ = $1;
+           $$ = result = $1;
        }
 block: block instruction {
             ((BlockAST*)$1)->children.push_back($2);
@@ -60,27 +62,55 @@ bracedblock : LEFTBRACE block RIGHTBRACE {
 }
 instruction: IF expression instruction ELSE instruction {
                 $$ = new ConditionalAST($2, $3, $5);
+                if(yyin == stdin) {
+                    result = $$;
+                    return 0;
+                }
            }
            | IF expression instruction {
                 $$ = new ConditionalAST($2, $3, 0);
+                if(yyin == stdin) {
+                    result = $$;
+                    return 0;
+                }
            }
            | WHILE expression instruction {
                 $$ = new WhileLoopAST($2, $3);
+                if(yyin == stdin) {
+                    result = $$;
+                    return 0;
+                }
            }
            | FUNCTION ID LEFTPAR arglist RIGHTPAR instruction {
                 Function* f = new Function($6);
                 f->arguments = *$4;
                 AST::functions[$2] = f;
                 $$ = new FunctionBodyAST(f);
+                if(yyin == stdin) {
+                    result = $$;
+                    return 0;
+                }
            }
            | RETURN expression SEMICOLON {
                 $$ = new ReturnAST($2);
+                if(yyin == stdin) {
+                    result = $$;
+                    return 0;
+                }
            }
            | expression SEMICOLON {
                 $$ = $1;
+                if(yyin == stdin) {
+                    result = $$;
+                    return 0;
+                }
            }
            | bracedblock {
                 $$ = $1;
+                if(yyin == stdin) {
+                    result = $$;
+                    return 0;
+                }
            }
 arglist: arglist COMMA ID {
            $1->push_back($3);
