@@ -13,7 +13,7 @@
 
 
 using namespace std;
-class UserFunction;
+class Function;
 namespace Kernel {
 
     struct AST {
@@ -54,9 +54,9 @@ namespace Kernel {
     };
 
     struct FunctionBodyAST : public AST {
-        UserFunction * function;
+        Function * function;
 
-        FunctionBodyAST(UserFunction *function)
+        FunctionBodyAST(Function *function)
                 : function(function){ };
         Type *exec();
     };

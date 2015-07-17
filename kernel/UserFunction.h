@@ -11,28 +11,28 @@
 #include <map>
 #include <functional>
 
-class Function : Type {
+class Function : public Type {
 public:
     virtual Type* operator()(std::vector<Type*> arguments) = 0;
 
-protected:
-    vector<string> arguments;
 };
 
-class BuiltinFunction : Function {
+class BuiltinFunction : public Function {
     std::function<Type*(std::vector<Type*>)> f;
 
 public:
-    BuiltinFunction(const function<Type*(std::vector<Type*>)> &f,
-                    vector<string> arguments = vector<string>()) : f(f), arguments(arguments) { }
+    BuiltinFunction(const function<Type*(std::vector<Type*>)> &f) : f(f) { }
 
     virtual Type *operator()(std::vector<Type *> args);
 };
 
-class UserFunction : Function {
+class UserFunction :  public Function {
     Kernel::AST *ast;
 
+
 public:
+    vector<string> arguments;
+
     virtual Type *operator()(std::vector<Type *> args);
 
     UserFunction(Kernel::AST *ast, vector<string> arguments = vector<string>()) : ast(ast), arguments(arguments) {

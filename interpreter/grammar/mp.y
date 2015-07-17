@@ -1,7 +1,7 @@
 %{
 #include <iostream>
 #include "../../kernel/AST.h"
-#include "../../kernel/Function.h"
+#include "../../kernel/UserFunction.h"
 #include "../../kernel/Type.h"
 #include "../../kernel/Matrix.h"
 #include <string>
@@ -82,7 +82,7 @@ instruction: IF expression instruction ELSE instruction {
                 }
            }
            | FUNCTION ID LEFTPAR arglist RIGHTPAR instruction {
-                Function* f = new UserFunction($6);
+                UserFunction* f = new UserFunction($6);
                 f->arguments = *$4;
                 //cout << "Function BODY: " << $2 << endl;
                 AST::functions[$2] = f;

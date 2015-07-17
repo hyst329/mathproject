@@ -8,7 +8,7 @@
 
 
 namespace Kernel {
-    map<string, UserFunction *> AST::functions = map<string, UserFunction *>();
+    map<string, Function *> AST::functions = map<string, Function *>();
     map<string, Type *> AST::variables = map<string, Type *>();
     stack<string> AST::callstack = stack<string>();
 
