@@ -7,22 +7,26 @@
 
 
 namespace Kernel {
-    map<string, Function *> AST::functions = std::map<std::string, Function *>();
+    map<string, Function *> AST::functions = map<string, Function *>();
+    map<string, Type *> AST::variables = map<string, Type *>();
+    stack<string> AST::callstack = stack<string>();
 
     vector<Type *> vAstToType(vector<AST *> initial) {
         vector<Type *> final(initial.size());
-        int i=0;
+        int i = 0;
         for (auto x:initial) {
-            final[i]=x->exec();
+            final[i] = x->exec();
         }
         return final;
     }
+
     Type *FunctionAST::exec() {
         callstack.push(function);
         Type *r = functions[function]->operator()(vAstToType(arguments));
         callstack.pop();
         return r;
     }
+
     Type *FunctionBodyAST::exec() {
         return 0;
         //return function->operator()(vector<Type *>());
