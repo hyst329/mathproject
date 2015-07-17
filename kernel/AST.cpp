@@ -3,12 +3,12 @@
 //
 
 #include "AST.h"
-#include "Function.h"
+#include "UserFunction.h"
 #include "Error.h"
 
 
 namespace Kernel {
-    map<string, Function *> AST::functions = map<string, Function *>();
+    map<string, UserFunction *> AST::functions = map<string, UserFunction *>();
     map<string, Type *> AST::variables = map<string, Type *>();
     stack<string> AST::callstack = stack<string>();
 

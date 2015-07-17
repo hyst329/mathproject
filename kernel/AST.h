@@ -13,13 +13,13 @@
 
 
 using namespace std;
-class Function;
+class UserFunction;
 namespace Kernel {
 
     struct AST {
         virtual Type *exec() = 0;
 
-        static map<string, Function*> functions;
+        static map<string, Function *> functions;
         static map<string, Type*> variables;
         static stack<string> callstack;
 
@@ -54,9 +54,9 @@ namespace Kernel {
     };
 
     struct FunctionBodyAST : public AST {
-        Function* function;
+        UserFunction * function;
 
-        FunctionBodyAST(Function *function)
+        FunctionBodyAST(UserFunction *function)
                 : function(function){ };
         Type *exec();
     };
