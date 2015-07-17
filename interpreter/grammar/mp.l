@@ -49,7 +49,7 @@ return {
     //cout << "Found RETURN keyword: " << yytext << endl;
     return RETURN;
 }
-[a-zA-Z_][a-zA-Z0-9_]* {
+[\$]?[a-zA-Z_][a-zA-Z0-9_]* {
     //cout << "Found an identifier: " << yytext << endl;
     yylval.str = strdup(yytext);
     return ID;

@@ -8,9 +8,14 @@ Type *Function::operator()(std::vector<Type *> args) {
     // TODO: Deal with variables
     for(int i = 0; i  < args.size(); i++){
 
-        ast->variables->insert(make_pair(arguments[i], args[i]));
+        Kernel::AST::variables.insert(make_pair(arguments[i], args[i]));
     }
-    return ast->exec();
+    Type* r = ast->exec();
+    // Delete all local variables
+    for(auto p: Kernel::AST::variables)
+        if(p.first[0] != '$')
+        Kernel::AST::variables.erase(p.first);
+    return r;
 }
 
 bool Function::equals(Type &type) {

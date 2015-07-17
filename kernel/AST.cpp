@@ -18,10 +18,13 @@ namespace Kernel {
         return final;
     }
     Type *FunctionAST::exec() {
-
-        return functions[function]->operator()(vAstToType(arguments));
+        callstack.push(function);
+        Type *r = functions[function]->operator()(vAstToType(arguments));
+        callstack.pop();
+        return r;
     }
     Type *FunctionBodyAST::exec() {
-        return function->operator()(vector<Type *>());
+        return 0;
+        //return function->operator()(vector<Type *>());
     }
 }

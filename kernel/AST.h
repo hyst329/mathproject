@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <map>
+#include <stack>
 #include "Type.h"
 
 
@@ -18,8 +19,9 @@ namespace Kernel {
     struct AST {
         virtual Type *exec() = 0;
 
-        map<string, Type *> *variables;
         static map<string, Function*> functions;
+        static map<string, Type*> variables;
+        static stack<string> callstack;
 
     };
 
@@ -66,7 +68,7 @@ namespace Kernel {
                 : name(name) { };
 
         Type *exec() {
-            return (*variables)[name];
+            return AST::variables[name];
         }
     };
 
