@@ -10,12 +10,18 @@
 #include <map>
 
 enum ErrorType {
+    ET_UNKNOWN,
+    ET_DIMENSIONS_MISMATCH,
+    ET_UNKNOWN_IDENTIFIER,
     ET_UNKNOWN_FUNCTION
 };
 
 static std::map<ErrorType, std::string> codes =
         {
-                {ET_UNKNOWN_FUNCTION, "Unknown function"}
+                {ET_UNKNOWN,             "Unknown error"},
+                {ET_DIMENSIONS_MISMATCH, "Matrix dimensions mismatch"},
+                {ET_UNKNOWN_IDENTIFIER,  "Unknown identifier"},
+                {ET_UNKNOWN_FUNCTION,    "Unknown function"}
         };
 
 class Error {
