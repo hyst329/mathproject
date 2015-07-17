@@ -30,6 +30,9 @@ public:
 
     bool isNonzero();
     double & element(int i, int j);
+    Matrix operator+(Matrix& other);
+    Matrix operator-(Matrix& other);
+    Matrix operator*(Matrix& other);
 
 };
 
