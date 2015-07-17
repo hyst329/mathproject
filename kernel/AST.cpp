@@ -4,6 +4,7 @@
 
 #include "AST.h"
 #include "Function.h"
+#include "Error.h"
 
 
 namespace Kernel {
@@ -21,6 +22,8 @@ namespace Kernel {
     }
 
     Type *FunctionAST::exec() {
+        if(!functions.count(function))
+            Error::error(ET_UNKNOWN_FUNCTION);
         callstack.push(function);
         Type *r = functions[function]->operator()(vAstToType(arguments));
         callstack.pop();
