@@ -21,7 +21,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(MP_KERNEL_SOURCE_FILES kernel/placeholder.cpp kernel/Type.cpp kernel/Type.h kernel/Matrix.cpp kernel/Matrix.h
     kernel/UserFunction.cpp kernel/UserFunction.h kernel/AST.cpp kernel/AST.h)
-add_library(kernel STATIC ${MP_KERNEL_SOURCE_FILES} kernel/Array.cpp kernel/Array.h kernel/Error.cpp kernel/Error.h)
+add_library(kernel STATIC ${MP_KERNEL_SOURCE_FILES} kernel/Array.cpp kernel/Array.h kernel/Error.cpp kernel/Error.h kernel/BuiltinFunctions.h kernel/BuiltinFunctions.cpp)
 
 include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})

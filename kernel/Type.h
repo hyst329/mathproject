@@ -14,7 +14,16 @@ public:
     virtual bool equals(Type &type) = 0;
 
     virtual bool isNonzero() = 0;
+
+    virtual void print(std::ostream &os) {
+        os << "[" << getType() << "] instance at address " << (int) this;
+    }
+
 };
 
+static inline std::ostream &operator<<(std::ostream &stream, Type &p) {
+    p.print(stream);
+    return stream;
+}
 
 #endif //MATHPROJECT_TYPE_H
