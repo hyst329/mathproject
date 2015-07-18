@@ -2,6 +2,7 @@
 // Created by main on 05.07.2015.
 //
 
+#include <iostream>
 #include "AST.h"
 #include "UserFunction.h"
 #include "Error.h"
@@ -28,6 +29,8 @@ namespace Kernel {
         // TODO: temporary for assign
         Type *r = 0;
         if (function == "$operator=") {
+            std::cout << arguments.size() << std::endl;
+            for(AST* a: arguments) cout << typeid(a).name() << endl;
             if(typeid(arguments[0]) == typeid(VarAST*))
                 variables[((VarAST*)arguments[0])->name] = arguments[1]->exec();
             else
