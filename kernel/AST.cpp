@@ -22,10 +22,20 @@ namespace Kernel {
     }
 
     Type *FunctionAST::exec() {
-        if(!functions.count(function))
+        if (!functions.count(function))
             Error::error(ET_UNKNOWN_FUNCTION);
         callstack.push(function);
-        Type *r = functions[function]->operator()(vAstToType(arguments));
+        // TODO: temporary for assign
+        Type *r = 0;
+        if (function == "$operator=") {
+            if(typeid(arguments[0]) == typeid(VarAST*))
+                variables[((VarAST*)arguments[0])->name] = arguments[1]->exec();
+            else
+                Error::error(ET_ASSIGNMENT_ERROR);
+        }
+        else {
+            r = functions[function]->operator()(vAstToType(arguments));
+        }
         callstack.pop();
         return r;
     }

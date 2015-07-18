@@ -14,6 +14,7 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["$operator/"] = new BuiltinFunction(divide);
     AST::functions["print"] = new BuiltinFunction(print);
     AST::functions["$operator="] = new BuiltinFunction(assign);
+    AST::functions["pvar"] = new BuiltinFunction(pvar);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -91,4 +92,11 @@ Type *::Kernel::assign(std::vector<Type *> v) {
             // TODO(hyst329): error
             return 0;
     }
+}
+
+Type *::Kernel::pvar(std::vector<Type *> v) {
+    for(auto p: AST::variables) {
+        cout << p.first << "\t:\t" << p.second << endl;
+    }
+    return 0;
 }

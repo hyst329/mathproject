@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../kernel/AST.h"
 #include "../kernel/BuiltinFunctions.h"
+#include "../kernel/Error.h"
 #include <boost/program_options.hpp>
 #include <fstream>
 
@@ -33,10 +34,15 @@ void interactive() {
     yyin = stdin;
     yyout = 0;
     do {
-        //cout << ">>> ";
-        ast = 0;
-        yyparse(ast);
-        ast->exec();
+        try {
+            cout << ">>> ";
+            ast = 0;
+            yyparse(ast);
+            ast->exec();
+        }
+        catch(Error& error) {
+            cerr << "Error: " << error.getText() << endl;
+        }
     } while (ast);
 }
 

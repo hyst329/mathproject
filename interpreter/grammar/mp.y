@@ -157,7 +157,6 @@ term: FLOAT {
     }
 matrix: LEFTBRACE rowlist RIGHTBRACE {
           $$ = new Matrix(*$2);
-          delete $2;
       }
 rowlist: rowlist SEMICOLON row {
            $1->push_back(*$3);
