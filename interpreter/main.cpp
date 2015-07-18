@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../kernel/AST.h"
+#include "../kernel/BuiltinFunctions.h"
 #include <boost/program_options.hpp>
 #include <fstream>
 
@@ -43,7 +44,8 @@ void setInputFile(string filename) {
     yyin = fopen(filename.c_str(), "r");
 }
 
-int main(int argc, char **argv) {
+int main(int argc, const char * const argv[]) {
+    Kernel::initialiseBuiltins();
     options_description desc("General options");
     string path;
     desc.add_options()
@@ -63,13 +65,15 @@ int main(int argc, char **argv) {
     catch (exception &a_exc) {
         cout << "Parse error: " << a_exc.what() << endl;
         cout << desc;
-        return 0;
+        return 1;
     }
     if (vm.count("help")) {
         cout << desc;
+        return 0;
     }
     if (vm.count("version")) {
         showVersion();
+        return 0;
     }
     if (vm.count("input-file")) {
         setInputFile(path);
@@ -83,6 +87,7 @@ int main(int argc, char **argv) {
     if (vm.empty()) {
         cout << "No options specified!" << endl;
         cout << desc;
+        return 0;
     }
     return 0;
 }

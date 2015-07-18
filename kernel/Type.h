@@ -6,6 +6,7 @@
 #define MATHPROJECT_TYPE_H
 
 #include <string>
+#include <boost/format.hpp>
 
 class Type {
 public:
@@ -16,7 +17,7 @@ public:
     virtual bool isNonzero() = 0;
 
     virtual void print(std::ostream &os) {
-        os << "[" << getType() << "] instance at address " << (int) this;
+        os << boost::format("[%1% instance at address %2%]") % getType() % (int)this;
     }
 
 };

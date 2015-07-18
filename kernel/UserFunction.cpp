@@ -29,3 +29,11 @@ bool UserFunction::isNonzero() {
 Type *BuiltinFunction::operator()(std::vector<Type *> args) {
     return f(args);
 }
+
+bool BuiltinFunction::equals(Type &type) {
+    return 0;
+}
+
+bool BuiltinFunction::isNonzero() {
+    return 1;
+}

@@ -24,6 +24,15 @@ public:
     BuiltinFunction(const function<Type*(std::vector<Type*>)> &f) : f(f) { }
 
     virtual Type *operator()(std::vector<Type *> args);
+
+
+    virtual bool equals(Type &type);
+
+    virtual bool isNonzero();
+
+    std::string getType() {
+        return "BuiltinFunction";
+    }
 };
 
 class UserFunction :  public Function {
