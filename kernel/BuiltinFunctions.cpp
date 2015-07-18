@@ -12,6 +12,8 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["$operator-"] = new BuiltinFunction(subtract);
     AST::functions["$operator*"] = new BuiltinFunction(multiply);
     AST::functions["$operator/"] = new BuiltinFunction(divide);
+    AST::functions["print"] = new BuiltinFunction(print);
+    AST::functions["$operator="] = new BuiltinFunction(assign);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -76,6 +78,17 @@ Type *::Kernel::divide(std::vector<Type *> v) {
 }
 
 Type *::Kernel::print(std::vector<Type *> v) {
-    for (Type *t: v) std::cout << *t;
+    for (Type *t: v) std::cout << *t << std::endl;
     return 0;
+}
+
+Type *::Kernel::assign(std::vector<Type *> v) {
+    switch(v.size()) {
+        case 2:
+            v[0] = v[1];
+            return v[1];
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
 }

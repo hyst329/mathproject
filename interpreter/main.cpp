@@ -33,10 +33,10 @@ void interactive() {
     yyin = stdin;
     yyout = 0;
     do {
-        //ast->exec();
-        cout << ">>> ";
+        //cout << ">>> ";
         ast = 0;
         yyparse(ast);
+        ast->exec();
     } while (ast);
 }
 

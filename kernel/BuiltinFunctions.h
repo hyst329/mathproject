@@ -15,6 +15,7 @@ namespace Kernel {
     Type* multiply(std::vector<Type*> v);
     Type* divide(std::vector<Type*> v);
     Type* print(std::vector<Type*> v);
+    Type* assign(std::vector<Type*> v);
 }
 
 #endif //MATHPROJECT_BUILTINFUNCTIONS_H
