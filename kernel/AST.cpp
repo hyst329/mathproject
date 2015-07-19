@@ -15,9 +15,8 @@ namespace Kernel {
 
     vector<Type *> vAstToType(vector<AST *> initial) {
         vector<Type *> final(initial.size());
-        int i = 0;
-        for (auto x:initial) {
-            final[i] = x->exec();
+        for (int i = 0; i < initial.size(); i++) {
+            final[i] = initial[i]->exec();
         }
         return final;
     }
