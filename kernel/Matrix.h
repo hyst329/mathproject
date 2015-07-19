@@ -9,8 +9,7 @@
 #include "Type.h"
 #include "AST.h"
 
-class Matrix : public Type
-{
+class Matrix : public Type {
     double **array;
     int sizeColumn;
     int sizeRow;
@@ -29,10 +28,18 @@ public:
     bool equals(Type &type);
 
     bool isNonzero();
-    double & element(int i, int j);
-    Matrix operator+(Matrix& other);
-    Matrix operator-(Matrix& other);
-    Matrix operator*(Matrix& other);
+
+    double &element(int i, int j);
+
+    Matrix operator+(Matrix &other);
+
+    Matrix operator-(Matrix &other);
+
+    Matrix operator*(Matrix &other);
+
+    int getRows() { return sizeRow; }
+
+    int getColumns() { return sizeColumn; }
 
     virtual void print(std::ostream &os) override;
 };

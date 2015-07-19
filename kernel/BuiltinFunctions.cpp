@@ -76,6 +76,25 @@ Type *::Kernel::multiply(std::vector<Type *> v) {
 }
 
 Type *::Kernel::divide(std::vector<Type *> v) {
+    // TODO: Multiply to inverse?
+    switch (v.size()) {
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
+                if(((Matrix *) v[1])->getRows() == 1 and ((Matrix *) v[1])->getColumns() == 1) {
+                    Matrix g = *((Matrix *) v[1]);
+                    g.element(1, 1) = 1.0 / g.element(1, 1);
+                    Matrix m = *((Matrix *) v[0]) * g;
+                    Matrix *r = new Matrix(m);
+                    return r;
+                }
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
     return nullptr;
 }
 
