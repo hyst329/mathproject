@@ -29,9 +29,7 @@ namespace Kernel {
         // TODO: temporary for assign
         Type *r = 0;
         if (function == "$operator=") {
-            std::cout << arguments.size() << std::endl;
-            for(AST* a: arguments) cout << typeid(a).name() << endl;
-            if(typeid(arguments[0]) == typeid(VarAST*))
+            if(dynamic_cast<VarAST*>(arguments[0]))
                 variables[((VarAST*)arguments[0])->name] = arguments[1]->exec();
             else
                 Error::error(ET_ASSIGNMENT_ERROR);

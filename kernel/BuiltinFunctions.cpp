@@ -22,7 +22,7 @@ Type *::Kernel::add(std::vector<Type *> v) {
         case 1:
             return v[0];
         case 2:
-            if(typeid(v[0]) == typeid(Matrix*) and typeid(v[1]) == typeid(Matrix*)) {
+            if(dynamic_cast<Matrix*>(v[0]) and dynamic_cast<Matrix*>(v[1])) {
                 Matrix m = (*((Matrix *) v[0]) + *((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
@@ -43,7 +43,7 @@ Type *::Kernel::subtract(std::vector<Type *> v) {
         case 1:
             return v[0]; // TODO(hyst329) : Negate
         case 2:
-            if(typeid(v[0]) == typeid(Matrix*) and typeid(v[1]) == typeid(Matrix*)) {
+            if(dynamic_cast<Matrix*>(v[0]) and dynamic_cast<Matrix*>(v[1])) {
                 Matrix m = (*((Matrix *) v[0]) - *((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
@@ -60,7 +60,7 @@ Type *::Kernel::subtract(std::vector<Type *> v) {
 Type *::Kernel::multiply(std::vector<Type *> v) {
     switch(v.size()) {
         case 2:
-            if(typeid(v[0]) == typeid(Matrix*) and typeid(v[1]) == typeid(Matrix*)) {
+            if(dynamic_cast<Matrix*>(v[0]) and dynamic_cast<Matrix*>(v[1])) {
                 Matrix m = (*((Matrix *) v[0]) * *((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
@@ -79,7 +79,7 @@ Type *::Kernel::divide(std::vector<Type *> v) {
 }
 
 Type *::Kernel::print(std::vector<Type *> v) {
-    for (Type *t: v) std::cout << *t << std::endl;
+    for (Type *t: v) t->print(std::cout);
     return 0;
 }
 
@@ -96,7 +96,7 @@ Type *::Kernel::assign(std::vector<Type *> v) {
 
 Type *::Kernel::pvar(std::vector<Type *> v) {
     for(auto p: AST::variables) {
-        cout << p.first << "\t:\t" << p.second << endl;
+        cout << (boost::format("%1%\t:\t[%2%] %3%") % p.first % p.second % *p.second) << endl;
     }
     return 0;
 }
