@@ -21,6 +21,8 @@ public:
 
     Matrix(std::vector<std::vector<double>> &v);
 
+    Matrix(const Matrix& other);
+
     ~Matrix();
 
     std::string getType();

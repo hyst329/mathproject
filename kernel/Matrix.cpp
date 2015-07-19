@@ -8,6 +8,11 @@
 Matrix::Matrix(int rows, int columns) : sizeColumn(columns), sizeRow(rows) {
     array = new double *[rows];
     for (int i = 0; i < rows; i++) array[i] = new double[columns];
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            array[i][j] = 0;
+        }
+    }
 }
 
 Matrix::Matrix(double number) : Matrix(1, 1) {
@@ -102,4 +107,10 @@ void Matrix::print(std::ostream &os) {
     for (int i = 0; i < sizeRow; i++)
         for (int j = 0; j < sizeColumn; j++)
             os << array[i][j] << (j != sizeColumn - 1 ? ", " : (i != sizeRow - 1 ? "; " : "}"));
+}
+
+Matrix::Matrix(const Matrix &other) : Matrix(other.sizeRow, other.sizeColumn) {
+    for (int i = 0; i < sizeRow; i++)
+        for (int j = 0; j < sizeColumn; j++)
+            array[i][j] = other.array[i][j];
 }
