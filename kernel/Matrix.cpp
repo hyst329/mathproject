@@ -102,5 +102,4 @@ void Matrix::print(std::ostream &os) {
     for (int i = 0; i < sizeRow; i++)
         for (int j = 0; j < sizeColumn; j++)
             os << array[i][j] << (j != sizeColumn - 1 ? ", " : (i != sizeRow - 1 ? "; " : "}"));
-    os << std::endl;
 }

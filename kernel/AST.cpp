@@ -24,7 +24,7 @@ namespace Kernel {
 
     Type *FunctionAST::exec() {
         if (!functions.count(function))
-            Error::error(ET_UNKNOWN_FUNCTION);
+            Error::error(ET_UNKNOWN_FUNCTION, {function});
         callstack.push(function);
         // TODO: temporary for assign
         Type *r = 0;
@@ -42,7 +42,7 @@ namespace Kernel {
     }
 
     Type *FunctionBodyAST::exec() {
-        return 0;
+        return NullType::getInstance();
         //return function->operator()(vector<Type *>());
     }
 }

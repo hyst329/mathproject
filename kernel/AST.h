@@ -9,7 +9,7 @@
 #include <map>
 #include <stack>
 #include "Type.h"
-
+#include "NullType.h"
 
 
 using namespace std;
@@ -94,7 +94,7 @@ namespace Kernel {
         Type *exec() {
             while (condition->exec()->isNonzero())
                 iteration->exec();
-            return 0;
+            return NullType::getInstance();
         }
     };
 

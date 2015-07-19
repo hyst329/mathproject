@@ -10,12 +10,19 @@
 
 class NullType : public Type {
 
+    static NullType *instance;
 public:
+    static NullType *getInstance() {
+        return instance;
+    }
+
     virtual std::string getType();
 
     virtual bool equals(Type &type);
 
     virtual bool isNonzero();
+
+
 };
 
 

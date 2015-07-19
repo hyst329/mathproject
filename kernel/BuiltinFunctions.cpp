@@ -6,6 +6,7 @@
 #include "BuiltinFunctions.h"
 #include "Matrix.h"
 #include "UserFunction.h"
+#include "Error.h"
 
 void ::Kernel::initialiseBuiltins() {
     AST::functions["$operator+"] = new BuiltinFunction(add);
@@ -18,17 +19,17 @@ void ::Kernel::initialiseBuiltins() {
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
-    switch(v.size()) {
+    switch (v.size()) {
         case 1:
             return v[0];
         case 2:
-            if(dynamic_cast<Matrix*>(v[0]) and dynamic_cast<Matrix*>(v[1])) {
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
                 Matrix m = (*((Matrix *) v[0]) + *((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
             else {
-                // TODO(hyst329): error
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
             }
         default:
             // TODO(hyst329): error
@@ -39,17 +40,17 @@ Type *::Kernel::add(std::vector<Type *> v) {
 }
 
 Type *::Kernel::subtract(std::vector<Type *> v) {
-    switch(v.size()) {
+    switch (v.size()) {
         case 1:
             return v[0]; // TODO(hyst329) : Negate
         case 2:
-            if(dynamic_cast<Matrix*>(v[0]) and dynamic_cast<Matrix*>(v[1])) {
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
                 Matrix m = (*((Matrix *) v[0]) - *((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
             else {
-                // TODO(hyst329): error
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
             }
         default:
             // TODO(hyst329): error
@@ -58,15 +59,15 @@ Type *::Kernel::subtract(std::vector<Type *> v) {
 }
 
 Type *::Kernel::multiply(std::vector<Type *> v) {
-    switch(v.size()) {
+    switch (v.size()) {
         case 2:
-            if(dynamic_cast<Matrix*>(v[0]) and dynamic_cast<Matrix*>(v[1])) {
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
                 Matrix m = (*((Matrix *) v[0]) * *((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
             else {
-                // TODO(hyst329): error
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
             }
         default:
             // TODO(hyst329): error
@@ -84,7 +85,7 @@ Type *::Kernel::print(std::vector<Type *> v) {
 }
 
 Type *::Kernel::assign(std::vector<Type *> v) {
-    switch(v.size()) {
+    switch (v.size()) {
         case 2:
             v[0] = v[1];
             return v[1];
@@ -95,8 +96,10 @@ Type *::Kernel::assign(std::vector<Type *> v) {
 }
 
 Type *::Kernel::pvar(std::vector<Type *> v) {
-    for(auto p: AST::variables) {
-        cout << (boost::format("%1%\t:\t[%2%] %3%") % p.first % p.second % *p.second) << endl;
+    for (auto p: AST::variables) {
+        cout << (p.second ? (boost::format("%1%\t:\t[%2$9d] %3%") % p.first % (int) p.second % (*p.second))
+                          : (boost::format("%1%\t:\t[%2$9d] ZERO POINTER") % p.first % p.second))
+        << endl;
     }
     return 0;
 }

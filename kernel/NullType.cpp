@@ -15,3 +15,5 @@ bool NullType::equals(Type &type) {
 bool NullType::isNonzero() {
     return 0;
 }
+
+NullType *NullType::instance = new NullType;
