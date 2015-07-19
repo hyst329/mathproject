@@ -64,6 +64,7 @@ Type *::Kernel::multiply(std::vector<Type *> v) {
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
                 Matrix m = (*((Matrix *) v[0]) * *((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
+                cout << "Matrix: " << m;
                 return r;
             }
             else {

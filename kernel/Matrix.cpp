@@ -90,7 +90,7 @@ Matrix Matrix::operator*(Matrix &other) {
     Matrix res = Matrix(sizeRow, other.sizeColumn);
     for (int i = 0; i < sizeRow; i++)
         for (int j = 0; j < other.sizeColumn; j++) {
-            for (int k = 0; k < sizeColumn; j++)
+            for (int k = 0; k < sizeColumn; k++)
                 res.array[i][j] += array[i][k] * other.array[k][j];
 
         }

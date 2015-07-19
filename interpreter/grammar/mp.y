@@ -167,11 +167,11 @@ rowlist: rowlist SEMICOLON row {
            $$->push_back(*$1);
        }
 row: row COMMA FLOAT {
-         $1->push_back(((Matrix*)$3)->element(0, 0));
+         $1->push_back(((Matrix*)$3)->element(1, 1));
          $$ = $1;
    }
    | FLOAT {
          $$ = new std::vector<double>;
-         $$->push_back(((Matrix*)$1)->element(0, 0));
+         $$->push_back(((Matrix*)$1)->element(1, 1));
    }
 %%

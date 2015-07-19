@@ -38,19 +38,20 @@ void interactive() {
             cout << ">>> ";
             ast = 0;
             yyparse(ast);
+            if (!ast) break;
             ast->exec();
         }
-        catch(Error& error) {
+        catch (Error &error) {
             cerr << "Error: " << error.getText() << endl;
         }
-    } while (ast);
+    } while (1);
 }
 
 void setInputFile(string filename) {
     yyin = fopen(filename.c_str(), "r");
 }
 
-int main(int argc, const char * const argv[]) {
+int main(int argc, const char *const argv[]) {
     Kernel::initialiseBuiltins();
     options_description desc("General options");
     string path;
