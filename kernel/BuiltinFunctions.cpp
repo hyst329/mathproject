@@ -114,13 +114,13 @@ Type *::Kernel::assign(std::vector<Type *> v) {
             return v[1];
         default:
             // TODO(hyst329): error
-            return 0;
+            return NullType::getInstance();
     }
 }
 
 Type *::Kernel::pvar(std::vector<Type *> v) {
     for (auto p: AST::variables) {
-        cout << (p.second ? (boost::format("%1%\t:\t[%4$20s at addr. %2$9d] %3%") % p.first % (int) p.second
+        cout << (p.second ? (boost::format("%1%\t:\t[%3$20s at addr. %2$9d] %4%") % p.first % (int) p.second
                              % p.second->getType() % (*p.second))
                           : (boost::format("%1%\t:\t[******************** at addr. %2$9d] ZERO POINTER")
                              % p.first % p.second))

@@ -26,7 +26,7 @@ namespace Kernel {
             Error::error(ET_UNKNOWN_FUNCTION, {function});
         callstack.push(function);
         // TODO: temporary for assign
-        Type *r = 0;
+        Type *r = NullType::getInstance();
         if (function == "$operator=") {
             if(dynamic_cast<VarAST*>(arguments[0]))
                 variables[((VarAST*)arguments[0])->name] = arguments[1]->exec();
