@@ -40,9 +40,7 @@ inline bool isInteractive() {
 %type <row> row
 %type <rowlist> rowlist
 %type <type> matrix
-%nonassoc RIGHTPAREN
-%nonassoc IFX
-%nonassoc ELSE
+%right IFX ELSE
 %union
 {
     Type *type;

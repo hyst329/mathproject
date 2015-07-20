@@ -8,6 +8,7 @@
 #include "UserFunction.h"
 #include "Error.h"
 
+
 void ::Kernel::initialiseBuiltins() {
     AST::functions["$operator+"] = new BuiltinFunction(add);
     AST::functions["$operator-"] = new BuiltinFunction(subtract);
@@ -17,6 +18,8 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["$operator="] = new BuiltinFunction(assign);
     AST::functions["pvar"] = new BuiltinFunction(pvar);
     AST::functions["exit"] = new BuiltinFunction(exit);
+    AST::functions["all"] = new BuiltinFunction(all);
+    AST::functions["any"] = new BuiltinFunction(any);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -127,4 +130,16 @@ Type *::Kernel::pvar(std::vector<Type *> v) {
 Type *::Kernel::exit(std::vector<Type *> v) {
     ::exit(1);
     return 0;
+}
+
+Type *::Kernel::all(std::vector<Type *> v) {
+    bool r = 1;
+    for(Type* x: v) r = r && x->isNonzero();
+    return new Matrix(double(r));
+}
+
+Type *::Kernel::any(std::vector<Type *> v) {
+    bool r = 0;
+    for(Type* x: v) r = r || x->isNonzero();
+    return new Matrix(double(r));
 }
