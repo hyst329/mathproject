@@ -84,7 +84,7 @@ Type *::Kernel::divide(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                if(((Matrix *) v[1])->getRows() == 1 and ((Matrix *) v[1])->getColumns() == 1) {
+                if (((Matrix *) v[1])->getRows() == 1 and ((Matrix *) v[1])->getColumns() == 1) {
                     Matrix g = *((Matrix *) v[1]);
                     g.element(1, 1) = 1.0 / g.element(1, 1);
                     Matrix m = *((Matrix *) v[0]) * g;
@@ -120,8 +120,10 @@ Type *::Kernel::assign(std::vector<Type *> v) {
 
 Type *::Kernel::pvar(std::vector<Type *> v) {
     for (auto p: AST::variables) {
-        cout << (p.second ? (boost::format("%1%\t:\t[%2$9d] %3%") % p.first % (int) p.second % (*p.second))
-                          : (boost::format("%1%\t:\t[%2$9d] ZERO POINTER") % p.first % p.second))
+        cout << (p.second ? (boost::format("%1%\t:\t[%4$20s at addr. %2$9d] %3%") % p.first % (int) p.second
+                             % p.second->getType() % (*p.second))
+                          : (boost::format("%1%\t:\t[******************** at addr. %2$9d] ZERO POINTER")
+                             % p.first % p.second))
         << endl;
     }
     return NullType::getInstance();
@@ -134,12 +136,12 @@ Type *::Kernel::exit(std::vector<Type *> v) {
 
 Type *::Kernel::all(std::vector<Type *> v) {
     bool r = 1;
-    for(Type* x: v) r = r && x->isNonzero();
+    for (Type *x: v) r = r && x->isNonzero();
     return new Matrix(double(r));
 }
 
 Type *::Kernel::any(std::vector<Type *> v) {
     bool r = 0;
-    for(Type* x: v) r = r || x->isNonzero();
+    for (Type *x: v) r = r || x->isNonzero();
     return new Matrix(double(r));
 }
