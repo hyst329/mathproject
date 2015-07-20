@@ -12,6 +12,7 @@
 
 enum ErrorType {
     ET_UNKNOWN,
+    ET_SYNTAX,
     ET_DIMENSIONS_MISMATCH,
     ET_UNKNOWN_IDENTIFIER,
     ET_UNKNOWN_FUNCTION,
@@ -22,6 +23,7 @@ enum ErrorType {
 static std::map<ErrorType, std::string> codes =
         {
                 {ET_UNKNOWN,             "Unknown error"},
+                {ET_SYNTAX,              "Syntax error: %1%"},
                 {ET_DIMENSIONS_MISMATCH, "Matrix dimensions mismatch"},
                 {ET_UNKNOWN_IDENTIFIER,  "Unknown identifier: %1%"},
                 {ET_UNKNOWN_FUNCTION,    "Unknown function: %1%"},

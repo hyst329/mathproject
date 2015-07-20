@@ -3,6 +3,7 @@
 #include "../../kernel/AST.h"
 #include "../../kernel/UserFunction.h"
 #include "../../kernel/Type.h"
+#include "../../kernel/Error.h"
 #include "../../kernel/Matrix.h"
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@ using namespace Kernel;
 extern int yylex();
 extern int yylineno;
 void yyerror(Kernel::AST* a, char* msg) {
-    fprintf(stderr, "%s in line %d\n", msg, yylineno);
+    Error::error(ET_SYNTAX, { msg });
 }
 
 extern FILE* yyin;
@@ -39,6 +40,9 @@ inline bool isInteractive() {
 %type <row> row
 %type <rowlist> rowlist
 %type <type> matrix
+%nonassoc RIGHTPAREN
+%nonassoc IFX
+%nonassoc ELSE
 %union
 {
     Type *type;
@@ -68,15 +72,15 @@ bracedblock : LEFTBRACE block RIGHTBRACE {
                 $$ = $2;
                 inside = 0;
 }
-instruction: IF expression instruction ELSE instruction {
-                $$ = new ConditionalAST($2, $3, $5);
+instruction: IF expression instruction %prec IFX {
+                $$ = new ConditionalAST($2, $3, 0);
                 if(isInteractive()) {
                     result = $$;
                     return 0;
                 }
            }
-           | IF expression instruction {
-                $$ = new ConditionalAST($2, $3, 0);
+           | IF expression instruction ELSE instruction {
+                $$ = new ConditionalAST($2, $3, $5);
                 if(isInteractive()) {
                     result = $$;
                     return 0;
