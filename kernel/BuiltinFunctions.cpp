@@ -16,6 +16,7 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["print"] = new BuiltinFunction(print);
     AST::functions["$operator="] = new BuiltinFunction(assign);
     AST::functions["pvar"] = new BuiltinFunction(pvar);
+    AST::functions["exit"] = new BuiltinFunction(exit);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -120,5 +121,10 @@ Type *::Kernel::pvar(std::vector<Type *> v) {
                           : (boost::format("%1%\t:\t[%2$9d] ZERO POINTER") % p.first % p.second))
         << endl;
     }
+    return NullType::getInstance();
+}
+
+Type *::Kernel::exit(std::vector<Type *> v) {
+    ::exit(1);
     return 0;
 }

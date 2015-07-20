@@ -37,9 +37,11 @@ void interactive() {
         try {
             cout << ">>> ";
             ast = 0;
-            yyparse(ast);
-            if (!ast) break;
-            ast->exec();
+            while (!feof(yyin)) {
+                yyparse(ast);
+                if (!ast) return;
+                ast->exec();
+            }
         }
         catch (Error &error) {
             cerr << "Error: " << error.getText() << endl;
