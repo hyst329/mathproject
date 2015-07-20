@@ -16,6 +16,8 @@ extern "C" int yywrap() {
 
 extern void yyerror(Kernel::AST*, char*);
 
+
+volatile int inside = 0;
 %}
 %%
 [ \t\n] ;
@@ -77,10 +79,12 @@ return {
 }
 \{ {
     //cout << "Found left brace: " << yytext << endl;
+    inside++;
     return LEFTBRACE;
 }
 \} {
     //cout << "Found right brace: " << yytext << endl;
+    inside--;
     return RIGHTBRACE;
 }
 . {
