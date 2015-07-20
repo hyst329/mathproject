@@ -88,7 +88,7 @@ Matrix Matrix::operator*(Matrix &other) {
         Matrix res = Matrix(sizeRow, sizeColumn);
         for (int i = 0; i < sizeRow; i++)
             for (int j = 0; j < sizeColumn; j++)
-                res.array[i][j] = array[i][j] * other.array[i][j];
+                res.array[i][j] = array[i][j] * other.array[0][0];
         return res;
     }
     if (sizeColumn != other.sizeRow) Error::error(ET_DIMENSIONS_MISMATCH);
