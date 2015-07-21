@@ -3,61 +3,117 @@
 
 class MainWindow: public Gtk::Window
 {
+//Child widgets:
     Glib::RefPtr<Gtk::Builder> _builder;
     //
 public:
-    /** "quit" action handler. */
-    G_MODULE_EXPORT void
+    /** signal handlers */
+    void
     OnQuit()
     {
         hide();
     }
+
+    //"Open" or "Save" toolbuttons handlers
+    // Choose the folder
+    void on_toolbutton_folder_clicked() {
+        Gtk::FileChooserDialog dialog("Please choose a folder",
+                                      Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
+        dialog.set_transient_for(*this);
+
+        //Add response buttons the the dialog:
+         dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+         dialog.add_button("Select", Gtk::RESPONSE_OK);
+
+        //Show the dialog and wait for a user response:
+        int result = dialog.run();
+
+        //Handle the response:
+        switch (result) {
+            case(Gtk::RESPONSE_OK): {
+                std::cout << "Select clicked." << std::endl;
+                std::cout << "Folder selected: " << dialog.get_filename()
+                << std::endl;
+                break;
+            }
+            case(Gtk::RESPONSE_CANCEL): {
+                std::cout << "Cancel clicked." << std::endl;
+                break;
+            }
+            default: {
+                std::cout << "Unexpected button clicked." << std::endl;
+                break;
+            }
+        }
+    }
+    //Choose the file
+     void on_toolbutton_file_clicked()
+    {
+        Gtk::FileChooserDialog dialog("Please choose a file",
+                                      Gtk::FILE_CHOOSER_ACTION_OPEN);
+        dialog.set_transient_for(*this);
+
+        //Add response buttons the the dialog:
+        dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+        dialog.add_button("_Open", Gtk::RESPONSE_OK);
+
+        //Add filters, so that only certain file types can be selected:
+
+        Glib::RefPtr<Gtk::FileFilter> filter_text = Gtk::FileFilter::create();
+        filter_text->set_name("Text files");
+        filter_text->add_mime_type("text/plain");
+        dialog.add_filter(filter_text);
+
+        Glib::RefPtr<Gtk::FileFilter> filter_cpp = Gtk::FileFilter::create();
+        filter_cpp->set_name("C/C++ files");
+        filter_cpp->add_mime_type("text/x-c");
+        filter_cpp->add_mime_type("text/x-c++");
+        filter_cpp->add_mime_type("text/x-c-header");
+        dialog.add_filter(filter_cpp);
+
+        Glib::RefPtr<Gtk::FileFilter> filter_any = Gtk::FileFilter::create();
+        filter_any->set_name("Any files");
+        filter_any->add_pattern("*");
+        dialog.add_filter(filter_any);
+
+        //Show the dialog and wait for a user response:
+        int result = dialog.run();
+
+        //Handle the response:
+        switch (result) {
+            case(Gtk::RESPONSE_OK): {
+                std::cout << "Open clicked." << std::endl;
+
+                std::string filename = dialog.get_filename();
+                std::cout << "File selected: " << filename << std::endl;
+                break;
+            }
+            case(Gtk::RESPONSE_CANCEL): {
+                std::cout << "Cancel clicked." << std::endl;
+                break;
+            }
+            default: {
+                std::cout << "Unexpected button clicked." << std::endl;
+                break;
+            }
+        }
+    }
+    //Constructor
     MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder):
             Gtk::Window(cobject), _builder(builder)
     {
-        /* Retrieve all widgets. */
-        Gtk::Box *box3 = 0;
-        _builder->get_widget("box_workspace",box3);
-
-        //create the Actions and add them to an ActionGroup, with ActionGroup::add()
-
-        Glib::RefPtr<Gtk::ActionGroup> actionGroup1 =
-                Gtk::ActionGroup::create();
-        //Меню "Файл":
-         Glib::RefPtr<Gtk::Action> action1 =
-                Gtk::Action::create("quit",
-                                   sigc::mem_fun(*this, &MainWindow::OnQuit));
-        actionGroup1->add(action1);
-        //insert_action_group("example",actionGroup1);
-        Glib::RefPtr<Gtk::UIManager> uiManager1 =
-                Gtk::UIManager::create();
-        uiManager1->insert_action_group(actionGroup1);
-        add_accel_group(uiManager1->get_accel_group());
-        //Строковое описание пользовательского интерфейса для меню и панели инструментов:
-        Glib::ustring ui_info =
-                "<interface>"
-                        "  <menubar name='MenuBar'>"
-                        "    <menu action='MenuFile'>"
-                        "      <menuitem action='Quit'/>"
-                        "    </menu>"
-                        "  </menubar>"
-                        "</interface>";
+        /* Retrieve widgets. */
+        //toolbar
+        Gtk::ToolButton *Open = 0;
+        _builder->get_widget("toolbutton_open",Open);
+        //Open->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_toolbutton_folder_clicked));
+        Open->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_toolbutton_file_clicked));
 
 
-        try
-        {
-            uiManager1->add_ui_from_string(ui_info);
-            //_builder->add_from_string(ui_info);
-        }
-        catch(const Glib::Error& ex)
-        {
-            std::cerr << "не удалось создать меню: " <<  ex.what();
-        }
-
-        //Получение виджета меню и добавление его в контейнерный виджет:
-        Gtk::Widget* pMenubar = uiManager1->get_widget("/MenuBar");
-        box3->add(*pMenubar);
-
+        //menubar
+        Gtk::MenuItem *Quit = 0;
+        _builder->get_widget("menuitem_quit_commands",Quit);
+        Quit->signal_activate().connect(sigc::mem_fun(*this,&MainWindow::OnQuit));
 
         /* Actions. */
         //Glib::RefPtr<Gtk::Action>::cast_dynamic(_builder->get_object("action_quit"))->
@@ -71,7 +127,7 @@ public:
 int main(int argc, char **argv)
 {
     Gtk::Main app(argc, argv);
-    //Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file(Glib::ustring("userInterface.glade"));
+
     //Load the GtkBuilder file and instantiate its widgets:
     Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
     try
@@ -94,11 +150,8 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    //Gtk::Window *w;
     MainWindow *w = 0;
     builder->get_widget_derived("window_main",w);
-    //builder->get_widget("window_main", w);
-    //w->show_all_children();
     app.run(*w);
     delete w;
     return 0;
