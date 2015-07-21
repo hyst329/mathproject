@@ -51,6 +51,18 @@ public:
 
     Matrix operator^(int degree);
 
+    Matrix operator<(Matrix &other);
+
+    Matrix operator>(Matrix &other);
+
+    Matrix operator<=(Matrix &other);
+
+    Matrix operator>=(Matrix &other);
+
+    Matrix operator==(Matrix &other);
+
+    Matrix operator!=(Matrix &other);
+
     virtual void print(std::ostream &os) override;
 };
 

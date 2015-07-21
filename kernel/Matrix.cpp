@@ -179,9 +179,83 @@ Matrix Matrix::operator^(int degree) {
     }
     return res;
 }
+
 Matrix Matrix::elemExp(double degree) {
     Matrix res = Matrix(sizeRow, sizeColumn);
     for (int i=0;i<sizeRow;i++)
         for (int j=0;j < sizeColumn;j++)
             res.array[i][j]=pow(array[i][j],degree);
+    return res;
+}
+
+Matrix Matrix::operator<(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]>=other.array[i][j]) {
+                res.array[0][0]=0;
+                return res;
+            }
+    res.array[0][0]=1;
+    return res;
+}
+
+Matrix Matrix::operator>(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]<=other.array[i][j]) {
+                res.array[0][0]=0;
+                return res;
+            }
+    res.array[0][0]=1;
+    return res;
+}
+
+Matrix Matrix::operator<=(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]>other.array[i][j]) {
+                res.array[0][0]=0;
+                return res;
+            }
+    res.array[0][0]=1;
+    return res;
+}
+
+Matrix Matrix::operator>=(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]<other.array[i][j]) {
+                res.array[0][0]=0;
+                return res;
+            }
+    res.array[0][0]=1;
+    return res;
+}
+
+Matrix Matrix::operator==(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]!=other.array[i][j]) {
+                res.array[0][0]=0;
+                return res;
+            }
+    res.array[0][0]=1;
+    return res;
+}
+
+Matrix Matrix::operator!=(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]!=other.array[i][j]) {
+                res.array[0][0]=1;
+                return res;
+            }
+    res.array[0][0]=0;
+    return res;
 }
