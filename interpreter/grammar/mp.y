@@ -56,6 +56,7 @@ inline bool isInteractive() {
 %%
 program: block {
            $$ = result = $1;
+           cout << typeid(*result).name() << endl;
        }
 block: block instruction {
             ((BlockAST*)$1)->children.push_back($2);
@@ -66,9 +67,9 @@ block: block instruction {
             ((BlockAST*)$$)->children.push_back($1);
        }
 bracedblock : LEFTBRACE block RIGHTBRACE {
-                inside = 1;
+                /*inside = 1;*/
                 $$ = $2;
-                inside = 0;
+                /*inside = 0;*/
 }
 instruction: IF expression instruction %prec IFX {
                 $$ = new ConditionalAST($2, $3, 0);
@@ -92,8 +93,7 @@ instruction: IF expression instruction %prec IFX {
                 }
            }
            | FUNCTION ID LEFTPAR arglist RIGHTPAR instruction {
-                UserFunction* f = new UserFunction($6);
-                f->arguments = *$4;
+                UserFunction* f = new UserFunction($6, *$4);
                 //cout << "Function BODY: " << $2 << endl;
                 AST::functions[$2] = f;
                 $$ = new FunctionBodyAST(f);

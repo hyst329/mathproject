@@ -12,9 +12,13 @@ Type *UserFunction::operator()(std::vector<Type *> args) {
     }
     Type* r = ast->exec();
     // Delete all local variables
-    for(auto p: Kernel::AST::variables)
-        if(p.first[0] != '$')
-        Kernel::AST::variables.erase(p.first);
+    if(Kernel::AST::variables.empty()) return r;
+    for (auto it = Kernel::AST::variables.begin();
+         it != Kernel::AST::variables.end(); it++) {
+            if(it->first[0] != '$')
+                Kernel::AST::variables.erase(it);
+                it++;
+    }
     return r;
 }
 

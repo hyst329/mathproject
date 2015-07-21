@@ -21,6 +21,15 @@ namespace Kernel {
         return final;
     }
 
+    Type *BlockAST::exec() {
+        for (AST *a: children) {
+            auto r = a->exec();
+            if (dynamic_cast<ReturnAST *>(a))
+                return r;
+        }
+        return NullType::getInstance();
+    }
+
     Type *FunctionAST::exec() {
         if (!functions.count(function))
             Error::error(ET_UNKNOWN_FUNCTION, {function});
@@ -28,8 +37,8 @@ namespace Kernel {
         // TODO: temporary for assign
         Type *r = NullType::getInstance();
         if (function == "$operator=") {
-            if(dynamic_cast<VarAST*>(arguments[0]))
-                variables[((VarAST*)arguments[0])->name] = arguments[1]->exec();
+            if (dynamic_cast<VarAST *>(arguments[0]))
+                variables[((VarAST *) arguments[0])->name] = arguments[1]->exec();
             else
                 Error::error(ET_ASSIGNMENT_ERROR);
         }

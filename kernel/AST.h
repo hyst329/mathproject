@@ -8,11 +8,13 @@
 #include <vector>
 #include <map>
 #include <stack>
+#include <iostream>
 #include "Type.h"
 #include "NullType.h"
 
 
 using namespace std;
+
 class Function;
 namespace Kernel {
 
@@ -20,7 +22,7 @@ namespace Kernel {
         virtual Type *exec() = 0;
 
         static map<string, Function *> functions;
-        static map<string, Type*> variables;
+        static map<string, Type *> variables;
         static stack<string> callstack;
 
     };
@@ -28,9 +30,7 @@ namespace Kernel {
     struct BlockAST : public AST {
         vector<AST *> children;
 
-        Type *exec() {
-            for (AST *a: children) a->exec();
-        }
+        Type *exec();
     };
 
     struct TypeAST : public AST {
@@ -50,14 +50,15 @@ namespace Kernel {
         FunctionAST(std::string function, vector<AST *> arguments = vector<AST *>())
                 : function(function), arguments(arguments) { };
 
-        Type *exec() ;
+        Type *exec();
     };
 
     struct FunctionBodyAST : public AST {
-        Function * function;
+        Function *function;
 
         FunctionBodyAST(Function *function)
-                : function(function){ };
+                : function(function) { };
+
         Type *exec();
     };
 
@@ -79,10 +80,10 @@ namespace Kernel {
                 : branchIf(ifAST), branchThen(thenAST), branchElse(elseAST) { };
 
         Type *exec() {
-            if (branchIf->exec()->isNonzero())
+            auto bif = branchIf->exec();
+            if (bif->isNonzero())
                 branchThen->exec();
-            else
-                if(branchElse) branchElse->exec();
+            else if (branchElse) branchElse->exec();
             return NullType::getInstance();
         }
     };
@@ -105,7 +106,6 @@ namespace Kernel {
         ReturnAST(AST *returnValue) : returnValue(returnValue) { }
 
         Type *exec() {
-            //TODO(hyst329): switch the control to main "function"
             return returnValue->exec();
         }
     };
