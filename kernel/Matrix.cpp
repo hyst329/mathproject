@@ -114,3 +114,74 @@ Matrix::Matrix(const Matrix &other) : Matrix(other.sizeRow, other.sizeColumn) {
         for (int j = 0; j < sizeColumn; j++)
             array[i][j] = other.array[i][j];
 }
+
+Matrix Matrix::elemMulti(Matrix &other) {
+    if (sizeColumn != other.sizeColumn || sizeRow != other.sizeRow)
+        Error::error(ET_DIMENSIONS_MISMATCH);
+    Matrix res = Matrix(sizeRow, other.sizeColumn);
+    for (int i = 0; i < sizeRow; i++)
+        for (int j = 0; j < other.sizeColumn; j++) {
+            res.array[i][j] = array[i][j] * other.array[i][j];
+        }
+    return res;
+
+}
+
+Matrix Matrix::elemExp(int degree) {
+    Matrix res = Matrix(sizeRow, sizeColumn);
+    if (degree==0) {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j < sizeColumn;j++)
+                if (array[i][j]!=0)
+                    res.array[i][j]=1;
+                //else TODO:exeption(0^0)
+    }
+    else {
+        Matrix tmp = Matrix(sizeRow, sizeColumn);
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j < sizeColumn;j++) {
+                res.array[i][j] = 1;
+                tmp.array[i][j] = array[i][j];
+            }
+        while (degree !=0) {
+            if (degree%2!=0) {
+                for (int i=0;i<sizeRow;i++)
+                    for (int j=0;j < sizeColumn;j++)
+                        res.array[i][j]*=tmp.array[i][j];
+                degree--;
+            }
+            for (int i=0;i<sizeRow;i++)
+                for (int j=0;j < sizeColumn;j++)
+                    tmp.array[i][j]*=tmp.array[i][j];
+            degree/=2;
+        }
+    }
+    return res;
+}
+
+Matrix Matrix::operator^(int degree) {
+    Matrix res = Matrix(sizeRow, sizeColumn);
+    Matrix tmp = Matrix(sizeRow, sizeColumn);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++) {
+            res.array[i][j] = 1;
+            tmp.array[i][j] = array[i][j];
+        }
+    while (degree != 0)
+    {
+        if (degree % 2 != 0)
+        {
+            res = res*tmp;
+            degree -= 1;
+        }
+        tmp = tmp*tmp;
+        degree /= 2;
+    }
+    return res;
+}
+Matrix Matrix::elemExp(double degree) {
+    Matrix res = Matrix(sizeRow, sizeColumn);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            res.array[i][j]=pow(array[i][j],degree);
+}

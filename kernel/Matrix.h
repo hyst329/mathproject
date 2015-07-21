@@ -43,6 +43,14 @@ public:
 
     int getColumns() { return sizeColumn; }
 
+    Matrix elemMulti(Matrix &other);
+
+    Matrix elemExp(int degree);
+
+    Matrix elemExp(double degree);
+
+    Matrix operator^(int degree);
+
     virtual void print(std::ostream &os) override;
 };
 
