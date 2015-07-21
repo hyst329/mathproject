@@ -127,18 +127,23 @@ Matrix Matrix::elemMulti(Matrix &other) {
 
 }
 
-Matrix Matrix::operator^(Matrix x) {
+Matrix Matrix::operator^(Matrix &x) {
     if (x.sizeColumn!=1||x.sizeRow!=1)
         Error::error(ET_DIMENSIONS_MISMATCH);
-    //TODO:x.array[0][0] is int?
-    int degree=(int)x.array[0][0];
+    //if (x.array[0][0]-(double)((int)x.array[0][0])>=1.e-10)
+        //TODO:error(matrix^double)
+    int degree=(int)(x.array[0][0]);
     Matrix res = Matrix(sizeRow, sizeColumn);
     Matrix tmp = Matrix(sizeRow, sizeColumn);
     for (int i=0;i<sizeRow;i++)
         for (int j=0;j < sizeColumn;j++) {
-            res.array[i][j] = 1;
             tmp.array[i][j] = array[i][j];
+            if (i==j)
+                res.array[i][j]=1;
+            else
+                res.array[i][j]=0;
         }
+
     while (degree != 0)
     {
         if (degree % 2 != 0)
@@ -147,12 +152,12 @@ Matrix Matrix::operator^(Matrix x) {
             degree -= 1;
         }
         tmp = tmp*tmp;
-        degree /= 2;
+        degree=degree/2;
     }
     return res;
 }
 
-Matrix Matrix::elemExp(Matrix x) {
+Matrix Matrix::elemExp(Matrix &x) {
     Matrix res = Matrix(sizeRow, sizeColumn);
     if (x.sizeColumn==1&&x.sizeRow==1) {
         double degree = x.array[0][0];

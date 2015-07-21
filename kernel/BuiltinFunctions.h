@@ -25,7 +25,12 @@ namespace Kernel {
     Type *elemMulti(std::vector<Type *>);
     Type *elemExp(std::vector<Type *>);
     Type *exponentation(std::vector<Type *>);
-
+    Type *more(std::vector<Type *>);
+    Type *moreOrEqual(std::vector<Type *>);
+    Type *less(std::vector<Type *>);
+    Type *lessOrEqual(std::vector<Type *>);
+    Type *equal(std::vector<Type *>);
+    Type *notEqual(std::vector<Type *>);
 }
 
 #endif //MATHPROJECT_BUILTINFUNCTIONS_H

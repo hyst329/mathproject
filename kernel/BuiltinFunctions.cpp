@@ -25,6 +25,12 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["elemMulti"]=new BuiltinFunction(elemMulti);
     AST::functions["$operator^"]=new BuiltinFunction(exponentation);
     AST::functions["elemExp"]=new BuiltinFunction(elemExp);
+    AST::functions["$operator>"]=new BuiltinFunction(more);
+    AST::functions["$operator>="]=new BuiltinFunction(moreOrEqual);
+    AST::functions["$operator<"]=new BuiltinFunction(less);
+    AST::functions["$operator<="]=new BuiltinFunction(lessOrEqual);
+    AST::functions["$operator=="]=new BuiltinFunction(equal);
+    AST::functions["$operator!="]=new BuiltinFunction(notEqual);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -200,6 +206,107 @@ Type *::Kernel::exponentation(std::vector<Type *> v) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
                 Matrix m = *((Matrix *) v[0])^(*((Matrix *) v[1]));
+                Matrix *r = new Matrix(m);
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+Type *::Kernel::more(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
+                Matrix m = *((Matrix *) v[0])>(*((Matrix *) v[1]));
+                Matrix *r = new Matrix(m);
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::moreOrEqual(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
+                Matrix m = *((Matrix *) v[0])>=(*((Matrix *) v[1]));
+                Matrix *r = new Matrix(m);
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::less(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
+                Matrix m = *((Matrix *) v[0])<(*((Matrix *) v[1]));
+                Matrix *r = new Matrix(m);
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::lessOrEqual(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
+                Matrix m = *((Matrix *) v[0])<=(*((Matrix *) v[1]));
+                Matrix *r = new Matrix(m);
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::equal(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
+                Matrix m = *((Matrix *) v[0])==(*((Matrix *) v[1]));
+                Matrix *r = new Matrix(m);
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::notEqual(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
+                Matrix m = *((Matrix *) v[0])!=(*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
