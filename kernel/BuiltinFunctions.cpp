@@ -22,9 +22,9 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["all"] = new BuiltinFunction(all);
     AST::functions["any"] = new BuiltinFunction(any);
 
-    AST::functions["elemMulti"]=new BuiltinFunction(elemMulti);
+    AST::functions["$operator.*"]=new BuiltinFunction(elemMulti);
     AST::functions["$operator^"]=new BuiltinFunction(exponentation);
-    AST::functions["elemExp"]=new BuiltinFunction(elemExp);
+    AST::functions["$operator.^"]=new BuiltinFunction(elemExp);
     AST::functions["$operator>"]=new BuiltinFunction(more);
     AST::functions["$operator>="]=new BuiltinFunction(moreOrEqual);
     AST::functions["$operator<"]=new BuiltinFunction(less);
