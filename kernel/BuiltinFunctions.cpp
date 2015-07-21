@@ -20,6 +20,10 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["exit"] = new BuiltinFunction(exit);
     AST::functions["all"] = new BuiltinFunction(all);
     AST::functions["any"] = new BuiltinFunction(any);
+
+    AST::functions["elemMulti"]=new BuiltinFunction(elemMulti);
+    AST::functions["$operator^"]=new BuiltinFunction(exponentation);
+    AST::functions["elemExp"]=new BuiltinFunction(elemExp);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -144,4 +148,55 @@ Type *::Kernel::any(std::vector<Type *> v) {
     bool r = 0;
     for (Type *x: v) r = r || x->isNonzero();
     return new Matrix(double(r));
+}
+
+Type *::Kernel::elemMulti(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
+                Matrix m = ((Matrix *) v[0])->elemMulti(*((Matrix *) v[1]));
+                Matrix *r = new Matrix(m);
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::elemExp(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
+                Matrix m = ((Matrix *) v[0])->elemExp(*((Matrix *) v[1]));
+                Matrix *r = new Matrix(m);
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::exponentation(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
+                Matrix m = *((Matrix *) v[0])^(*((Matrix *) v[1]));
+                Matrix *r = new Matrix(m);
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
 }

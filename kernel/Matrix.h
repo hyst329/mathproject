@@ -45,11 +45,9 @@ public:
 
     Matrix elemMulti(Matrix &other);
 
-    Matrix elemExp(int degree);
+    Matrix elemExp(Matrix degree);
 
-    Matrix elemExp(double degree);
-
-    Matrix operator^(int degree);
+    Matrix operator^(Matrix degree);
 
     Matrix operator<(Matrix &other);
 

@@ -20,6 +20,11 @@ namespace Kernel {
     Type *exit(std::vector<Type *>);
     Type *all(std::vector<Type *>);
     Type *any(std::vector<Type *>);
+
+    Type *elemMulti(std::vector<Type *>);
+    Type *elemExp(std::vector<Type *>);
+    Type *exponentation(std::vector<Type *>);
+
 }
 
 #endif //MATHPROJECT_BUILTINFUNCTIONS_H

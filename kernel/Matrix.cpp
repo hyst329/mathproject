@@ -4,7 +4,7 @@
 
 #include "Matrix.h"
 #include "Error.h"
-
+#include <cmath>
 Matrix::Matrix(int rows, int columns) : sizeColumn(columns), sizeRow(rows) {
     array = new double *[rows];
     for (int i = 0; i < rows; i++) array[i] = new double[columns];
@@ -127,39 +127,11 @@ Matrix Matrix::elemMulti(Matrix &other) {
 
 }
 
-Matrix Matrix::elemExp(int degree) {
-    Matrix res = Matrix(sizeRow, sizeColumn);
-    if (degree==0) {
-        for (int i=0;i<sizeRow;i++)
-            for (int j=0;j < sizeColumn;j++)
-                if (array[i][j]!=0)
-                    res.array[i][j]=1;
-                //else TODO:exeption(0^0)
-    }
-    else {
-        Matrix tmp = Matrix(sizeRow, sizeColumn);
-        for (int i=0;i<sizeRow;i++)
-            for (int j=0;j < sizeColumn;j++) {
-                res.array[i][j] = 1;
-                tmp.array[i][j] = array[i][j];
-            }
-        while (degree !=0) {
-            if (degree%2!=0) {
-                for (int i=0;i<sizeRow;i++)
-                    for (int j=0;j < sizeColumn;j++)
-                        res.array[i][j]*=tmp.array[i][j];
-                degree--;
-            }
-            for (int i=0;i<sizeRow;i++)
-                for (int j=0;j < sizeColumn;j++)
-                    tmp.array[i][j]*=tmp.array[i][j];
-            degree/=2;
-        }
-    }
-    return res;
-}
-
-Matrix Matrix::operator^(int degree) {
+Matrix Matrix::operator^(Matrix x) {
+    if (x.sizeColumn!=1||x.sizeRow!=1)
+        Error::error(ET_DIMENSIONS_MISMATCH);
+    //TODO:x.array[0][0] is int?
+    int degree=(int)x.array[0][0];
     Matrix res = Matrix(sizeRow, sizeColumn);
     Matrix tmp = Matrix(sizeRow, sizeColumn);
     for (int i=0;i<sizeRow;i++)
@@ -180,11 +152,23 @@ Matrix Matrix::operator^(int degree) {
     return res;
 }
 
-Matrix Matrix::elemExp(double degree) {
+Matrix Matrix::elemExp(Matrix x) {
     Matrix res = Matrix(sizeRow, sizeColumn);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            res.array[i][j]=pow(array[i][j],degree);
+    if (x.sizeColumn==1&&x.sizeRow==1) {
+        double degree = x.array[0][0];
+        for (int i = 0; i < sizeRow; i++)
+            for (int j = 0; j < sizeColumn; j++)
+                res.array[i][j] = pow(array[i][j], degree);
+
+    }
+    if (x.sizeColumn==sizeColumn&&x.sizeRow==sizeRow) {
+        Matrix res = Matrix(sizeRow, sizeColumn);
+        for (int i = 0; i < sizeRow; i++)
+            for (int j = 0; j < sizeColumn; j++)
+                res.array[i][j] = pow(array[i][j], x.array[i][j]);
+    }
+    if (x.sizeColumn!=sizeColumn||x.sizeRow!=sizeRow)
+        Error::error(ET_DIMENSIONS_MISMATCH);
     return res;
 }
 
