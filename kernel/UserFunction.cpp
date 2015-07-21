@@ -14,10 +14,10 @@ Type *UserFunction::operator()(std::vector<Type *> args) {
     // Delete all local variables
     if(Kernel::AST::variables.empty()) return r;
     for (auto it = Kernel::AST::variables.begin();
-         it != Kernel::AST::variables.end(); it++) {
+         it != Kernel::AST::variables.end(); ) {
             if(it->first[0] != '$')
-                Kernel::AST::variables.erase(it);
-                it++;
+                Kernel::AST::variables.erase(it++);
+            else it++;
     }
     return r;
 }
