@@ -10,13 +10,16 @@
 
 namespace Kernel {
     void initialiseBuiltins();
-    Type* add(std::vector<Type*> v);
-    Type* subtract(std::vector<Type*> v);
-    Type* multiply(std::vector<Type*> v);
-    Type* divide(std::vector<Type*> v);
-    Type* print(std::vector<Type*> v);
-    Type* assign(std::vector<Type*> v);
-    Type* pvar(std::vector<Type*> v);
+    Type *add(std::vector<Type *>);
+    Type *subtract(std::vector<Type *>);
+    Type *multiply(std::vector<Type *>);
+    Type *divide(std::vector<Type *>);
+    Type *print(std::vector<Type *>);
+    Type *assign(std::vector<Type *>);
+    Type *pvar(std::vector<Type *>);
+    Type *exit(std::vector<Type *>);
+    Type *all(std::vector<Type *>);
+    Type *any(std::vector<Type *>);
 }
 
 #endif //MATHPROJECT_BUILTINFUNCTIONS_H

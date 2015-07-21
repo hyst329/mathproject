@@ -8,6 +8,7 @@
 #include "UserFunction.h"
 #include "Error.h"
 
+
 void ::Kernel::initialiseBuiltins() {
     AST::functions["$operator+"] = new BuiltinFunction(add);
     AST::functions["$operator-"] = new BuiltinFunction(subtract);
@@ -16,6 +17,9 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["print"] = new BuiltinFunction(print);
     AST::functions["$operator="] = new BuiltinFunction(assign);
     AST::functions["pvar"] = new BuiltinFunction(pvar);
+    AST::functions["exit"] = new BuiltinFunction(exit);
+    AST::functions["all"] = new BuiltinFunction(all);
+    AST::functions["any"] = new BuiltinFunction(any);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -80,7 +84,7 @@ Type *::Kernel::divide(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                if(((Matrix *) v[1])->getRows() == 1 and ((Matrix *) v[1])->getColumns() == 1) {
+                if (((Matrix *) v[1])->getRows() == 1 and ((Matrix *) v[1])->getColumns() == 1) {
                     Matrix g = *((Matrix *) v[1]);
                     g.element(1, 1) = 1.0 / g.element(1, 1);
                     Matrix m = *((Matrix *) v[0]) * g;
@@ -110,15 +114,34 @@ Type *::Kernel::assign(std::vector<Type *> v) {
             return v[1];
         default:
             // TODO(hyst329): error
-            return 0;
+            return NullType::getInstance();
     }
 }
 
 Type *::Kernel::pvar(std::vector<Type *> v) {
     for (auto p: AST::variables) {
-        cout << (p.second ? (boost::format("%1%\t:\t[%2$9d] %3%") % p.first % (int) p.second % (*p.second))
-                          : (boost::format("%1%\t:\t[%2$9d] ZERO POINTER") % p.first % p.second))
+        cout << (p.second ? (boost::format("%1%\t:\t[%3$20s at addr. %2$9d] %4%") % p.first % (int) p.second
+                             % p.second->getType() % (*p.second))
+                          : (boost::format("%1%\t:\t[******************** at addr. %2$9d] ZERO POINTER")
+                             % p.first % p.second))
         << endl;
     }
+    return NullType::getInstance();
+}
+
+Type *::Kernel::exit(std::vector<Type *> v) {
+    ::exit(1);
     return 0;
+}
+
+Type *::Kernel::all(std::vector<Type *> v) {
+    bool r = 1;
+    for (Type *x: v) r = r && x->isNonzero();
+    return new Matrix(double(r));
+}
+
+Type *::Kernel::any(std::vector<Type *> v) {
+    bool r = 0;
+    for (Type *x: v) r = r || x->isNonzero();
+    return new Matrix(double(r));
 }

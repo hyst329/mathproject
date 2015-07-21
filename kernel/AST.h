@@ -80,9 +80,10 @@ namespace Kernel {
 
         Type *exec() {
             if (branchIf->exec()->isNonzero())
-                return branchThen->exec();
+                branchThen->exec();
             else
-                return branchElse->exec();
+                if(branchElse) branchElse->exec();
+            return NullType::getInstance();
         }
     };
 

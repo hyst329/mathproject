@@ -3,6 +3,7 @@
 #include "../../kernel/AST.h"
 #include "../../kernel/UserFunction.h"
 #include "../../kernel/Type.h"
+#include "../../kernel/Error.h"
 #include "../../kernel/Matrix.h"
 #include <string>
 #include <vector>
@@ -13,12 +14,18 @@ using namespace Kernel;
 extern int yylex();
 extern int yylineno;
 void yyerror(Kernel::AST* a, char* msg) {
-    fprintf(stderr, "%s in line %d\n", msg, yylineno);
+    Error::error(ET_SYNTAX, { msg });
 }
 
 extern FILE* yyin;
 
 static std::string opMarker = "$operator";
+
+extern volatile int inside;
+
+inline bool isInteractive() {
+    return yyin == stdin and !inside;
+}
 %}
 %error-verbose
 %token <type> FLOAT
@@ -33,6 +40,7 @@ static std::string opMarker = "$operator";
 %type <row> row
 %type <rowlist> rowlist
 %type <type> matrix
+%right IFX ELSE
 %union
 {
     Type *type;
@@ -58,25 +66,27 @@ block: block instruction {
             ((BlockAST*)$$)->children.push_back($1);
        }
 bracedblock : LEFTBRACE block RIGHTBRACE {
+                inside = 1;
                 $$ = $2;
+                inside = 0;
 }
-instruction: IF expression instruction ELSE instruction {
-                $$ = new ConditionalAST($2, $3, $5);
-                if(yyin == stdin) {
+instruction: IF expression instruction %prec IFX {
+                $$ = new ConditionalAST($2, $3, 0);
+                if(isInteractive()) {
                     result = $$;
                     return 0;
                 }
            }
-           | IF expression instruction {
-                $$ = new ConditionalAST($2, $3, 0);
-                if(yyin == stdin) {
+           | IF expression instruction ELSE instruction {
+                $$ = new ConditionalAST($2, $3, $5);
+                if(isInteractive()) {
                     result = $$;
                     return 0;
                 }
            }
            | WHILE expression instruction {
                 $$ = new WhileLoopAST($2, $3);
-                if(yyin == stdin) {
+                if(isInteractive()) {
                     result = $$;
                     return 0;
                 }
@@ -87,28 +97,28 @@ instruction: IF expression instruction ELSE instruction {
                 //cout << "Function BODY: " << $2 << endl;
                 AST::functions[$2] = f;
                 $$ = new FunctionBodyAST(f);
-                if(yyin == stdin) {
+                if(isInteractive()) {
                     result = $$;
                     return 0;
                 }
            }
            | RETURN expression SEMICOLON {
                 $$ = new ReturnAST($2);
-                if(yyin == stdin) {
+                if(isInteractive()) {
                     result = $$;
                     return 0;
                 }
            }
            | expression SEMICOLON {
                 $$ = $1;
-                if(yyin == stdin) {
+                if(isInteractive()) {
                     result = $$;
                     return 0;
                 }
            }
            | bracedblock {
                 $$ = $1;
-                if(yyin == stdin) {
+                if(isInteractive()) {
                     result = $$;
                     return 0;
                 }
