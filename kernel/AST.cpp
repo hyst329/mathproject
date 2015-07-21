@@ -33,12 +33,16 @@ namespace Kernel {
     Type *FunctionAST::exec() {
         if (!functions.count(function))
             Error::error(ET_UNKNOWN_FUNCTION, {function});
+        bool toplevel = callstack.empty();
         callstack.push(function);
         // TODO: temporary for assign
         Type *r = NullType::getInstance();
         if (function == "$operator=") {
             if (dynamic_cast<VarAST *>(arguments[0]))
-                variables[((VarAST *) arguments[0])->name] = arguments[1]->exec();
+                if (toplevel and ((VarAST *) arguments[0])->name[0] != '$')
+                    Error::error(ET_LOCAL_TOPLEVEL);
+                else
+                    variables[((VarAST *) arguments[0])->name] = arguments[1]->exec();
             else
                 Error::error(ET_ASSIGNMENT_ERROR);
         }
