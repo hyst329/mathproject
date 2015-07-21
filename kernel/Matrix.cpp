@@ -4,7 +4,7 @@
 
 #include "Matrix.h"
 #include "Error.h"
-
+#include <cmath>
 Matrix::Matrix(int rows, int columns) : sizeColumn(columns), sizeRow(rows) {
     array = new double *[rows];
     for (int i = 0; i < rows; i++) array[i] = new double[columns];
@@ -113,4 +113,133 @@ Matrix::Matrix(const Matrix &other) : Matrix(other.sizeRow, other.sizeColumn) {
     for (int i = 0; i < sizeRow; i++)
         for (int j = 0; j < sizeColumn; j++)
             array[i][j] = other.array[i][j];
+}
+
+Matrix Matrix::elemMulti(Matrix &other) {
+    if (sizeColumn != other.sizeColumn || sizeRow != other.sizeRow)
+        Error::error(ET_DIMENSIONS_MISMATCH);
+    Matrix res = Matrix(sizeRow, other.sizeColumn);
+    for (int i = 0; i < sizeRow; i++)
+        for (int j = 0; j < other.sizeColumn; j++) {
+            res.array[i][j] = array[i][j] * other.array[i][j];
+        }
+    return res;
+
+}
+
+Matrix Matrix::operator^(Matrix x) {
+    if (x.sizeColumn!=1||x.sizeRow!=1)
+        Error::error(ET_DIMENSIONS_MISMATCH);
+    //TODO:x.array[0][0] is int?
+    int degree=(int)x.array[0][0];
+    Matrix res = Matrix(sizeRow, sizeColumn);
+    Matrix tmp = Matrix(sizeRow, sizeColumn);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++) {
+            res.array[i][j] = 1;
+            tmp.array[i][j] = array[i][j];
+        }
+    while (degree != 0)
+    {
+        if (degree % 2 != 0)
+        {
+            res = res*tmp;
+            degree -= 1;
+        }
+        tmp = tmp*tmp;
+        degree /= 2;
+    }
+    return res;
+}
+
+Matrix Matrix::elemExp(Matrix x) {
+    Matrix res = Matrix(sizeRow, sizeColumn);
+    if (x.sizeColumn==1&&x.sizeRow==1) {
+        double degree = x.array[0][0];
+        for (int i = 0; i < sizeRow; i++)
+            for (int j = 0; j < sizeColumn; j++)
+                res.array[i][j] = pow(array[i][j], degree);
+
+    }
+    if (x.sizeColumn==sizeColumn&&x.sizeRow==sizeRow) {
+        Matrix res = Matrix(sizeRow, sizeColumn);
+        for (int i = 0; i < sizeRow; i++)
+            for (int j = 0; j < sizeColumn; j++)
+                res.array[i][j] = pow(array[i][j], x.array[i][j]);
+    }
+    if (x.sizeColumn!=sizeColumn||x.sizeRow!=sizeRow)
+        Error::error(ET_DIMENSIONS_MISMATCH);
+    return res;
+}
+
+Matrix Matrix::operator<(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]>=other.array[i][j]) {
+                res.array[0][0]=0;
+                return res;
+            }
+    res.array[0][0]=1;
+    return res;
+}
+
+Matrix Matrix::operator>(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]<=other.array[i][j]) {
+                res.array[0][0]=0;
+                return res;
+            }
+    res.array[0][0]=1;
+    return res;
+}
+
+Matrix Matrix::operator<=(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]>other.array[i][j]) {
+                res.array[0][0]=0;
+                return res;
+            }
+    res.array[0][0]=1;
+    return res;
+}
+
+Matrix Matrix::operator>=(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]<other.array[i][j]) {
+                res.array[0][0]=0;
+                return res;
+            }
+    res.array[0][0]=1;
+    return res;
+}
+
+Matrix Matrix::operator==(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]!=other.array[i][j]) {
+                res.array[0][0]=0;
+                return res;
+            }
+    res.array[0][0]=1;
+    return res;
+}
+
+Matrix Matrix::operator!=(Matrix &other) {
+    Matrix res = Matrix(1,1);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j < sizeColumn;j++)
+            if (array[i][j]!=other.array[i][j]) {
+                res.array[0][0]=1;
+                return res;
+            }
+    res.array[0][0]=0;
+    return res;
 }
