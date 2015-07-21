@@ -17,6 +17,7 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["print"] = new BuiltinFunction(print);
     AST::functions["$operator="] = new BuiltinFunction(assign);
     AST::functions["pvar"] = new BuiltinFunction(pvar);
+    AST::functions["pfun"] = new BuiltinFunction(pfun);
     AST::functions["exit"] = new BuiltinFunction(exit);
     AST::functions["all"] = new BuiltinFunction(all);
     AST::functions["any"] = new BuiltinFunction(any);
@@ -125,6 +126,16 @@ Type *::Kernel::pvar(std::vector<Type *> v) {
                           : (boost::format("%1%\t:\t[******************** at addr. %2$9d] ZERO POINTER")
                              % p.first % p.second))
         << endl;
+    }
+    return NullType::getInstance();
+}
+
+
+Type *::Kernel::pfun(std::vector<Type *> v) {
+    for (auto p: AST::functions) {
+        cout <<
+        boost::format("%1% (%2%)\t at addr. %3$9d") % p.first % (dynamic_cast<UserFunction *>(p.second) ? "user" :
+                                                                 "built-in") % (int) p.second << endl;
     }
     return NullType::getInstance();
 }

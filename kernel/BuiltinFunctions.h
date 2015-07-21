@@ -17,6 +17,7 @@ namespace Kernel {
     Type *print(std::vector<Type *>);
     Type *assign(std::vector<Type *>);
     Type *pvar(std::vector<Type *>);
+    Type *pfun(std::vector<Type *>);
     Type *exit(std::vector<Type *>);
     Type *all(std::vector<Type *>);
     Type *any(std::vector<Type *>);
