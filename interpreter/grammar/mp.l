@@ -56,7 +56,7 @@ return {
     yylval.str = strdup(yytext);
     return ID;
 }
-[\+\-\*\/\@\^\%\=\<\>\!]+ {
+[\+\-\*\/\@\^\%\=\<\>\!\.]+ {
     //cout << "Found an operator: " << yytext << endl;
     yylval.str = strdup(yytext);
     return OPERATOR;
