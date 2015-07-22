@@ -118,7 +118,7 @@ Matrix::Matrix(const Matrix &other) : Matrix(other.sizeRow, other.sizeColumn) {
 Matrix Matrix::elemMulti(Matrix &other) {
     if (sizeColumn != other.sizeColumn || sizeRow != other.sizeRow)
         Error::error(ET_DIMENSIONS_MISMATCH);
-    Matrix res = Matrix(sizeRow, other.sizeColumn);
+    Matrix res = Matrix(sizeRow,sizeColumn);
     for (int i = 0; i < sizeRow; i++)
         for (int j = 0; j < other.sizeColumn; j++) {
             res.array[i][j] = array[i][j] * other.array[i][j];
@@ -128,7 +128,7 @@ Matrix Matrix::elemMulti(Matrix &other) {
 }
 
 Matrix Matrix::operator^(Matrix &x) {
-    if (x.sizeColumn!=1||x.sizeRow!=1)
+    if (x.sizeColumn!=1||x.sizeRow!=1||sizeRow!=sizeColumn)
         Error::error(ET_DIMENSIONS_MISMATCH);
     //if (x.array[0][0]-(double)((int)x.array[0][0])>=1.e-10)
         //TODO:error(matrix^double)
@@ -138,22 +138,19 @@ Matrix Matrix::operator^(Matrix &x) {
     for (int i=0;i<sizeRow;i++)
         for (int j=0;j < sizeColumn;j++) {
             tmp.array[i][j] = array[i][j];
-            if (i==j)
-                res.array[i][j]=1;
-            else
-                res.array[i][j]=0;
+            res.array[i][j]=(i==j);
         }
 
     while (degree != 0)
     {
-        if (degree % 2 != 0)
+        if (degree % 2)
         {
             res = res*tmp;
-            degree -= 1;
         }
         tmp = tmp*tmp;
         degree=degree/2;
     }
+
     return res;
 }
 
@@ -167,7 +164,6 @@ Matrix Matrix::elemExp(Matrix &x) {
 
     }
     if (x.sizeColumn==sizeColumn&&x.sizeRow==sizeRow) {
-        Matrix res = Matrix(sizeRow, sizeColumn);
         for (int i = 0; i < sizeRow; i++)
             for (int j = 0; j < sizeColumn; j++)
                 res.array[i][j] = pow(array[i][j], x.array[i][j]);
