@@ -31,6 +31,11 @@ namespace Kernel {
     Type *lessOrEqual(std::vector<Type *>);
     Type *equal(std::vector<Type *>);
     Type *notEqual(std::vector<Type *>);
+    Type *getRows(std::vector<Type *>);
+    Type *getColumns(std::vector<Type *>);
+    Type *getCountOfElements(std::vector<Type *>);
+    Type *getSize(std::vector<Type *>);
+    Type *newIndentityMatrix(std::vector<Type *>);
 }
 
 #endif //MATHPROJECT_BUILTINFUNCTIONS_H

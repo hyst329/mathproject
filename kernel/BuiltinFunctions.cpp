@@ -7,6 +7,7 @@
 #include "Matrix.h"
 #include "UserFunction.h"
 #include "Error.h"
+#include "Array.h"
 
 
 void ::Kernel::initialiseBuiltins() {
@@ -31,6 +32,11 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["$operator<="]=new BuiltinFunction(lessOrEqual);
     AST::functions["$operator=="]=new BuiltinFunction(equal);
     AST::functions["$operator!="]=new BuiltinFunction(notEqual);
+    AST::functions["getRows"]=new BuiltinFunction(getRows);
+    AST::functions["getColumns"]=new BuiltinFunction(getColumns);
+    AST::functions["getCountOfElements"]=new BuiltinFunction(getCountOfElements);
+    AST::functions["getSize"]=new BuiltinFunction(getSize);
+    AST::functions["newIndentityMatrix"]=new BuiltinFunction(newIndentityMatrix);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -308,6 +314,93 @@ Type *::Kernel::notEqual(std::vector<Type *> v) {
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
                 Matrix m = *((Matrix *) v[0])!=(*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::getRows(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 1:
+            if (dynamic_cast<Matrix *>(v[0])) {
+                Matrix m = *((Matrix *) v[0]);
+                Matrix *r = new Matrix(m.getRows());
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::getColumns(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 1:
+            if (dynamic_cast<Matrix *>(v[0])) {
+                Matrix m = *((Matrix *) v[0]);
+                Matrix *r = new Matrix(m.getColumns());
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::getCountOfElements(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 1:
+            if (dynamic_cast<Matrix *>(v[0])) {
+                Matrix m = *((Matrix *) v[0]);
+                Matrix *r = new Matrix(m.getColumns()*m.getRows());
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::getSize(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 1:
+            if (dynamic_cast<Matrix *>(v[0])) {
+                Matrix m = *((Matrix *) v[0]);
+                Matrix *r = new Matrix(*(new vector<vector<double>>({{(double)m.getRows()},{(double)m.getColumns()}})));
+                return r;
+            }
+            if (dynamic_cast<Array *>(v[0])) {
+                return new Matrix(((Array *)v[0])->size());
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::newIndentityMatrix(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 1:
+            if (dynamic_cast<Matrix *>(v[0])) {
+                Matrix *r = new Matrix(Matrix(0).newIndentityMatrix(*(Matrix *)v[0]));
                 return r;
             }
             else {

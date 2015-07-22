@@ -61,6 +61,8 @@ public:
 
     Matrix operator!=(Matrix &other);
 
+    Matrix newIndentityMatrix(Matrix &size);
+
     virtual void print(std::ostream &os) override;
 };
 
