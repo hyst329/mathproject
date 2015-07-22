@@ -5,6 +5,7 @@ class MainWindow: public Gtk::Window
 {
 //Child widgets:
     Glib::RefPtr<Gtk::Builder> _builder;
+    Gtk::TextView *_source_view;
     //
 public:
     /** signal handlers */
@@ -86,6 +87,8 @@ public:
 
                 std::string filename = dialog.get_filename();
                 std::cout << "File selected: " << filename << std::endl;
+                // Set the text TODO(hyst329): add the real text instead of filename
+                _source_view->get_buffer()->set_text(filename);
                 break;
             }
             case(Gtk::RESPONSE_CANCEL): {
@@ -116,8 +119,11 @@ public:
         Quit->signal_activate().connect(sigc::mem_fun(*this,&MainWindow::OnQuit));
 
         /* Actions. */
+        //TODO(hyst329): create action action_quit
         //Glib::RefPtr<Gtk::Action>::cast_dynamic(_builder->get_object("action_quit"))->
         //        signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnQuit));
+
+        _builder->get_widget("textview_commands", _source_view);
 
         show_all_children();
     }
