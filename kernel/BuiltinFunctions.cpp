@@ -36,6 +36,7 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["getColumns"]=new BuiltinFunction(getColumns);
     AST::functions["getCountOfElements"]=new BuiltinFunction(getCountOfElements);
     AST::functions["getSize"]=new BuiltinFunction(getSize);
+    AST::functions["newIndentityMatrix"]=new BuiltinFunction(newIndentityMatrix);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -385,6 +386,22 @@ Type *::Kernel::getSize(std::vector<Type *> v) {
             }
             if (dynamic_cast<Array *>(v[0])) {
                 return new Matrix(((Array *)v[0])->size());
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::newIndentityMatrix(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 1:
+            if (dynamic_cast<Matrix *>(v[0])) {
+                Matrix *r = new Matrix(Matrix(0).newIndentityMatrix(*(Matrix *)v[0]));
+                return r;
             }
             else {
                 Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
