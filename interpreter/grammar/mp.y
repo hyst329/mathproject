@@ -29,23 +29,23 @@ inline bool isInteractive() {
 }
 
 map<string, double> prec = {
-    {"*",  8},
-    {"/",  8},
-    {"%",  8},
-    {"^",  8},
-    {"!",  8},
-    {"+",  7},
-    {"-",  7},
-    {"<",  6},
-    {"<=", 6},
-    {">",  6},
-    {">=", 6},
-    {"==", 5},
-    {"!=", 5},
-    {"&",  4},
-    {"@",  3},
-    {"|",  2},
-    {"=",  1}
+    {opMarker + "*",  8},
+    {opMarker + "/",  8},
+    {opMarker + "%",  8},
+    {opMarker + "^",  8},
+    {opMarker + "!",  8},
+    {opMarker + "+",  7},
+    {opMarker + "-",  7},
+    {opMarker + "<",  6},
+    {opMarker + "<=", 6},
+    {opMarker + ">",  6},
+    {opMarker + ">=", 6},
+    {opMarker + "==", 5},
+    {opMarker + "!=", 5},
+    {opMarker + "&",  4},
+    {opMarker + "@",  3},
+    {opMarker + "|",  2},
+    {opMarker + "=",  1}
 };
 
 %}
@@ -163,8 +163,18 @@ exprlist: exprlist COMMA expression {
             $$->push_back($1);
         }
 expression: expression OPERATOR expression {
-              std::vector<AST*> v = { $1, $3 };
-              $$ = new FunctionAST(opMarker + $2, v);
+              double last = INT_MAX;
+              if(dynamic_cast<FunctionAST*>($3)) last = prec[((FunctionAST*)($3))->function];
+              double added = INT_MIN;
+              if(dynamic_cast<FunctionAST*>($1)) added = prec[((FunctionAST*)($1))->function];
+              if(added < last) {
+                  std::vector<AST*> v = { $1, $3 };
+                  $$ = new FunctionAST(opMarker + $2, v);
+              }
+              else {
+                  AST* tmp = ((FunctionAST*)($3))->arguments[0];
+                  ((FunctionAST*)($3))->arguments[0] = new FunctionAST(opMarker + $2, {$1, tmp});
+              }
           }
           | OPERATOR expression {
               std::vector<AST*> v = { $2 };
