@@ -286,5 +286,4 @@ Matrix Matrix::getElement(Matrix &i) {
             return res;
         }
         Error::error(ET_DIMENSIONS_MISMATCH);
-
 }
