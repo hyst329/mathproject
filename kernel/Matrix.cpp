@@ -253,3 +253,38 @@ Matrix Matrix::newIndentityMatrix(Matrix &size) {
         res.array[i][i]=1;
     return res;
 }
+
+Matrix Matrix::getElement(Matrix &i,Matrix &j) {
+    if ((int) i.array[0][0] > sizeRow || (int) j.array[0][0] > sizeColumn);//TODO:error out of range
+    if (i.sizeColumn!=1||i.sizeRow!=1||j.sizeColumn!=1||j.sizeRow!=1)
+        Error::error(ET_DIMENSIONS_MISMATCH);
+    if (i.array[0][0]-(int) i.array[0][0] < 0.e-10 || j.array[0][0]-(int) j.array[0][0] <0.e-10){
+        ;//TODO:error array[double]
+    }
+    Matrix res(1,1);
+    res.array[0][0]=array[(int)i.array[0][0]][(int)j.array[0][0]];
+    return res;
+}
+
+Matrix Matrix::getElement(Matrix &i) {
+        if (i.sizeColumn == 1 && i.sizeRow == 2) {
+            if ((int) i.array[0][0] > sizeRow || (int) i.array[1][0] > sizeColumn);//TODO:error out of range
+            if (i.array[0][0]-(int) i.array[0][0] < 0.e-10 || i.array[1][0]-(int) i.array[1][0] <0.e-10){
+                ;//TODO:error array[double]
+            }
+            Matrix res(1, 1);
+            res.array[0][0] = array[(int) i.array[0][0]][(int) i.array[1][0]];
+            return res;
+        }
+        if (i.sizeColumn == 2 && i.sizeRow == 1) {
+            if ((int) i.array[0][0] > sizeRow || (int) i.array[1][0] > sizeColumn);//TODO:error out of range
+            if (i.array[0][0]-(int) i.array[0][0] < 0.e-10 || i.array[0][1]-(int) i.array[0][1] <0.e-10){
+               ; //TODO:error array[double]
+            }
+            Matrix res(1, 1);
+            res.array[0][0] = array[(int) i.array[0][0]][(int) i.array[0][1]];
+            return res;
+        }
+        Error::error(ET_DIMENSIONS_MISMATCH);
+
+}

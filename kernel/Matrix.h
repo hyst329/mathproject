@@ -63,6 +63,10 @@ public:
 
     Matrix newIndentityMatrix(Matrix &size);
 
+    Matrix getElement(Matrix &i,Matrix &j);
+
+    Matrix getElement(Matrix &i);
+
     virtual void print(std::ostream &os) override;
 };
 
