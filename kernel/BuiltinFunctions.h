@@ -61,7 +61,7 @@ namespace Kernel {
 
     Type *getSize(std::vector<Type *>);
 
-    Type *newIndentityMatrix(std::vector<Type *>);
+    Type *newIdentityMatrix(std::vector<Type *>);
 
     Type *getElement(std::vector<Type *>);
 }

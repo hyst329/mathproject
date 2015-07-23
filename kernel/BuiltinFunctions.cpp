@@ -37,7 +37,7 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["columns"] = new BuiltinFunction(getColumns);
     AST::functions["elements"] = new BuiltinFunction(getCountOfElements);
     AST::functions["size"] = new BuiltinFunction(getSize);
-    AST::functions["identity"] = new BuiltinFunction(newIndentityMatrix);
+    AST::functions["identity"] = new BuiltinFunction(newIdentityMatrix);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -420,11 +420,11 @@ Type *::Kernel::getSize(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::newIndentityMatrix(std::vector<Type *> v) {
+Type *::Kernel::newIdentityMatrix(std::vector<Type *> v) {
     switch (v.size()) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix *r = new Matrix(Matrix(0).newIndentityMatrix(*(Matrix *) v[0]));
+                Matrix *r = new Matrix(Matrix(0).newIdentityMatrix(*(Matrix *) v[0]));
                 return r;
             }
             else {

@@ -61,7 +61,7 @@ public:
 
     Matrix operator!=(Matrix &other);
 
-    Matrix newIndentityMatrix(Matrix &size);
+    Matrix newIdentityMatrix(Matrix &size);
 
     Matrix getElement(Matrix &i, Matrix &j);
 
