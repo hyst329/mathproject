@@ -38,6 +38,7 @@ namespace Kernel {
     Type *getCountOfElements(std::vector<Type *>);
     Type *getSize(std::vector<Type *>);
     Type *newIndentityMatrix(std::vector<Type *>);
+    Type *getElement(std::vector<Type *>);
 }
 
 #endif //MATHPROJECT_BUILTINFUNCTIONS_H
