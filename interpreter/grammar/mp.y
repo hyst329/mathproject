@@ -32,7 +32,7 @@ inline bool isInteractive() {
 %token <str> ID
 %token <str> OPERATOR
 %token SEMICOLON COMMA 
-%token LEFTPAR RIGHTPAR LEFTBRACE RIGHTBRACE
+%token LEFTPAR RIGHTPAR LEFTBRACE RIGHTBRACE LEFTBRK RIGHTBRK
 %token IF WHILE ELSE FUNCTION RETURN
 %type <ast> program block bracedblock instruction expression term
 %type <arglist> arglist
@@ -164,6 +164,10 @@ term: FLOAT {
     }
     | ID LEFTPAR exprlist RIGHTPAR {
         $$ = new FunctionAST($1, *$3);
+    }
+    | ID LEFTBRK exprlist RIGHTBRK {
+        $3->insert($3->begin(), new VarAST($1));
+        $$ = new FunctionAST("$index", *$3);
     }
 matrix: LEFTBRACE rowlist RIGHTBRACE {
           $$ = new Matrix(*$2);

@@ -87,6 +87,14 @@ return {
     inside--;
     return RIGHTBRACE;
 }
+\[ {
+    //cout << "Found left bracket: " << yytext << endl;
+    return LEFTBRK;
+}
+\] {
+    //cout << "Found right bracket: " << yytext << endl;
+    return RIGHTBRK;
+}
 . {
     yyerror(0, yytext);
 }

@@ -32,11 +32,12 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["$operator<="]=new BuiltinFunction(lessOrEqual);
     AST::functions["$operator=="]=new BuiltinFunction(equal);
     AST::functions["$operator!="]=new BuiltinFunction(notEqual);
-    AST::functions["getRows"]=new BuiltinFunction(getRows);
-    AST::functions["getColumns"]=new BuiltinFunction(getColumns);
-    AST::functions["getCountOfElements"]=new BuiltinFunction(getCountOfElements);
-    AST::functions["getSize"]=new BuiltinFunction(getSize);
-    AST::functions["newIndentityMatrix"]=new BuiltinFunction(newIndentityMatrix);
+    AST::functions["$index"]=new BuiltinFunction(index);
+    AST::functions["rows"]=new BuiltinFunction(getRows);
+    AST::functions["columns"]=new BuiltinFunction(getColumns);
+    AST::functions["elements"]=new BuiltinFunction(getCountOfElements);
+    AST::functions["size"]=new BuiltinFunction(getSize);
+    AST::functions["identity"]=new BuiltinFunction(newIndentityMatrix);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -323,6 +324,11 @@ Type *::Kernel::notEqual(std::vector<Type *> v) {
             // TODO(hyst329): error
             return 0;
     }
+}
+
+
+Type *::Kernel::index(std::vector<Type *> v) {
+    // TODO: return index
 }
 
 Type *::Kernel::getRows(std::vector<Type *> v) {
