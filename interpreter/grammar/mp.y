@@ -165,8 +165,8 @@ exprlist: exprlist COMMA expression {
 expression: expression OPERATOR expression {
               double last = INT_MAX;
               if(dynamic_cast<FunctionAST*>($3)) last = prec[((FunctionAST*)($3))->function];
-              double added = INT_MIN;
-              if(dynamic_cast<FunctionAST*>($1)) added = prec[((FunctionAST*)($1))->function];
+              double added = prec.find(opMarker + $2) == prec.end() ? INT_MIN : prec[opMarker + $2];
+              cout << "Added: " << added << " Last: " << last << endl;
               if(added < last) {
                   std::vector<AST*> v = { $1, $3 };
                   $$ = new FunctionAST(opMarker + $2, v);
@@ -174,6 +174,7 @@ expression: expression OPERATOR expression {
               else {
                   AST* tmp = ((FunctionAST*)($3))->arguments[0];
                   ((FunctionAST*)($3))->arguments[0] = new FunctionAST(opMarker + $2, {$1, tmp});
+                  $$ = $3;
               }
           }
           | OPERATOR expression {
