@@ -48,6 +48,8 @@ map<string, double> prec = {
     {opMarker + "=",  1}
 };
 
+static bool last_term = 0;
+
 %}
 %error-verbose
 %token <type> FLOAT
@@ -164,7 +166,9 @@ exprlist: exprlist COMMA expression {
         }
 expression: expression OPERATOR expression {
               double last = INT_MAX;
-              if(dynamic_cast<FunctionAST*>($3)) last = prec[((FunctionAST*)($3))->function];
+              if(dynamic_cast<FunctionAST*>($3) and !last_term)
+                  last = prec.find(((FunctionAST*)($3))->function) == prec.end() ?
+                         INT_MAX : prec[((FunctionAST*)($3))->function];
               double added = prec.find(opMarker + $2) == prec.end() ? INT_MIN : prec[opMarker + $2];
               cout << "Added: " << added << " Last: " << last << endl;
               if(added < last) {
@@ -176,6 +180,7 @@ expression: expression OPERATOR expression {
                   ((FunctionAST*)($3))->arguments[0] = new FunctionAST(opMarker + $2, {$1, tmp});
                   $$ = $3;
               }
+              last_term = 0;
           }
           | OPERATOR expression {
               std::vector<AST*> v = { $2 };
@@ -183,6 +188,7 @@ expression: expression OPERATOR expression {
           }
           | term {
               $$ = $1;
+              last_term = 1;
           }
 term: FLOAT {
         $$ = new TypeAST($1);
