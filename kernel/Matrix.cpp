@@ -247,11 +247,9 @@ Matrix Matrix::operator!=(Matrix &other) {
     return res;
 }
 
-Matrix Matrix::newIndentityMatrix(Matrix &size) {
-    if (size.sizeColumn!=1||size.sizeRow!=1)
-        Error::error(ET_DIMENSIONS_MISMATCH);
-    Matrix res((int)size.array[0][0],(int)size.array[0][0]);
-    for(int i=0;i<size.array[0][0];i++)
+Matrix Matrix::newIndentityMatrix(int size) {
+    Matrix res(size, size);
+    for(int i=0;i<size;i++)
         res.array[i][i]=1;
     return res;
 }

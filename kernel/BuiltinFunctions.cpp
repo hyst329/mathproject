@@ -420,11 +420,11 @@ Type *::Kernel::newIndentityMatrix(std::vector<Type *> v) {
     switch (v.size()) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix *r = new Matrix(Matrix(0).newIndentityMatrix(*(Matrix *) v[0]));
+                Matrix *r = new Matrix(Matrix::newIndentityMatrix((int) ((Matrix *) v[0])->element(1, 1)));
                 return r;
             }
             else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+                //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
             }
         default:
             // TODO(hyst329): error
