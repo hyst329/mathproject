@@ -7,6 +7,7 @@
 #include "../../kernel/Matrix.h"
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 using namespace Kernel;
@@ -26,6 +27,27 @@ extern volatile int inside;
 inline bool isInteractive() {
     return yyin == stdin and !inside;
 }
+
+map<string, double> prec = {
+    {"*",  8},
+    {"/",  8},
+    {"%",  8},
+    {"^",  8},
+    {"!",  8},
+    {"+",  7},
+    {"-",  7},
+    {"<",  6},
+    {"<=", 6},
+    {">",  6},
+    {">=", 6},
+    {"==", 5},
+    {"!=", 5},
+    {"&",  4},
+    {"@",  3},
+    {"|",  2},
+    {"=",  1}
+};
+
 %}
 %error-verbose
 %token <type> FLOAT
@@ -40,6 +62,7 @@ inline bool isInteractive() {
 %type <row> row
 %type <rowlist> rowlist
 %type <type> matrix
+%right OPERATOR
 %right IFX ELSE
 %union
 {

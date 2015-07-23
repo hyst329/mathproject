@@ -109,7 +109,9 @@ void Matrix::print(std::ostream &os) {
             os << array[i][j] << (j != sizeColumn - 1 ? ", " : (i != sizeRow - 1 ? "; " : "}"));
 }
 
-Matrix::Matrix(const Matrix &other) : Matrix(other.sizeRow, other.sizeColumn) {
+Matrix::Matrix(const Matrix &other) : sizeRow(other.sizeRow), sizeColumn(other.sizeColumn) {
+    array = new double *[other.sizeRow];
+    for (int i = 0; i < other.sizeRow; i++) array[i] = new double[other.sizeColumn];
     for (int i = 0; i < sizeRow; i++)
         for (int j = 0; j < sizeColumn; j++)
             array[i][j] = other.array[i][j];

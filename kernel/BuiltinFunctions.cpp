@@ -23,21 +23,21 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["all"] = new BuiltinFunction(all);
     AST::functions["any"] = new BuiltinFunction(any);
 
-    AST::functions["$operator.*"]=new BuiltinFunction(elemMulti);
-    AST::functions["$operator^"]=new BuiltinFunction(exponentation);
-    AST::functions["$operator.^"]=new BuiltinFunction(elemExp);
-    AST::functions["$operator>"]=new BuiltinFunction(more);
-    AST::functions["$operator>="]=new BuiltinFunction(moreOrEqual);
-    AST::functions["$operator<"]=new BuiltinFunction(less);
-    AST::functions["$operator<="]=new BuiltinFunction(lessOrEqual);
-    AST::functions["$operator=="]=new BuiltinFunction(equal);
-    AST::functions["$operator!="]=new BuiltinFunction(notEqual);
-    AST::functions["$index"]=new BuiltinFunction(index);
-    AST::functions["rows"]=new BuiltinFunction(getRows);
-    AST::functions["columns"]=new BuiltinFunction(getColumns);
-    AST::functions["elements"]=new BuiltinFunction(getCountOfElements);
-    AST::functions["size"]=new BuiltinFunction(getSize);
-    AST::functions["identity"]=new BuiltinFunction(newIndentityMatrix);
+    AST::functions["$operator.*"] = new BuiltinFunction(elemMulti);
+    AST::functions["$operator^"] = new BuiltinFunction(exponentation);
+    AST::functions["$operator.^"] = new BuiltinFunction(elemExp);
+    AST::functions["$operator>"] = new BuiltinFunction(more);
+    AST::functions["$operator>="] = new BuiltinFunction(moreOrEqual);
+    AST::functions["$operator<"] = new BuiltinFunction(less);
+    AST::functions["$operator<="] = new BuiltinFunction(lessOrEqual);
+    AST::functions["$operator=="] = new BuiltinFunction(equal);
+    AST::functions["$operator!="] = new BuiltinFunction(notEqual);
+    AST::functions["$index"] = new BuiltinFunction(index);
+    AST::functions["rows"] = new BuiltinFunction(getRows);
+    AST::functions["columns"] = new BuiltinFunction(getColumns);
+    AST::functions["elements"] = new BuiltinFunction(getCountOfElements);
+    AST::functions["size"] = new BuiltinFunction(getSize);
+    AST::functions["identity"] = new BuiltinFunction(newIndentityMatrix);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -212,7 +212,7 @@ Type *::Kernel::exponentation(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0])^(*((Matrix *) v[1]));
+                Matrix m = *((Matrix *) v[0]) ^(*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
@@ -224,11 +224,12 @@ Type *::Kernel::exponentation(std::vector<Type *> v) {
             return 0;
     }
 }
+
 Type *::Kernel::more(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0])>(*((Matrix *) v[1]));
+                Matrix m = *((Matrix *) v[0]) > (*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
@@ -245,7 +246,7 @@ Type *::Kernel::moreOrEqual(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0])>=(*((Matrix *) v[1]));
+                Matrix m = *((Matrix *) v[0]) >= (*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
@@ -262,7 +263,7 @@ Type *::Kernel::less(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0])<(*((Matrix *) v[1]));
+                Matrix m = *((Matrix *) v[0]) < (*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
@@ -279,7 +280,7 @@ Type *::Kernel::lessOrEqual(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0])<=(*((Matrix *) v[1]));
+                Matrix m = *((Matrix *) v[0]) <= (*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
@@ -296,7 +297,7 @@ Type *::Kernel::equal(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0])==(*((Matrix *) v[1]));
+                Matrix m = *((Matrix *) v[0]) == (*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
@@ -313,7 +314,7 @@ Type *::Kernel::notEqual(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0])!=(*((Matrix *) v[1]));
+                Matrix m = *((Matrix *) v[0]) != (*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
@@ -328,7 +329,19 @@ Type *::Kernel::notEqual(std::vector<Type *> v) {
 
 
 Type *::Kernel::index(std::vector<Type *> v) {
-    // TODO: return index
+    switch (v.size()) {
+        case 1:
+            // TODO: Error
+        case 2:
+            // TODO: Index of an array
+        case 3:
+            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1]) and dynamic_cast<Matrix *>(v[2]))
+                return new Matrix(
+                        ((Matrix *) v[0])->element((int) ((Matrix *) v[1])->element(1, 1),
+                                                   (int) ((Matrix *) v[2])->element(1, 1)));
+        default:
+            break;
+    }
 }
 
 Type *::Kernel::getRows(std::vector<Type *> v) {
@@ -370,7 +383,7 @@ Type *::Kernel::getCountOfElements(std::vector<Type *> v) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
                 Matrix m = *((Matrix *) v[0]);
-                Matrix *r = new Matrix(m.getColumns()*m.getRows());
+                Matrix *r = new Matrix(m.getColumns() * m.getRows());
                 return r;
             }
             else {
@@ -387,11 +400,12 @@ Type *::Kernel::getSize(std::vector<Type *> v) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
                 Matrix m = *((Matrix *) v[0]);
-                Matrix *r = new Matrix(*(new vector<vector<double>>({{(double)m.getRows()},{(double)m.getColumns()}})));
+                Matrix *r = new Matrix(*(new vector<vector<double>>({{(double) m.getRows()},
+                                                                     {(double) m.getColumns()}})));
                 return r;
             }
             if (dynamic_cast<Array *>(v[0])) {
-                return new Matrix(((Array *)v[0])->size());
+                return new Matrix(((Array *) v[0])->size());
             }
             else {
                 Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
@@ -406,7 +420,7 @@ Type *::Kernel::newIndentityMatrix(std::vector<Type *> v) {
     switch (v.size()) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix *r = new Matrix(Matrix(0).newIndentityMatrix(*(Matrix *)v[0]));
+                Matrix *r = new Matrix(Matrix(0).newIndentityMatrix(*(Matrix *) v[0]));
                 return r;
             }
             else {
