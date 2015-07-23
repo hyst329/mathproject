@@ -21,7 +21,7 @@ public:
 
     Matrix(std::vector<std::vector<double>> &v);
 
-    Matrix(const Matrix& other);
+    Matrix(const Matrix &other);
 
     ~Matrix();
 
@@ -63,7 +63,7 @@ public:
 
     Matrix newIndentityMatrix(Matrix &size);
 
-    Matrix getElement(Matrix &i,Matrix &j);
+    Matrix getElement(Matrix &i, Matrix &j);
 
     Matrix getElement(Matrix &i);
 

@@ -4,7 +4,7 @@
 
 #include "Matrix.h"
 #include "Error.h"
-#include <cmath>
+
 Matrix::Matrix(int rows, int columns) : sizeColumn(columns), sizeRow(rows) {
     array = new double *[rows];
     for (int i = 0; i < rows; i++) array[i] = new double[columns];
@@ -120,7 +120,7 @@ Matrix::Matrix(const Matrix &other) : sizeRow(other.sizeRow), sizeColumn(other.s
 Matrix Matrix::elemMulti(Matrix &other) {
     if (sizeColumn != other.sizeColumn || sizeRow != other.sizeRow)
         Error::error(ET_DIMENSIONS_MISMATCH);
-    Matrix res = Matrix(sizeRow,sizeColumn);
+    Matrix res = Matrix(sizeRow, sizeColumn);
     for (int i = 0; i < sizeRow; i++)
         for (int j = 0; j < other.sizeColumn; j++) {
             res.array[i][j] = array[i][j] * other.array[i][j];
@@ -130,27 +130,25 @@ Matrix Matrix::elemMulti(Matrix &other) {
 }
 
 Matrix Matrix::operator^(Matrix &x) {
-    if (x.sizeColumn!=1||x.sizeRow!=1||sizeRow!=sizeColumn)
+    if (x.sizeColumn != 1 || x.sizeRow != 1 || sizeRow != sizeColumn)
         Error::error(ET_DIMENSIONS_MISMATCH);
     //if (x.array[0][0]-(double)((int)x.array[0][0])>=1.e-10)
-        //TODO:error(matrix^double)
-    int degree=(int)(x.array[0][0]);
+    //TODO:error(matrix^double)
+    int degree = (int) (x.array[0][0]);
     Matrix res = Matrix(sizeRow, sizeColumn);
     Matrix tmp = Matrix(sizeRow, sizeColumn);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++) {
+    for (int i = 0; i < sizeRow; i++)
+        for (int j = 0; j < sizeColumn; j++) {
             tmp.array[i][j] = array[i][j];
-            res.array[i][j]=(i==j);
+            res.array[i][j] = (i == j);
         }
 
-    while (degree != 0)
-    {
-        if (degree % 2)
-        {
-            res = res*tmp;
+    while (degree != 0) {
+        if (degree % 2) {
+            res = res * tmp;
         }
-        tmp = tmp*tmp;
-        degree=degree/2;
+        tmp = tmp * tmp;
+        degree = degree / 2;
     }
 
     return res;
@@ -158,134 +156,134 @@ Matrix Matrix::operator^(Matrix &x) {
 
 Matrix Matrix::elemExp(Matrix &x) {
     Matrix res = Matrix(sizeRow, sizeColumn);
-    if (x.sizeColumn==1&&x.sizeRow==1) {
+    if (x.sizeColumn == 1 && x.sizeRow == 1) {
         double degree = x.array[0][0];
         for (int i = 0; i < sizeRow; i++)
             for (int j = 0; j < sizeColumn; j++)
                 res.array[i][j] = pow(array[i][j], degree);
 
     }
-    if (x.sizeColumn==sizeColumn&&x.sizeRow==sizeRow) {
+    if (x.sizeColumn == sizeColumn && x.sizeRow == sizeRow) {
         for (int i = 0; i < sizeRow; i++)
             for (int j = 0; j < sizeColumn; j++)
                 res.array[i][j] = pow(array[i][j], x.array[i][j]);
     }
-    if (x.sizeColumn!=sizeColumn||x.sizeRow!=sizeRow)
+    if (x.sizeColumn != sizeColumn || x.sizeRow != sizeRow)
         Error::error(ET_DIMENSIONS_MISMATCH);
     return res;
 }
 
 Matrix Matrix::operator<(Matrix &other) {
-    Matrix res = Matrix(1,1);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            if (array[i][j]>=other.array[i][j]) {
-                res.array[0][0]=0;
+    Matrix res = Matrix(1, 1);
+    for (int i = 0; i < sizeRow; i++)
+        for (int j = 0; j < sizeColumn; j++)
+            if (array[i][j] >= other.array[i][j]) {
+                res.array[0][0] = 0;
                 return res;
             }
-    res.array[0][0]=1;
+    res.array[0][0] = 1;
     return res;
 }
 
 Matrix Matrix::operator>(Matrix &other) {
-    Matrix res = Matrix(1,1);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            if (array[i][j]<=other.array[i][j]) {
-                res.array[0][0]=0;
+    Matrix res = Matrix(1, 1);
+    for (int i = 0; i < sizeRow; i++)
+        for (int j = 0; j < sizeColumn; j++)
+            if (array[i][j] <= other.array[i][j]) {
+                res.array[0][0] = 0;
                 return res;
             }
-    res.array[0][0]=1;
+    res.array[0][0] = 1;
     return res;
 }
 
 Matrix Matrix::operator<=(Matrix &other) {
-    Matrix res = Matrix(1,1);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            if (array[i][j]>other.array[i][j]) {
-                res.array[0][0]=0;
+    Matrix res = Matrix(1, 1);
+    for (int i = 0; i < sizeRow; i++)
+        for (int j = 0; j < sizeColumn; j++)
+            if (array[i][j] > other.array[i][j]) {
+                res.array[0][0] = 0;
                 return res;
             }
-    res.array[0][0]=1;
+    res.array[0][0] = 1;
     return res;
 }
 
 Matrix Matrix::operator>=(Matrix &other) {
-    Matrix res = Matrix(1,1);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            if (array[i][j]<other.array[i][j]) {
-                res.array[0][0]=0;
+    Matrix res = Matrix(1, 1);
+    for (int i = 0; i < sizeRow; i++)
+        for (int j = 0; j < sizeColumn; j++)
+            if (array[i][j] < other.array[i][j]) {
+                res.array[0][0] = 0;
                 return res;
             }
-    res.array[0][0]=1;
+    res.array[0][0] = 1;
     return res;
 }
 
 Matrix Matrix::operator==(Matrix &other) {
-    Matrix res = Matrix(1,1);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            if (array[i][j]!=other.array[i][j]) {
-                res.array[0][0]=0;
+    Matrix res = Matrix(1, 1);
+    for (int i = 0; i < sizeRow; i++)
+        for (int j = 0; j < sizeColumn; j++)
+            if (array[i][j] != other.array[i][j]) {
+                res.array[0][0] = 0;
                 return res;
             }
-    res.array[0][0]=1;
+    res.array[0][0] = 1;
     return res;
 }
 
 Matrix Matrix::operator!=(Matrix &other) {
-    Matrix res = Matrix(1,1);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            if (array[i][j]!=other.array[i][j]) {
-                res.array[0][0]=1;
+    Matrix res = Matrix(1, 1);
+    for (int i = 0; i < sizeRow; i++)
+        for (int j = 0; j < sizeColumn; j++)
+            if (array[i][j] != other.array[i][j]) {
+                res.array[0][0] = 1;
                 return res;
             }
-    res.array[0][0]=0;
+    res.array[0][0] = 0;
     return res;
 }
 
 Matrix Matrix::newIndentityMatrix(Matrix &size) {
-    if (size.sizeColumn!=1||size.sizeRow!=1)
+    if (size.sizeColumn != 1 || size.sizeRow != 1)
         Error::error(ET_DIMENSIONS_MISMATCH);
-    Matrix res((int)size.array[0][0],(int)size.array[0][0]);
-    for(int i=0;i<size.array[0][0];i++)
-        res.array[i][i]=1;
+    Matrix res((int) size.array[0][0], (int) size.array[0][0]);
+    for (int i = 0; i < size.array[0][0]; i++)
+        res.array[i][i] = 1;
     return res;
 }
 
-Matrix Matrix::getElement(Matrix &i,Matrix &j) {
+Matrix Matrix::getElement(Matrix &i, Matrix &j) {
     if ((int) i.array[0][0] > sizeRow || (int) j.array[0][0] > sizeColumn);//TODO:error out of range
-    if (i.sizeColumn!=1||i.sizeRow!=1||j.sizeColumn!=1||j.sizeRow!=1)
+    if (i.sizeColumn != 1 || i.sizeRow != 1 || j.sizeColumn != 1 || j.sizeRow != 1)
         Error::error(ET_DIMENSIONS_MISMATCH);
-    if (i.array[0][0]-(int) i.array[0][0] < 0.e-10 || j.array[0][0]-(int) j.array[0][0] <0.e-10){
-        ;//TODO:error array[double]
+    if (i.array[0][0] - (int) i.array[0][0] < 0.e-10 ||
+        j.array[0][0] - (int) j.array[0][0] < 0.e-10) { ;//TODO:error array[double]
     }
-    Matrix res(1,1);
-    res.array[0][0]=array[(int)i.array[0][0]][(int)j.array[0][0]];
+    Matrix res(1, 1);
+    res.array[0][0] = array[(int) i.array[0][0]][(int) j.array[0][0]];
     return res;
 }
 
 Matrix Matrix::getElement(Matrix &i) {
-        if (i.sizeColumn == 1 && i.sizeRow == 2) {
-            if ((int) i.array[0][0] > sizeRow || (int) i.array[1][0] > sizeColumn);//TODO:error out of range
-            if (i.array[0][0]-(int) i.array[0][0] < 0.e-10 || i.array[1][0]-(int) i.array[1][0] <0.e-10){
-                ;//TODO:error array[double]
-            }
-            Matrix res(1, 1);
-            res.array[0][0] = array[(int) i.array[0][0]][(int) i.array[1][0]];
-            return res;
+    if (i.sizeColumn == 1 && i.sizeRow == 2) {
+        if ((int) i.array[0][0] > sizeRow || (int) i.array[1][0] > sizeColumn);//TODO:error out of range
+        if (i.array[0][0] - (int) i.array[0][0] < 0.e-10 ||
+            i.array[1][0] - (int) i.array[1][0] < 0.e-10) { ;//TODO:error array[double]
         }
-        if (i.sizeColumn == 2 && i.sizeRow == 1) {
-            if ((int) i.array[0][0] > sizeRow || (int) i.array[1][0] > sizeColumn);//TODO:error out of range
-            if (i.array[0][0]-(int) i.array[0][0] < 0.e-10 || i.array[0][1]-(int) i.array[0][1] <0.e-10){
-               ; //TODO:error array[double]
-            }
-            Matrix res(1, 1);
-            res.array[0][0] = array[(int) i.array[0][0]][(int) i.array[0][1]];
-            return res;
+        Matrix res(1, 1);
+        res.array[0][0] = array[(int) i.array[0][0]][(int) i.array[1][0]];
+        return res;
+    }
+    if (i.sizeColumn == 2 && i.sizeRow == 1) {
+        if ((int) i.array[0][0] > sizeRow || (int) i.array[1][0] > sizeColumn);//TODO:error out of range
+        if (i.array[0][0] - (int) i.array[0][0] < 0.e-10 ||
+            i.array[0][1] - (int) i.array[0][1] < 0.e-10) { ; //TODO:error array[double]
         }
-        Error::error(ET_DIMENSIONS_MISMATCH);
+        Matrix res(1, 1);
+        res.array[0][0] = array[(int) i.array[0][0]][(int) i.array[0][1]];
+        return res;
+    }
+    Error::error(ET_DIMENSIONS_MISMATCH);
 }

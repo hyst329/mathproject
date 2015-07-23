@@ -13,15 +13,15 @@
 
 class Function : public Type {
 public:
-    virtual Type* operator()(std::vector<Type*> arguments) = 0;
+    virtual Type *operator()(std::vector<Type *> arguments) = 0;
 
 };
 
 class BuiltinFunction : public Function {
-    std::function<Type*(std::vector<Type*>)> f;
+    std::function<Type *(std::vector<Type *>)> f;
 
 public:
-    BuiltinFunction(const function<Type*(std::vector<Type*>)> &f) : f(f) { }
+    BuiltinFunction(const function<Type *(std::vector<Type *>)> &f) : f(f) { }
 
     virtual Type *operator()(std::vector<Type *> args);
 
@@ -35,7 +35,7 @@ public:
     }
 };
 
-class UserFunction :  public Function {
+class UserFunction : public Function {
     Kernel::AST *ast;
 
 

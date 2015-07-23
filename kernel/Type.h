@@ -17,7 +17,7 @@ public:
     virtual bool isNonzero() = 0;
 
     virtual void print(std::ostream &os) {
-        os << boost::format("[%1% instance at address %2%]") % getType() % (int)this;
+        os << boost::format("[%1% instance at address %2%]") % getType() % (int) this;
     }
 
 };

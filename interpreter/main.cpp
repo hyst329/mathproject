@@ -3,7 +3,6 @@
 #include "../kernel/BuiltinFunctions.h"
 #include "../kernel/Error.h"
 #include <boost/program_options.hpp>
-#include <fstream>
 
 using namespace std;
 using namespace boost::program_options;
@@ -38,9 +37,9 @@ void interactive() {
             cout << ">>> ";
             ast = 0;
             //while (!feof(yyin)) {
-                yyparse(ast);
-                if (!ast) return;
-                ast->exec();
+            yyparse(ast);
+            if (!ast) return;
+            ast->exec();
             //}
         }
         catch (Error &error) {

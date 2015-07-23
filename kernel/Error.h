@@ -41,7 +41,7 @@ public:
         //TODO: text processing of mistakes
         text = (boost::format("[%1$3d] %2%") % et % codes[et]).str();
         boost::format f(text);
-        for(int i = 0; i < args.size(); i++) f = f % args[i];
+        for (int i = 0; i < args.size(); i++) f = f % args[i];
         text = f.str();
     }
 

@@ -1,8 +1,7 @@
 #include <gtkmm.h>
 #include<iostream>
 
-class MainWindow: public Gtk::Window
-{
+class MainWindow : public Gtk::Window {
 //Child widgets:
     Glib::RefPtr<Gtk::Builder> _builder;
     Gtk::TextView *_source_view;
@@ -10,8 +9,7 @@ class MainWindow: public Gtk::Window
 public:
     /** signal handlers */
     void
-    OnQuit()
-    {
+    OnQuit() {
         hide();
     }
 
@@ -23,8 +21,8 @@ public:
         dialog.set_transient_for(*this);
 
         //Add response buttons the the dialog:
-         dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-         dialog.add_button("Select", Gtk::RESPONSE_OK);
+        dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+        dialog.add_button("Select", Gtk::RESPONSE_OK);
 
         //Show the dialog and wait for a user response:
         int result = dialog.run();
@@ -47,9 +45,9 @@ public:
             }
         }
     }
+
     //Choose the file
-     void on_toolbutton_file_clicked()
-    {
+    void on_toolbutton_file_clicked() {
         Gtk::FileChooserDialog dialog("Please choose a file",
                                       Gtk::FILE_CHOOSER_ACTION_OPEN);
         dialog.set_transient_for(*this);
@@ -101,22 +99,22 @@ public:
             }
         }
     }
+
     //Constructor
-    MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder):
-            Gtk::Window(cobject), _builder(builder)
-    {
+    MainWindow(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &builder) :
+            Gtk::Window(cobject), _builder(builder) {
         /* Retrieve widgets. */
         //toolbar
         Gtk::ToolButton *Open = 0;
-        _builder->get_widget("toolbutton_open",Open);
+        _builder->get_widget("toolbutton_open", Open);
         //Open->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_toolbutton_folder_clicked));
         Open->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_toolbutton_file_clicked));
 
 
         //menubar
         Gtk::MenuItem *Quit = 0;
-        _builder->get_widget("menuitem_quit_commands",Quit);
-        Quit->signal_activate().connect(sigc::mem_fun(*this,&MainWindow::OnQuit));
+        _builder->get_widget("menuitem_quit_commands", Quit);
+        Quit->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnQuit));
 
         /* Actions. */
         //TODO(hyst329): create action action_quit
@@ -130,34 +128,29 @@ public:
 
 };
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     Gtk::Main app(argc, argv);
 
     //Load the GtkBuilder file and instantiate its widgets:
     Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
-    try
-    {
+    try {
         builder->add_from_file("userInterface.glade");
     }
-    catch(const Glib::FileError& ex)
-    {
+    catch (const Glib::FileError &ex) {
         std::cerr << "FileError: " << ex.what() << std::endl;
         return 1;
     }
-    catch(const Glib::MarkupError& ex)
-    {
+    catch (const Glib::MarkupError &ex) {
         std::cerr << "MarkupError: " << ex.what() << std::endl;
         return 1;
     }
-    catch(const Gtk::BuilderError& ex)
-    {
+    catch (const Gtk::BuilderError &ex) {
         std::cerr << "BuilderError: " << ex.what() << std::endl;
         return 1;
     }
 
     MainWindow *w = 0;
-    builder->get_widget_derived("window_main",w);
+    builder->get_widget_derived("window_main", w);
     app.run(*w);
     delete w;
     return 0;

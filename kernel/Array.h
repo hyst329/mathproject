@@ -9,28 +9,28 @@
 #include <vector>
 
 
-class Array: Type {
+class Array : Type {
 
-std:: vector<Type*> array;
+    std::vector<Type *> array;
 
 public:
-    int size(){
+    int size() {
         return array.size();
     }
 
-    Type*& operator[](int i){
+    Type *&operator[](int i) {
         return array[i];
     }
 
-    void add(Type * element){
+    void add(Type *element) {
         array.push_back(element);
     }
 
-    Array (int n){
-        array = std::vector<Type*>(n);
+    Array(int n) {
+        array = std::vector<Type *>(n);
     }
 
-    Array (std::vector<Type*>& newArray){
+    Array(std::vector<Type *> &newArray) {
         array = newArray;
     }
 };
