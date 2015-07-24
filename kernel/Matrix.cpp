@@ -135,8 +135,8 @@ Matrix Matrix::operator^(Matrix &x) {
     //if (x.array[0][0]-(double)((int)x.array[0][0])>=1.e-10)
     //TODO:error(matrix^double)
     int degree = (int) (x.array[0][0]);
-    Matrix res = Matrix(sizeRow, sizeColumn);
-    Matrix tmp = Matrix(sizeRow, sizeColumn);
+    Matrix res(sizeRow, sizeColumn);
+    Matrix tmp(sizeRow, sizeColumn);
     for (int i = 0; i < sizeRow; i++)
         for (int j = 0; j < sizeColumn; j++) {
             tmp.array[i][j] = array[i][j];

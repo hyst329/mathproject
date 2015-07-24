@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 
 using namespace std;
 using namespace Kernel;
@@ -29,10 +30,10 @@ inline bool isInteractive() {
 }
 
 map<string, double> prec = {
+    {opMarker + "^",  9},
     {opMarker + "*",  8},
     {opMarker + "/",  8},
     {opMarker + "%",  8},
-    {opMarker + "^",  8},
     {opMarker + "!",  8},
     {opMarker + "+",  7},
     {opMarker + "-",  7},
@@ -47,6 +48,8 @@ map<string, double> prec = {
     {opMarker + "|",  2},
     {opMarker + "=",  1}
 };
+
+set<string> right_assoc = {opMarker + "^", opMarker + "="};
 
 static bool last_term = 0;
 
@@ -171,7 +174,7 @@ expression: expression OPERATOR expression {
                          INT_MAX : prec[((FunctionAST*)($3))->function];
               double added = prec.find(opMarker + $2) == prec.end() ? INT_MIN : prec[opMarker + $2];
               cout << "Added: " << added << " Last: " << last << endl;
-              if(added < last) {
+              if(right_assoc.count(opMarker + $2) ? added <= last : added < last) {
                   std::vector<AST*> v = { $1, $3 };
                   $$ = new FunctionAST(opMarker + $2, v);
               }

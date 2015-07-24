@@ -216,7 +216,7 @@ Type *::Kernel::exponentation(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0]) ^(*((Matrix *) v[1]));
+                Matrix m = (*((Matrix *) v[0])) ^ (*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
