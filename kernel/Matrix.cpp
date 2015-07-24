@@ -136,10 +136,10 @@ Matrix Matrix::operator^(Matrix &x) {
     //TODO:error(matrix^double)
     int degree = (int) (x.array[0][0]);
     Matrix res(sizeRow, sizeColumn);
-    Matrix tmp(sizeRow, sizeColumn);
+    Matrix tmp = *this;
     for (int i = 0; i < sizeRow; i++)
         for (int j = 0; j < sizeColumn; j++) {
-            tmp.array[i][j] = array[i][j];
+            //tmp.array[i][j] = array[i][j];
             res.array[i][j] = (i == j);
         }
 
