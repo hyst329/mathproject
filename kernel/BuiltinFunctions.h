@@ -64,6 +64,12 @@ namespace Kernel {
     Type *newIdentityMatrix(std::vector<Type *>);
 
     Type *getElement(std::vector<Type *>);
+
+    Type * isVector(std::vector<Type *>);
+
+    Type * isScalar(std::vector<Type *>);
+
+    Type * isInt(std::vector<Type *>);
 }
 
 #endif //MATHPROJECT_BUILTINFUNCTIONS_H

@@ -287,3 +287,53 @@ Matrix Matrix::getElement(Matrix &i) {
     }
     Error::error(ET_DIMENSIONS_MISMATCH);
 }
+
+Matrix Matrix::isVector() {
+    if (sizeRow==1||sizeColumn==1)
+        return Matrix(1);
+    return Matrix(0);
+}
+
+Matrix Matrix::isScalar() {
+    if (sizeRow==1&&sizeColumn==1)
+        return Matrix(1);
+    return Matrix(0);
+}
+
+Matrix Matrix::isInt(Matrix epsilon) {
+    return Matrix(this->isIntBool(epsilon.toDouble()));
+}
+bool Matrix::isVectorBool() {
+    if (sizeRow==1||sizeColumn==1)
+        return 1;
+    return 0;
+}
+
+bool Matrix::isScalarBool() {
+    if (sizeRow==1&&sizeColumn==1)
+        return 1;
+    return 0;
+}
+
+bool Matrix::isIntBool(double epsilon) {
+    for(int i=0;i<sizeRow;i++)
+        for(int j=0;j<sizeColumn;j++)
+            if (array[i][j]-(int)array[i][j]>epsilon)
+                return 0;
+    return 1;
+}
+
+double Matrix::toDouble(int i,int j) {
+    return array[i][j];
+}
+
+Matrix Matrix::setElement(Matrix &i, Matrix &j, Matrix &Value) {
+    if (i.isScalarBool()&&j.isScalarBool()&&i.isIntBool()&&j.isIntBool()) {
+        array[(int)i.toDouble()][(int)j.toDouble()]=Value.toDouble();
+        return *this ;
+    }
+    if (!(i.isScalarBool()&&j.isScalarBool()))
+        Error::error(ET_DIMENSIONS_MISMATCH);
+    if (!(i.isIntBool()&&j.isIntBool()))
+        ;//TODO:error array[double]
+}
