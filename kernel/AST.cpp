@@ -38,12 +38,16 @@ namespace Kernel {
         // TODO: temporary for assign
         Type *r = NullType::getInstance();
         if (function == "$operator=") {
-            if (dynamic_cast<VarAST *>(arguments[0])) if (toplevel and ((VarAST *) arguments[0])->name[0] != '$')
+            if (dynamic_cast<VarAST *>(arguments[0])) if (toplevel and ((VarAST *) arguments[0])->name[0] != '$') {
+                callstack.pop();
                 Error::error(ET_LOCAL_TOPLEVEL);
+            }
             else
                 variables[((VarAST *) arguments[0])->name] = arguments[1]->exec();
-            else
+            else {
+                callstack.pop();
                 Error::error(ET_ASSIGNMENT_ERROR);
+            }
         }
         else {
             r = functions[function]->operator()(vAstToType(arguments));
