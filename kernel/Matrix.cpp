@@ -287,3 +287,16 @@ Matrix Matrix::getElement(Matrix &i) {
     }
     Error::error(ET_DIMENSIONS_MISMATCH);
 }
+
+Matrix &Matrix::operator=(const Matrix &other) {
+    if (this != &other) {
+        for (int i = 0; i < sizeRow; i++) delete[] array[i];
+        delete[] array;
+        array = new double *[other.sizeRow];
+        for (int i = 0; i < other.sizeRow; i++) array[i] = new double[other.sizeColumn];
+        for (int i = 0; i < sizeRow; i++)
+            for (int j = 0; j < sizeColumn; j++)
+                array[i][j] = other.array[i][j];
+    }
+    return *this;
+}

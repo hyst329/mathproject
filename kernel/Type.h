@@ -24,6 +24,7 @@ public:
 
 static inline std::ostream &operator<<(std::ostream &stream, Type &p) {
     p.print(stream);
+    stream << std::endl;
     return stream;
 }
 

@@ -159,9 +159,8 @@ Type *::Kernel::pfun(std::vector<Type *> v) {
 
 Type *::Kernel::exit(std::vector<Type *> v) {
     int res = 1;
-    if(v.size())
-        if(dynamic_cast<Matrix*>(v[0]))
-            res = (int) ((Matrix*)(v[0]))->element(1, 1);
+    if (v.size()) if (dynamic_cast<Matrix *>(v[0]))
+        res = (int) ((Matrix *) (v[0]))->element(1, 1);
     ::exit(res);
     return 0;
 }

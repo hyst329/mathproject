@@ -39,6 +39,8 @@ public:
 
     Matrix operator*(Matrix &other);
 
+    Matrix& operator=(const Matrix& other);
+
     int getRows() { return sizeRow; }
 
     int getColumns() { return sizeColumn; }
