@@ -121,7 +121,7 @@ Type *::Kernel::divide(std::vector<Type *> v) {
 }
 
 Type *::Kernel::print(std::vector<Type *> v) {
-    for (Type *t: v) t->print(std::cout);
+    for (Type *t: v) std::cout << *t;
     return 0;
 }
 
