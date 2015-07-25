@@ -170,7 +170,7 @@ expression: expression OPERATOR expression {
                   last = prec.find(((FunctionAST*)($3))->function) == prec.end() ?
                          INT_MAX : prec[((FunctionAST*)($3))->function];
               double added = prec.find(opMarker + $2) == prec.end() ? INT_MIN : prec[opMarker + $2];
-              cout << "Added: " << added << " Last: " << last << endl;
+              //cout << "Added: " << added << " Last: " << last << endl;
               if(added < last) {
                   std::vector<AST*> v = { $1, $3 };
                   $$ = new FunctionAST(opMarker + $2, v);
