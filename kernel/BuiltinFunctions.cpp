@@ -37,7 +37,7 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["columns"] = new BuiltinFunction(getColumns);
     AST::functions["elements"] = new BuiltinFunction(getCountOfElements);
     AST::functions["size"] = new BuiltinFunction(getSize);
-    AST::functions["identity"] = new BuiltinFunction(newIdentityMatrix);
+    AST::functions["identity"] = new BuiltinFunction(newIndentityMatrix);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -158,11 +158,7 @@ Type *::Kernel::pfun(std::vector<Type *> v) {
 }
 
 Type *::Kernel::exit(std::vector<Type *> v) {
-    int res = 1;
-    if(v.size())
-        if(dynamic_cast<Matrix*>(v[0]))
-            res = (int) ((Matrix*)(v[0]))->element(1, 1);
-    ::exit(res);
+    ::exit(1);
     return 0;
 }
 
@@ -216,7 +212,7 @@ Type *::Kernel::exponentation(std::vector<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = (*((Matrix *) v[0])) ^ (*((Matrix *) v[1]));
+                Matrix m = *((Matrix *) v[0]) ^(*((Matrix *) v[1]));
                 Matrix *r = new Matrix(m);
                 return r;
             }
@@ -420,71 +416,15 @@ Type *::Kernel::getSize(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::newIdentityMatrix(std::vector<Type *> v) {
+Type *::Kernel::newIndentityMatrix(std::vector<Type *> v) {
     switch (v.size()) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix *r = new Matrix(Matrix(0).newIdentityMatrix(*(Matrix *) v[0]));
+                Matrix *r = new Matrix(Matrix::newIndentityMatrix((int) ((Matrix *) v[0])->element(1, 1)));
                 return r;
             }
             else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
-    }
-}
-
-Type *::Kernel::isScalar(std::vector<Type *> v) {
-    switch (v.size()) {
-        case 1:
-            if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix *r = new Matrix((*(Matrix *) v[0]).isScalar());
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
-    }
-}
-
-Type *::Kernel::isVector(std::vector<Type *> v) {
-    switch (v.size()) {
-        case 1:
-            if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix *r = new Matrix((*(Matrix *) v[0]).isVector());
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
-    }
-}
-
-Type *::Kernel::isInt(std::vector<Type *> v) {
-    switch (v.size()) {
-        case 1:
-            if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix *r = new Matrix((*(Matrix *) v[0]).isInt());
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix *r = new Matrix((*(Matrix *) v[0]).isInt((*(Matrix *) v[1])));
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+                //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
             }
         default:
             // TODO(hyst329): error
