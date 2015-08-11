@@ -435,3 +435,59 @@ Type *::Kernel::newIdentityMatrix(std::vector<Type *> v) {
             return 0;
     }
 }
+
+Type *::Kernel::isScalar(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 1:
+            if (dynamic_cast<Matrix *>(v[0])) {
+                Matrix *r = new Matrix((*(Matrix *) v[0]).isScalar());
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::isVector(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 1:
+            if (dynamic_cast<Matrix *>(v[0])) {
+                Matrix *r = new Matrix((*(Matrix *) v[0]).isVector());
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
+
+Type *::Kernel::isInt(std::vector<Type *> v) {
+    switch (v.size()) {
+        case 1:
+            if (dynamic_cast<Matrix *>(v[0])) {
+                Matrix *r = new Matrix((*(Matrix *) v[0]).isInt());
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        case 2:
+            if (dynamic_cast<Matrix *>(v[0])) {
+                Matrix *r = new Matrix((*(Matrix *) v[0]).isInt((*(Matrix *) v[1])));
+                return r;
+            }
+            else {
+                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+            }
+        default:
+            // TODO(hyst329): error
+            return 0;
+    }
+}
