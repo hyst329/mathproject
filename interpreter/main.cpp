@@ -2,10 +2,10 @@
 #include "../kernel/AST.h"
 #include "../kernel/BuiltinFunctions.h"
 #include "../kernel/Error.h"
-#include <boost/program_options.hpp>
+//#include <boost/program_options.hpp>
 
 using namespace std;
-using namespace boost::program_options;
+//using namespace boost::program_options;
 
 extern int yyparse(Kernel::AST *&);
 
@@ -54,9 +54,9 @@ void setInputFile(string filename) {
 
 int main(int argc, const char *const argv[]) {
     Kernel::initialiseBuiltins();
-    options_description desc("General options");
+    //options_description desc("General options");
     string path;
-    desc.add_options()
+    /*desc.add_options()
             ("help,h", "Show this help message")
             ("version,v", "Show version")
             ("interactive,i", "Run in interactive mode")
@@ -96,6 +96,6 @@ int main(int argc, const char *const argv[]) {
         cout << "No options specified!" << endl;
         cout << desc;
         return 0;
-    }
+    }*/
     return 0;
 }
