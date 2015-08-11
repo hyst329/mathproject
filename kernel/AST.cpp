@@ -4,17 +4,18 @@
 
 #include <iostream>
 #include "AST.h"
-#include "UserFunction.h"
+#include "Function.h"
 #include "Error.h"
 
 
 namespace Kernel {
-    map<string, Function *> AST::functions = map<string, Function *>();
-    map<string, Type *> AST::variables = map<string, Type *>();
-    stack<string> AST::callstack = stack<string>();
+    QMap<QString, Function *> AST::functions = QMap<QString, Function *>();
+    QMap<QString, Type *> AST::variables = QMap<QString, Type *>();
+    QStack<QString> AST::callstack = QStack<QString>();
 
-    vector<Type *> vAstToType(vector<AST *> initial) {
-        vector<Type *> final(initial.size());
+    QList<Type *> vAstToType(QList<AST *> initial) {
+        QList<Type *> final;
+        final.reserve(initial.size());
         for (int i = 0; i < initial.size(); i++) {
             final[i] = initial[i]->exec();
         }
@@ -58,6 +59,6 @@ namespace Kernel {
 
     Type *FunctionBodyAST::exec() {
         return NullType::getInstance();
-        //return function->operator()(vector<Type *>());
+        //return function->operator()(QList<Type *>());
     }
 }

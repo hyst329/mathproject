@@ -12,7 +12,7 @@ HEADERS += \
     Matrix.h \
     NullType.h \
     Type.h \
-    UserFunction.h
+    Function.h
 
 SOURCES += \
     Array.cpp \
@@ -23,5 +23,5 @@ SOURCES += \
     NullType.cpp \
     placeholder.cpp \
     Type.cpp \
-    UserFunction.cpp
+    Function.cpp
 

@@ -32,6 +32,7 @@ void translate() {
 void interactive() {
     yyin = stdin;
     yyout = 0;
+    static QTextStream cout(stdout), cerr(stderr);
     do {
         try {
             cout << ">>> ";

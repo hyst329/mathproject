@@ -5,9 +5,9 @@
 #ifndef MATHPROJECT_AST_H
 #define MATHPROJECT_AST_H
 
-#include <vector>
-#include <map>
-#include <stack>
+#include <QList>
+#include <QMap>
+#include <QStack>
 #include <iostream>
 #include "Type.h"
 #include "NullType.h"
@@ -21,14 +21,14 @@ namespace Kernel {
     struct AST {
         virtual Type *exec() = 0;
 
-        static map<string, Function *> functions;
-        static map<string, Type *> variables;
-        static stack<string> callstack;
+        static QMap<QString, Function *> functions;
+        static QMap<QString, Type *> variables;
+        static QStack<QString> callstack;
 
     };
 
     struct BlockAST : public AST {
-        vector<AST *> children;
+        QList<AST *> children;
 
         Type *exec();
     };
@@ -44,10 +44,10 @@ namespace Kernel {
     };
 
     struct FunctionAST : public AST {
-        std::string function;
-        vector<AST *> arguments;
+        QString function;
+        QList<AST *> arguments;
 
-        FunctionAST(std::string function, vector<AST *> arguments = vector<AST *>())
+        FunctionAST(QString function, QList<AST *> arguments = QList<AST *>())
                 : function(function), arguments(arguments) { };
 
         Type *exec();
@@ -63,9 +63,9 @@ namespace Kernel {
     };
 
     struct VarAST : public AST {
-        string name;
+        QString name;
 
-        VarAST(string name)
+        VarAST(QString name)
                 : name(name) { };
 
         Type *exec() {

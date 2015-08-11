@@ -1,7 +1,7 @@
 %{
 #include <iostream>
 #include "../../kernel/AST.h"
-#include "../../kernel/UserFunction.h"
+#include "../../kernel/Function.h"
 #include "../../kernel/Type.h"
 #include "../../kernel/Error.h"
 #include "../../kernel/Matrix.h"

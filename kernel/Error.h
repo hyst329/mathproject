@@ -6,10 +6,8 @@
 #ifndef MATHPROJECT_ERROR_H
 #define MATHPROJECT_ERROR_H
 
-#include <string>
-#include <map>
-// #include <boost/format.hpp>
 #include <QString>
+#include <QMap>
 
 enum ErrorType {
     ET_UNKNOWN,
@@ -22,7 +20,7 @@ enum ErrorType {
     ET_INCOMPATIBLE_TYPES
 };
 
-static std::map<ErrorType, QString> codes =
+static QMap<ErrorType, QString> codes =
         {
                 {ET_UNKNOWN,             "Unknown error"},
                 {ET_SYNTAX,              "Syntax error: %1%"},
@@ -38,19 +36,17 @@ class Error {
     QString text;
 
 public:
-    Error(ErrorType et, std::vector<std::string> &args) {
+    Error(ErrorType et, QStringList &args) {
         //TODO: text processing of mistakes
         text = QString("[%1] %2").arg(et).arg(codes[et]);
-        //boost::format f(text);
-        for (int i = 0; i < args.size(); i++) text = text.arg(i);
-        //text = f.str();
+        for (int i = 0; i < args.size(); i++) text = text.arg(args[i]);
     }
 
-    std::string getText() {
-        return text.toStdString();
+    QString getText() {
+        return text;
     }
 
-    static void error(ErrorType et, std::vector<std::string> args = std::vector<std::string>()) {
+    static void error(ErrorType et, QStringList args = QStringList()) {
         throw Error(et, args);
     }
 };

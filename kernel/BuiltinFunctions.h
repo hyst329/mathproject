@@ -6,70 +6,70 @@
 #define MATHPROJECT_BUILTINFUNCTIONS_H
 
 #include "Type.h"
-#include <vector>
+#include <QList>
 
 namespace Kernel {
     void initialiseBuiltins();
 
-    Type *add(std::vector<Type *>);
+    Type *add(QList<Type *>);
 
-    Type *subtract(std::vector<Type *>);
+    Type *subtract(QList<Type *>);
 
-    Type *multiply(std::vector<Type *>);
+    Type *multiply(QList<Type *>);
 
-    Type *divide(std::vector<Type *>);
+    Type *divide(QList<Type *>);
 
-    Type *print(std::vector<Type *>);
+    Type *print(QList<Type *>);
 
-    Type *assign(std::vector<Type *>);
+    Type *assign(QList<Type *>);
 
-    Type *pvar(std::vector<Type *>);
+    Type *pvar(QList<Type *>);
 
-    Type *pfun(std::vector<Type *>);
+    Type *pfun(QList<Type *>);
 
-    Type *exit(std::vector<Type *>);
+    Type *exit(QList<Type *>);
 
-    Type *all(std::vector<Type *>);
+    Type *all(QList<Type *>);
 
-    Type *any(std::vector<Type *>);
+    Type *any(QList<Type *>);
 
-    Type *elemMulti(std::vector<Type *>);
+    Type *elemMulti(QList<Type *>);
 
-    Type *elemExp(std::vector<Type *>);
+    Type *elemExp(QList<Type *>);
 
-    Type *exponentation(std::vector<Type *>);
+    Type *exponentation(QList<Type *>);
 
-    Type *more(std::vector<Type *>);
+    Type *more(QList<Type *>);
 
-    Type *moreOrEqual(std::vector<Type *>);
+    Type *moreOrEqual(QList<Type *>);
 
-    Type *less(std::vector<Type *>);
+    Type *less(QList<Type *>);
 
-    Type *lessOrEqual(std::vector<Type *>);
+    Type *lessOrEqual(QList<Type *>);
 
-    Type *equal(std::vector<Type *>);
+    Type *equal(QList<Type *>);
 
-    Type *notEqual(std::vector<Type *>);
+    Type *notEqual(QList<Type *>);
 
-    Type *index(std::vector<Type *>);
+    Type *index(QList<Type *>);
 
-    Type *getRows(std::vector<Type *>);
+    Type *getRows(QList<Type *>);
 
-    Type *getColumns(std::vector<Type *>);
+    Type *getColumns(QList<Type *>);
 
-    Type *getCountOfElements(std::vector<Type *>);
+    Type *getCountOfElements(QList<Type *>);
 
-    Type *getSize(std::vector<Type *>);
+    Type *getSize(QList<Type *>);
 
-    Type *newIdentityMatrix(std::vector<Type *>);
+    Type *newIdentityMatrix(QList<Type *>);
 
-    Type *getElement(std::vector<Type *>);
+    Type *getElement(QList<Type *>);
 
-    Type * isVector(std::vector<Type *>);
+    Type * isVector(QList<Type *>);
 
-    Type * isScalar(std::vector<Type *>);
+    Type * isScalar(QList<Type *>);
 
-    Type * isInt(std::vector<Type *>);
+    Type * isInt(QList<Type *>);
 }
 
 #endif //MATHPROJECT_BUILTINFUNCTIONS_H

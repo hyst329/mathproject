@@ -16,7 +16,7 @@ public:
         return instance;
     }
 
-    virtual std::string getType();
+    virtual QString getType();
 
     virtual bool equals(Type &type);
 

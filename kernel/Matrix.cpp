@@ -24,7 +24,7 @@ Matrix::~Matrix() {
     delete[] array;
 }
 
-std::string Matrix::getType() {
+QString Matrix::getType() {
     return "Matrix";
 }
 
@@ -102,11 +102,30 @@ Matrix Matrix::operator*(Matrix &other) {
     return res;
 }
 
-void Matrix::print(std::ostream &os) {
-    os << "{";
+Matrix &Matrix::operator=(const Matrix &other)
+{
+    for (int i = 0; i < sizeRow; i++) delete[] array[i];
+    delete[] array;
+    sizeRow = other.sizeRow;
+    sizeColumn = other.sizeColumn;
+    array = new double *[sizeRow];
+    for (int i = 0; i < sizeRow; i++) array[i] = new double[sizeColumn];
+    for (int i = 0; i < sizeRow; i++) {
+        for (int j = 0; j < sizeColumn; j++) {
+            array[i][j] = other.array[i][j];
+        }
+    }
+}
+
+QString Matrix::toString() {
+    QString res;
+    res += "{";
     for (int i = 0; i < sizeRow; i++)
-        for (int j = 0; j < sizeColumn; j++)
-            os << array[i][j] << (j != sizeColumn - 1 ? ", " : (i != sizeRow - 1 ? "; " : "}"));
+        for (int j = 0; j < sizeColumn; j++) {
+            res += array[i][j];
+            res += (j != sizeColumn - 1 ? ", " : (i != sizeRow - 1 ? "; " : "}"));
+        }
+    return res;
 }
 
 Matrix::Matrix(const Matrix &other) : sizeRow(other.sizeRow), sizeColumn(other.sizeColumn) {
@@ -247,7 +266,7 @@ Matrix Matrix::operator!=(Matrix &other) {
     return res;
 }
 
-Matrix Matrix::newIndentityMatrix(int size) {
+Matrix Matrix::newIdentityMatrix(int size) {
     Matrix res(size, size);
     for(int i=0;i<size;i++)
         res.array[i][i]=1;

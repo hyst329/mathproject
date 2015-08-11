@@ -5,32 +5,30 @@
 #ifndef MATHPROJECT_FUNCTION_H
 #define MATHPROJECT_FUNCTION_H
 
-#include <vector>
 #include "Type.h"
 #include "AST.h"
-#include <map>
 #include <functional>
 
 class Function : public Type {
 public:
-    virtual Type *operator()(std::vector<Type *> arguments) = 0;
+    virtual Type *operator()(QList<Type *> arguments) = 0;
 
 };
 
 class BuiltinFunction : public Function {
-    std::function<Type *(std::vector<Type *>)> f;
+    std::function<Type *(QList<Type *>)> f;
 
 public:
-    BuiltinFunction(const function<Type *(std::vector<Type *>)> &f) : f(f) { }
+    BuiltinFunction(const function<Type *(QList<Type *>)> &f) : f(f) { }
 
-    virtual Type *operator()(std::vector<Type *> args);
+    virtual Type *operator()(QList<Type *> args);
 
 
     virtual bool equals(Type &type);
 
     virtual bool isNonzero();
 
-    std::string getType() {
+    QString getType() {
         return "BuiltinFunction";
     }
 };
@@ -40,18 +38,18 @@ class UserFunction : public Function {
 
 
 public:
-    vector<string> arguments;
+    QStringList arguments;
 
-    virtual Type *operator()(std::vector<Type *> args);
+    virtual Type *operator()(QList<Type *> args);
 
-    UserFunction(Kernel::AST *ast, vector<string> arguments = vector<string>()) : ast(ast), arguments(arguments) {
+    UserFunction(Kernel::AST *ast, QStringList arguments = QStringList()) : ast(ast), arguments(arguments) {
     }
 
     virtual bool equals(Type &type);
 
     virtual bool isNonzero();
 
-    std::string getType() {
+    QString getType() {
         return "UserFunction";
     }
 };

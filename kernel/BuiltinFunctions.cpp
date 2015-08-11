@@ -5,7 +5,7 @@
 #include <iostream>
 #include "BuiltinFunctions.h"
 #include "Matrix.h"
-#include "UserFunction.h"
+#include "Function.h"
 #include "Error.h"
 #include "Array.h"
 
@@ -40,7 +40,7 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["identity"] = new BuiltinFunction(newIdentityMatrix);
 }
 
-Type *::Kernel::add(std::vector<Type *> v) {
+Type *::Kernel::add(QList<Type *> v) {
     switch (v.size()) {
         case 1:
             return v[0];
@@ -61,7 +61,7 @@ Type *::Kernel::add(std::vector<Type *> v) {
     return nullptr;
 }
 
-Type *::Kernel::subtract(std::vector<Type *> v) {
+Type *::Kernel::subtract(QList<Type *> v) {
     switch (v.size()) {
         case 1:
             return v[0]; // TODO(hyst329) : Negate
@@ -80,7 +80,7 @@ Type *::Kernel::subtract(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::multiply(std::vector<Type *> v) {
+Type *::Kernel::multiply(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
@@ -97,7 +97,7 @@ Type *::Kernel::multiply(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::divide(std::vector<Type *> v) {
+Type *::Kernel::divide(QList<Type *> v) {
     // TODO: Multiply to inverse?
     switch (v.size()) {
         case 2:
@@ -120,12 +120,13 @@ Type *::Kernel::divide(std::vector<Type *> v) {
     return nullptr;
 }
 
-Type *::Kernel::print(std::vector<Type *> v) {
-    for (Type *t: v) t->print(std::cout);
+Type *::Kernel::print(QList<Type *> v) {
+    static QTextStream str(stdout);
+    for (Type *t: v) t->print(str);
     return 0;
 }
 
-Type *::Kernel::assign(std::vector<Type *> v) {
+Type *::Kernel::assign(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             v[0] = v[1];
@@ -136,45 +137,51 @@ Type *::Kernel::assign(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::pvar(std::vector<Type *> v) {
-    for (auto p: AST::variables) {
-        cout << (p.second ? (QString("%1\t:\t[%3 at addr. %2] %4").arg(p.first.c_str()).arg((int) p.second)
-                             .arg(p.second->getType().c_str()).arg(*p.second)).toStdString()
+Type *::Kernel::pvar(QList<Type *> v) {
+    static QTextStream s(stdout);
+    for (auto p = AST::variables.begin(); p != AST::variables.end(); ++p) {
+
+        s << (p.value() ? (QString("%1\t:\t[%3 at addr. %2] %4").arg(p.key())
+                                             .arg((int) p.value())
+                             .arg(p.value()->getType()).arg(p.value()->toString()))
                           : (QString("%1\t:\t[******************** at addr. %2] ZERO POINTER")
-                             .arg(p.first.c_str()).arg(p.second)).toStdString())
-        << endl;
+                             .arg(p.key()).arg((int) p.value())));
+        endl(s);
     }
     return NullType::getInstance();
 }
 
 
-Type *::Kernel::pfun(std::vector<Type *> v) {
-    for (auto p: AST::functions) {
-        cout <<
-        boost::format("%1% (%2%)\t at addr. %3$9d") % p.first % (dynamic_cast<UserFunction *>(p.second) ? "user" :
-                                                                 "built-in") % (int) p.second << endl;
+Type *::Kernel::pfun(QList<Type *> v) {
+    static QTextStream s(stdout);
+    for (auto p = AST::variables.begin(); p != AST::variables.end(); ++p) {
+        s <<
+        QString("%1 (%2)\t at addr. %3").arg(p.key()).arg(dynamic_cast<UserFunction *>(p.value()) ? "user" :
+                                                                 "built-in").arg((int) p.value());
+        endl(s);
+
     }
     return NullType::getInstance();
 }
 
-Type *::Kernel::exit(std::vector<Type *> v) {
+Type *::Kernel::exit(QList<Type *> v) {
     ::exit(1);
     return 0;
 }
 
-Type *::Kernel::all(std::vector<Type *> v) {
+Type *::Kernel::all(QList<Type *> v) {
     bool r = 1;
     for (Type *x: v) r = r && x->isNonzero();
     return new Matrix(double(r));
 }
 
-Type *::Kernel::any(std::vector<Type *> v) {
+Type *::Kernel::any(QList<Type *> v) {
     bool r = 0;
     for (Type *x: v) r = r || x->isNonzero();
     return new Matrix(double(r));
 }
 
-Type *::Kernel::elemMulti(std::vector<Type *> v) {
+Type *::Kernel::elemMulti(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
@@ -191,7 +198,7 @@ Type *::Kernel::elemMulti(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::elemExp(std::vector<Type *> v) {
+Type *::Kernel::elemExp(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
@@ -208,7 +215,7 @@ Type *::Kernel::elemExp(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::exponentation(std::vector<Type *> v) {
+Type *::Kernel::exponentation(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
@@ -225,7 +232,7 @@ Type *::Kernel::exponentation(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::more(std::vector<Type *> v) {
+Type *::Kernel::more(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
@@ -242,7 +249,7 @@ Type *::Kernel::more(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::moreOrEqual(std::vector<Type *> v) {
+Type *::Kernel::moreOrEqual(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
@@ -259,7 +266,7 @@ Type *::Kernel::moreOrEqual(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::less(std::vector<Type *> v) {
+Type *::Kernel::less(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
@@ -276,7 +283,7 @@ Type *::Kernel::less(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::lessOrEqual(std::vector<Type *> v) {
+Type *::Kernel::lessOrEqual(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
@@ -293,7 +300,7 @@ Type *::Kernel::lessOrEqual(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::equal(std::vector<Type *> v) {
+Type *::Kernel::equal(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
@@ -310,7 +317,7 @@ Type *::Kernel::equal(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::notEqual(std::vector<Type *> v) {
+Type *::Kernel::notEqual(QList<Type *> v) {
     switch (v.size()) {
         case 2:
             if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
@@ -328,7 +335,7 @@ Type *::Kernel::notEqual(std::vector<Type *> v) {
 }
 
 
-Type *::Kernel::index(std::vector<Type *> v) {
+Type *::Kernel::index(QList<Type *> v) {
     switch (v.size()) {
         case 1:
             // TODO: Error
@@ -344,7 +351,7 @@ Type *::Kernel::index(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::getRows(std::vector<Type *> v) {
+Type *::Kernel::getRows(QList<Type *> v) {
     switch (v.size()) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
@@ -361,7 +368,7 @@ Type *::Kernel::getRows(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::getColumns(std::vector<Type *> v) {
+Type *::Kernel::getColumns(QList<Type *> v) {
     switch (v.size()) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
@@ -378,7 +385,7 @@ Type *::Kernel::getColumns(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::getCountOfElements(std::vector<Type *> v) {
+Type *::Kernel::getCountOfElements(QList<Type *> v) {
     switch (v.size()) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
@@ -395,7 +402,7 @@ Type *::Kernel::getCountOfElements(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::getSize(std::vector<Type *> v) {
+Type *::Kernel::getSize(QList<Type *> v) {
     switch (v.size()) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
@@ -416,11 +423,11 @@ Type *::Kernel::getSize(std::vector<Type *> v) {
     }
 }
 
-Type *::Kernel::newIndentityMatrix(std::vector<Type *> v) {
+Type *::Kernel::newIdentityMatrix(QList<Type *> v) {
     switch (v.size()) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix *r = new Matrix(Matrix::newIndentityMatrix((int) ((Matrix *) v[0])->element(1, 1)));
+                Matrix *r = new Matrix(Matrix::newIdentityMatrix((int) ((Matrix *) v[0])->element(1, 1)));
                 return r;
             }
             else {

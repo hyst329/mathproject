@@ -4,7 +4,7 @@
 
 #include "NullType.h"
 
-std::string NullType::getType() {
+QString NullType::getType() {
     return "NullType";
 }
 

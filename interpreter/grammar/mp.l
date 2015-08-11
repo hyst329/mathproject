@@ -5,7 +5,7 @@
 #include "../../kernel/AST.h"
 #include "../../kernel/Type.h"
 #include "../../kernel/Matrix.h"
-#include "mpparser.hpp"
+#include "mpparser.h"
 #include "../Token.h"
 using namespace std;
 using namespace Kernel;

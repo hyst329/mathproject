@@ -25,7 +25,7 @@ public:
 
     ~Matrix();
 
-    std::string getType();
+    QString getType();
 
     bool equals(Type &type);
 
@@ -63,9 +63,9 @@ public:
 
     Matrix operator!=(Matrix &other);
 
-    static Matrix newIndentityMatrix(int size);
+    static Matrix newIdentityMatrix(int size);
 
-    virtual void print(std::ostream &os) override;
+    virtual QString toString() override;
 };
 
 
