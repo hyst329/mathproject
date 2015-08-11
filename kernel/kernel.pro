@@ -1,3 +1,5 @@
+QT += core
+
 CONFIG += c++11
 TARGET = kernel
 TEMPLATE = lib

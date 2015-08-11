@@ -37,7 +37,7 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["columns"] = new BuiltinFunction(getColumns);
     AST::functions["elements"] = new BuiltinFunction(getCountOfElements);
     AST::functions["size"] = new BuiltinFunction(getSize);
-    AST::functions["identity"] = new BuiltinFunction(newIndentityMatrix);
+    AST::functions["identity"] = new BuiltinFunction(newIdentityMatrix);
 }
 
 Type *::Kernel::add(std::vector<Type *> v) {
@@ -138,10 +138,10 @@ Type *::Kernel::assign(std::vector<Type *> v) {
 
 Type *::Kernel::pvar(std::vector<Type *> v) {
     for (auto p: AST::variables) {
-        cout << (p.second ? (boost::format("%1%\t:\t[%3$20s at addr. %2$9d] %4%") % p.first % (int) p.second
-                             % p.second->getType() % (*p.second))
-                          : (boost::format("%1%\t:\t[******************** at addr. %2$9d] ZERO POINTER")
-                             % p.first % p.second))
+        cout << (p.second ? (QString("%1\t:\t[%3 at addr. %2] %4").arg(p.first.c_str()).arg((int) p.second)
+                             .arg(p.second->getType().c_str()).arg(*p.second)).toStdString()
+                          : (QString("%1\t:\t[******************** at addr. %2] ZERO POINTER")
+                             .arg(p.first.c_str()).arg(p.second)).toStdString())
         << endl;
     }
     return NullType::getInstance();

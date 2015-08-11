@@ -8,7 +8,8 @@
 
 #include <string>
 #include <map>
-#include <boost/format.hpp>
+// #include <boost/format.hpp>
+#include <QString>
 
 enum ErrorType {
     ET_UNKNOWN,
@@ -21,7 +22,7 @@ enum ErrorType {
     ET_INCOMPATIBLE_TYPES
 };
 
-static std::map<ErrorType, std::string> codes =
+static std::map<ErrorType, QString> codes =
         {
                 {ET_UNKNOWN,             "Unknown error"},
                 {ET_SYNTAX,              "Syntax error: %1%"},
@@ -34,19 +35,19 @@ static std::map<ErrorType, std::string> codes =
         };
 
 class Error {
-    std::string text;
+    QString text;
 
 public:
     Error(ErrorType et, std::vector<std::string> &args) {
         //TODO: text processing of mistakes
-        text = (boost::format("[%1$3d] %2%") % et % codes[et]).str();
-        boost::format f(text);
-        for (int i = 0; i < args.size(); i++) f = f % args[i];
-        text = f.str();
+        text = QString("[%1] %2").arg(et).arg(codes[et]);
+        //boost::format f(text);
+        for (int i = 0; i < args.size(); i++) text = text.arg(i);
+        //text = f.str();
     }
 
     std::string getText() {
-        return text;
+        return text.toStdString();
     }
 
     static void error(ErrorType et, std::vector<std::string> args = std::vector<std::string>()) {

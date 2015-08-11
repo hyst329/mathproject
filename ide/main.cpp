@@ -1,3 +1,10 @@
+int main()
+{
+    return 0;
+}
+
+// OLD CONTENTS PRESERVED
+/*
 #include <gtkmm.h>
 #include<iostream>
 
@@ -7,7 +14,7 @@ class MainWindow : public Gtk::Window {
     Gtk::TextView *_source_view;
     //
 public:
-    /** signal handlers */
+    // signal handlers
     void
     OnQuit() {
         hide();
@@ -103,7 +110,7 @@ public:
     //Constructor
     MainWindow(BaseObjectType *cobject, const Glib::RefPtr<Gtk::Builder> &builder) :
             Gtk::Window(cobject), _builder(builder) {
-        /* Retrieve widgets. */
+        // Retrieve widgets.
         //toolbar
         Gtk::ToolButton *Open = 0;
         _builder->get_widget("toolbutton_open", Open);
@@ -116,7 +123,7 @@ public:
         _builder->get_widget("menuitem_quit_commands", Quit);
         Quit->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnQuit));
 
-        /* Actions. */
+        // Actions.
         //TODO(hyst329): create action action_quit
         //Glib::RefPtr<Gtk::Action>::cast_dynamic(_builder->get_object("action_quit"))->
         //        signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnQuit));
@@ -155,7 +162,7 @@ int main(int argc, char **argv) {
     delete w;
     return 0;
 }
-
+*/
 
 
 
