@@ -83,3 +83,5 @@ interpreter/grammar/*.hpp
 *.app
 
 
+# Qt project user files
+*.pro.user
