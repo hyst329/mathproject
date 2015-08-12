@@ -1,11 +1,7 @@
-#include <iostream>
 #include "../kernel/AST.h"
 #include "../kernel/BuiltinFunctions.h"
 #include "../kernel/Error.h"
-//#include <boost/program_options.hpp>
-
-using namespace std;
-//using namespace boost::program_options;
+#include <QCommandLineParser>
 
 extern int yyparse(Kernel::AST *&);
 
@@ -14,10 +10,6 @@ extern int yylex();
 extern FILE *yyin, *yyout;
 
 static Kernel::AST *ast = 0;
-
-void showVersion() {
-    cout << "Version 0.0.0 (currently versioning is not implemented)" << endl;
-};
 
 void translate() {
     yyparse(ast);
@@ -49,54 +41,40 @@ void interactive() {
     } while (1);
 }
 
-void setInputFile(string filename) {
-    yyin = fopen(filename.c_str(), "r");
+void setInputFile(QString filename) {
+    yyin = fopen(filename.toLocal8Bit().constData(), "r");
 }
 
-int main(int argc, const char *const argv[]) {
+int main(int argc, char** argv) {
+    QCoreApplication a(argc, argv);
+    QCoreApplication::setApplicationName("mathproject-interpreter");
+    QCoreApplication::setApplicationVersion("0.0.0");
+    QTextStream cout(stdout);
     Kernel::initialiseBuiltins();
-    //options_description desc("General options");
-    string path;
-    /*desc.add_options()
-            ("help,h", "Show this help message")
-            ("version,v", "Show version")
-            ("interactive,i", "Run in interactive mode")
-            ("input-file,I", value<string>(&path), "Input file name");
-    positional_options_description pos;
-    pos.add("input-file", -1);
-    variables_map vm;
-    try {
-        parsed_options parsed = command_line_parser(argc, argv).options(desc).positional(pos).
-                allow_unregistered().run();
-        store(parsed, vm);
-        notify(vm);
-    }
-    catch (exception &a_exc) {
-        cout << "Parse error: " << a_exc.what() << endl;
-        cout << desc;
-        return 1;
-    }
-    if (vm.count("help")) {
-        cout << desc;
-        return 0;
-    }
-    if (vm.count("version")) {
-        showVersion();
-        return 0;
-    }
-    if (vm.count("input-file")) {
+    QCommandLineParser parser;
+    parser.setApplicationDescription("mathproject interpreter");
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addPositionalArgument("input-file", QCoreApplication::translate("main", "File to interpret."));
+    parser.addOptions({
+        {{"i", "interactive"}, QCoreApplication::translate("main", "Run in interactive mode.")}
+    });
+    parser.process(a.arguments());
+    const QStringList args = parser.positionalArguments();
+    cout << "This is a test";
+    if (!args.empty()) {
+        QString path = args.at(0);
         setInputFile(path);
         cout << "Translating file " << path << "...\n";
         translate();
     }
-    if (vm.count("interactive")) {
+    else if (parser.isSet("interactive")) {
         cout << "Running in interactive mode...\n";
         interactive();
     }
-    if (vm.empty()) {
-        cout << "No options specified!" << endl;
-        cout << desc;
+    else {
+        parser.showHelp();
         return 0;
-    }*/
+    }
     return 0;
 }

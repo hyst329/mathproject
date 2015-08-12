@@ -1,3 +1,6 @@
+QT -= gui
+
+CONFIG += console
 CONFIG += c++11
 TARGET = interpreter
 TEMPLATE = app
@@ -19,3 +22,5 @@ else:unix: LIBS += -L$$OUT_PWD/../kernel/ -lkernel
 
 INCLUDEPATH += $$PWD/../kernel
 DEPENDPATH += $$PWD/../kernel
+
+CONFIG += windeployqt

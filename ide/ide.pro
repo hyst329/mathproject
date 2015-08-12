@@ -6,4 +6,13 @@ CONFIG += c++11
 TARGET = ide
 TEMPLATE = app
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    mainwindow.cpp
+
+CONFIG += windeployqt
+
+FORMS += \
+    mainwindow.ui
+
+HEADERS += \
+    mainwindow.h
