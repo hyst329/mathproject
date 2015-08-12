@@ -5,6 +5,6 @@ interpreter.depends = kernel
 
 OTHER_FILES += \
                .gitignore \
-               .astylerc
+               uncrustify.cfg
 
 CONFIG += windeployqt

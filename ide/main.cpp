@@ -5,15 +5,15 @@ int main()
 
 // OLD CONTENTS PRESERVED
 /*
-#include <gtkmm.h>
-#include<iostream>
+   #include <gtkmm.h>
+   #include<iostream>
 
-class MainWindow : public Gtk::Window {
-//Child widgets:
+   class MainWindow : public Gtk::Window {
+   //Child widgets:
     Glib::RefPtr<Gtk::Builder> _builder;
     Gtk::TextView *_source_view;
     //
-public:
+   public:
     // signal handlers
     void
     OnQuit() {
@@ -133,9 +133,9 @@ public:
         show_all_children();
     }
 
-};
+   };
 
-int main(int argc, char **argv) {
+   int main(int argc, char **argv) {
     Gtk::Main app(argc, argv);
 
     //Load the GtkBuilder file and instantiate its widgets:
@@ -161,8 +161,8 @@ int main(int argc, char **argv) {
     app.run(*w);
     delete w;
     return 0;
-}
-*/
+   }
+ */
 
 
 
