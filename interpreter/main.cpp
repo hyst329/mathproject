@@ -27,7 +27,7 @@ void interactive() {
     static QTextStream cout(stdout), cerr(stderr);
     do {
         try {
-            cout << ">>> ";
+            cout << ">>> " << flush;
             ast = 0;
             //while (!feof(yyin)) {
             yyparse(ast);

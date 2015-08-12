@@ -122,7 +122,7 @@ QString Matrix::toString() {
     res += "{";
     for (int i = 0; i < sizeRow; i++)
         for (int j = 0; j < sizeColumn; j++) {
-            res += array[i][j];
+            res += QString::number(array[i][j]);
             res += (j != sizeColumn - 1 ? ", " : (i != sizeRow - 1 ? "; " : "}"));
         }
     return res;
