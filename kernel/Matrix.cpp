@@ -43,7 +43,7 @@ bool Matrix::isNonzero() {
     return false;
 }
 
-Matrix::Matrix(vector<vector<double>> &v) {
+Matrix::Matrix(QList<QList<double> > &v) {
     sizeRow = v.size();
     sizeColumn = 0;
     for (int i = 0; i < sizeRow; i++) {

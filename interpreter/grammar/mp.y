@@ -1,16 +1,15 @@
 %{
-#include <iostream>
+#include <QTextStream>
 #include "kernel/AST.h"
 #include "kernel/Function.h"
 #include "kernel/Type.h"
 #include "kernel/Error.h"
 #include "kernel/Matrix.h"
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
+#include <QString>
+#include <QList>
+#include <QMap>
+#include <QSet>
 
-using namespace std;
 using namespace Kernel;
 
 extern int yylex();
@@ -21,15 +20,15 @@ void yyerror(Kernel::AST* a, char* msg) {
 
 extern FILE* yyin;
 
-static std::string opMarker = "$operator";
+static QString opMarker = "$operator";
 
 extern volatile int inside;
 
 inline bool isInteractive() {
-    return yyin == stdin and !inside;
+    return yyin == stdin && !inside;
 }
 
-map<string, double> prec = {
+QMap<QString, double> prec = {
     {opMarker + "^",  9},
     {opMarker + "*",  8},
     {opMarker + "/",  8},
@@ -49,7 +48,7 @@ map<string, double> prec = {
     {opMarker + "=",  1}
 };
 
-set<string> right_assoc = {opMarker + "^", opMarker + "="};
+QSet<QString> right_assoc = {opMarker + "^", opMarker + "="};
 
 static bool last_term = 0;
 
@@ -74,10 +73,10 @@ static bool last_term = 0;
     Type *type;
     Kernel::AST *ast;
     char* str;
-    std::vector<std::string> *arglist;
-    std::vector<Kernel::AST*> *exprlist;
-    std::vector<double> *row;
-    std::vector<std::vector<double>> *rowlist;
+    QStringList *arglist;
+    QList<Kernel::AST*> *exprlist;
+    QList<double> *row;
+    QList<QList<double>> *rowlist;
 }
 %start program
 %parse-param {Kernel::AST *&result}
@@ -156,7 +155,7 @@ arglist: arglist COMMA ID {
            $$ = $1;
        }
        | ID {
-           $$ = new std::vector<std::string>;
+           $$ = new QStringList;
            $$->push_back($1);
        }
 exprlist: exprlist COMMA expression {
@@ -164,7 +163,7 @@ exprlist: exprlist COMMA expression {
             $$ = $1;
         }
         | expression {
-            $$ = new std::vector<Kernel::AST*>;
+            $$ = new QList<Kernel::AST*>;
             $$->push_back($1);
         }
 expression: expression OPERATOR expression {
@@ -174,8 +173,8 @@ expression: expression OPERATOR expression {
                          INT_MAX : prec[((FunctionAST*)($3))->function];
               double added = prec.find(opMarker + $2) == prec.end() ? INT_MIN : prec[opMarker + $2];
               cout << "Added: " << added << " Last: " << last << endl;
-              if(right_assoc.count(opMarker + $2) ? added <= last : added < last) {
-                  std::vector<AST*> v = { $1, $3 };
+              if(right_assoc.contains(opMarker + $2) ? added <= last : added < last) {
+                  QList<AST*> v = { $1, $3 };
                   $$ = new FunctionAST(opMarker + $2, v);
               }
               else {
@@ -186,7 +185,7 @@ expression: expression OPERATOR expression {
               last_term = 0;
           }
           | OPERATOR expression {
-              std::vector<AST*> v = { $2 };
+              QList<AST*> v = { $2 };
               $$ = new FunctionAST(opMarker + $1, v);
           }
           | term {
@@ -220,7 +219,7 @@ rowlist: rowlist SEMICOLON row {
            $$ = $1;
        }
        | row {
-           $$ = new std::vector<std::vector<double>>;
+           $$ = new QList<QList<double>>;
            $$->push_back(*$1);
        }
 row: row COMMA FLOAT {
@@ -228,7 +227,7 @@ row: row COMMA FLOAT {
          $$ = $1;
    }
    | FLOAT {
-         $$ = new std::vector<double>;
+         $$ = new QList<double>;
          $$->push_back(((Matrix*)$1)->element(1, 1));
    }
 %%

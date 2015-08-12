@@ -19,7 +19,7 @@ public:
 
     Matrix(double number);
 
-    Matrix(std::vector<std::vector<double>> &v);
+    Matrix(QList<QList<double>> &v);
 
     Matrix(const Matrix& other);
 

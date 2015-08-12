@@ -407,7 +407,7 @@ Type *::Kernel::getSize(QList<Type *> v) {
         case 1:
             if (dynamic_cast<Matrix *>(v[0])) {
                 Matrix m = *((Matrix *) v[0]);
-                Matrix *r = new Matrix(*(new vector<vector<double>>({{(double) m.getRows()},
+                Matrix *r = new Matrix(*(new QList<QList<double>>({{(double) m.getRows()},
                                                                      {(double) m.getColumns()}})));
                 return r;
             }
