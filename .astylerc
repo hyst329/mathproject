@@ -1,0 +1,14 @@
+# Using allman style
+--style=allman
+# Indentation with for spaces
+--indent=spaces=4
+# Insert spaces around operators
+--pad-oper
+# Insert space after a keyword such as if, for, while...
+--pad-header
+# Remove spaces around parentheses
+--unpad-paren
+# Delete empty lines
+--delete-empty-lines
+# Align pointers
+--align-pointer=type
