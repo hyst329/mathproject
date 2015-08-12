@@ -23,13 +23,13 @@ enum ErrorType {
 static QMap<ErrorType, QString> codes =
         {
                 {ET_UNKNOWN,             "Unknown error"},
-                {ET_SYNTAX,              "Syntax error: %1%"},
+                {ET_SYNTAX,              "Syntax error: %1"},
                 {ET_DIMENSIONS_MISMATCH, "Matrix dimensions mismatch"},
-                {ET_UNKNOWN_IDENTIFIER,  "Unknown identifier: %1%"},
-                {ET_UNKNOWN_FUNCTION,    "Unknown function: %1%"},
+                {ET_UNKNOWN_IDENTIFIER,  "Unknown identifier: %1"},
+                {ET_UNKNOWN_FUNCTION,    "Unknown function: %1"},
                 {ET_ASSIGNMENT_ERROR,    "Error in assignment"},
                 {ET_LOCAL_TOPLEVEL,      "Creating local variable in top-level statement"},
-                {ET_INCOMPATIBLE_TYPES,  "Incompatible types: %1% and %2%"}
+                {ET_INCOMPATIBLE_TYPES,  "Incompatible types: %1 and %2"}
         };
 
 class Error {
@@ -38,7 +38,7 @@ class Error {
 public:
     Error(ErrorType et, QStringList &args) {
         //TODO: text processing of mistakes
-        text = QString("[%1] %2").arg(et).arg(codes[et]);
+        text = QString("[%1] %2").arg(et, 3, 10, QLatin1Char('0')).arg(codes[et]);
         for (int i = 0; i < args.size(); i++) text = text.arg(args[i]);
     }
 
