@@ -47,7 +47,7 @@ namespace Kernel {
         QString function;
         QList<AST *> arguments;
 
-        FunctionAST(QString function, QList<AST *> arguments = QList<AST *>())
+        FunctionAST(QString function, QList<AST *> arguments)
                 : function(function), arguments(arguments) { };
 
         Type *exec();

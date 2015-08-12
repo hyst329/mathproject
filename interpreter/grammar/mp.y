@@ -9,6 +9,7 @@
 #include <QList>
 #include <QMap>
 #include <QSet>
+#include <QtDebug>
 
 using namespace Kernel;
 
@@ -83,15 +84,15 @@ static bool last_term = 0;
 %%
 program: block {
            $$ = result = $1;
-           cout << typeid(*result).name() << endl;
+           //cout << typeid(*result).name() << endl;
        }
 block: block instruction {
-            ((BlockAST*)$1)->children.push_back($2);
+            ((BlockAST*)$1)->children.append($2);
             $$ = $1;
        }
        | instruction {
             $$ = new BlockAST();
-            ((BlockAST*)$$)->children.push_back($1);
+            ((BlockAST*)$$)->children.append($1);
        }
 bracedblock : LEFTBRACE block RIGHTBRACE {
                 /*inside = 1;*/
@@ -151,20 +152,20 @@ instruction: IF expression instruction %prec IFX {
                 }
            }
 arglist: arglist COMMA ID {
-           $1->push_back($3);
+           $1->append($3);
            $$ = $1;
        }
        | ID {
            $$ = new QStringList;
-           $$->push_back($1);
+           $$->append($1);
        }
 exprlist: exprlist COMMA expression {
-            $1->push_back($3);
+            $1->append($3);
             $$ = $1;
         }
         | expression {
             $$ = new QList<Kernel::AST*>;
-            $$->push_back($1);
+            $$->append($1);
         }
 expression: expression OPERATOR expression {
               double last = INT_MAX;
@@ -172,7 +173,7 @@ expression: expression OPERATOR expression {
                   last = prec.find(((FunctionAST*)($3))->function) == prec.end() ?
                          INT_MAX : prec[((FunctionAST*)($3))->function];
               double added = prec.find(opMarker + $2) == prec.end() ? INT_MIN : prec[opMarker + $2];
-              cout << "Added: " << added << " Last: " << last << endl;
+              //cout << "Added: " << added << " Last: " << last << endl;
               if(right_assoc.contains(opMarker + $2) ? added <= last : added < last) {
                   QList<AST*> v = { $1, $3 };
                   $$ = new FunctionAST(opMarker + $2, v);
@@ -208,26 +209,26 @@ term: FLOAT {
         $$ = new FunctionAST($1, *$3);
     }
     | ID LEFTBRK exprlist RIGHTBRK {
-        $3->insert($3->begin(), new VarAST($1));
+        $3->prepend(new VarAST($1));
         $$ = new FunctionAST("$index", *$3);
     }
 matrix: LEFTBRACE rowlist RIGHTBRACE {
           $$ = new Matrix(*$2);
       }
 rowlist: rowlist SEMICOLON row {
-           $1->push_back(*$3);
+           $1->append(*$3);
            $$ = $1;
        }
        | row {
            $$ = new QList<QList<double>>;
-           $$->push_back(*$1);
+           $$->append(*$1);
        }
 row: row COMMA FLOAT {
-         $1->push_back(((Matrix*)$3)->element(1, 1));
+         $1->append(((Matrix*)$3)->element(1, 1));
          $$ = $1;
    }
    | FLOAT {
          $$ = new QList<double>;
-         $$->push_back(((Matrix*)$1)->element(1, 1));
+         $$->append(((Matrix*)$1)->element(1, 1));
    }
 %%

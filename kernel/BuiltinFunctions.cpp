@@ -42,20 +42,20 @@ void ::Kernel::initialiseBuiltins() {
 
 Type *::Kernel::add(QList<Type *> v) {
     switch (v.size()) {
-        case 1:
-            return v[0];
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = (*((Matrix *) v[0]) + *((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 1:
+        return v[0];
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = (*((Matrix *) v[0]) + *((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 
     return nullptr;
@@ -63,77 +63,80 @@ Type *::Kernel::add(QList<Type *> v) {
 
 Type *::Kernel::subtract(QList<Type *> v) {
     switch (v.size()) {
-        case 1:
-            return v[0]; // TODO(hyst329) : Negate
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = (*((Matrix *) v[0]) - *((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 1:
+        return v[0]; // TODO(hyst329) : Negate
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = (*((Matrix *) v[0]) - *((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::multiply(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = (*((Matrix *) v[0]) * *((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = (*((Matrix *) v[0]) * *((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::divide(QList<Type *> v) {
     // TODO: Multiply to inverse?
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                if (((Matrix *) v[1])->getRows() == 1 and ((Matrix *) v[1])->getColumns() == 1) {
-                    Matrix g = *((Matrix *) v[1]);
-                    g.element(1, 1) = 1.0 / g.element(1, 1);
-                    Matrix m = *((Matrix *) v[0]) * g;
-                    Matrix *r = new Matrix(m);
-                    return r;
-                }
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            if (((Matrix *) v[1])->getRows() == 1 and ((Matrix *) v[1])->getColumns() == 1) {
+                Matrix g = *((Matrix *) v[1]);
+                g.element(1, 1) = 1.0 / g.element(1, 1);
+                Matrix m = *((Matrix *) v[0]) * g;
+                Matrix *r = new Matrix(m);
+                return r;
             }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
     return nullptr;
 }
 
 Type *::Kernel::print(QList<Type *> v) {
     static QTextStream str(stdout);
-    for (Type *t: v) t->print(str);
-    return 0;
+    for (Type *t: v) {
+        t->print(str);
+        str << endl;
+    }
+    return NullType::getInstance();
 }
 
 Type *::Kernel::assign(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            v[0] = v[1];
-            return v[1];
-        default:
-            // TODO(hyst329): error
-            return NullType::getInstance();
+    case 2:
+        v[0] = v[1];
+        return v[1];
+    default:
+        // TODO(hyst329): error
+        return NullType::getInstance();
     }
 }
 
@@ -142,10 +145,10 @@ Type *::Kernel::pvar(QList<Type *> v) {
     for (auto p = AST::variables.begin(); p != AST::variables.end(); ++p) {
 
         s << (p.value() ? (QString("%1\t:\t[%3 at addr. %2] %4").arg(p.key())
-                                             .arg((int) p.value())
-                             .arg(p.value()->getType()).arg(p.value()->toString()))
-                          : (QString("%1\t:\t[******************** at addr. %2] ZERO POINTER")
-                             .arg(p.key()).arg((int) p.value())));
+                           .arg((int) p.value())
+                           .arg(p.value()->getType()).arg(p.value()->toString()))
+              : (QString("%1\t:\t[******************** at addr. %2] ZERO POINTER")
+                 .arg(p.key()).arg((int) p.value())));
         endl(s);
     }
     return NullType::getInstance();
@@ -154,10 +157,10 @@ Type *::Kernel::pvar(QList<Type *> v) {
 
 Type *::Kernel::pfun(QList<Type *> v) {
     static QTextStream s(stdout);
-    for (auto p = AST::variables.begin(); p != AST::variables.end(); ++p) {
+    for (auto p = AST::functions.begin(); p != AST::functions.end(); ++p) {
         s <<
-        QString("%1 (%2)\t at addr. %3").arg(p.key()).arg(dynamic_cast<UserFunction *>(p.value()) ? "user" :
-                                                                 "built-in").arg((int) p.value());
+                QString("%1 (%2)\t at addr. %3").arg(p.key()).arg(dynamic_cast<UserFunction *>(p.value()) ? "user" :
+                                                                  "built-in").arg((int) p.value());
         endl(s);
 
     }
@@ -165,7 +168,11 @@ Type *::Kernel::pfun(QList<Type *> v) {
 }
 
 Type *::Kernel::exit(QList<Type *> v) {
-    ::exit(1);
+    int code = 1;
+    if(!v.empty())
+        if(dynamic_cast<Matrix*>(v[0]))
+            code = ((Matrix*)v[0])->element(1, 1);
+    ::exit(code);
     return 0;
 }
 
@@ -183,258 +190,258 @@ Type *::Kernel::any(QList<Type *> v) {
 
 Type *::Kernel::elemMulti(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = ((Matrix *) v[0])->elemMulti(*((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = ((Matrix *) v[0])->elemMulti(*((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::elemExp(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = ((Matrix *) v[0])->elemExp(*((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = ((Matrix *) v[0])->elemExp(*((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::exponentation(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0]) ^(*((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = *((Matrix *) v[0]) ^(*((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::more(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0]) > (*((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = *((Matrix *) v[0]) > (*((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::moreOrEqual(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0]) >= (*((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = *((Matrix *) v[0]) >= (*((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::less(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0]) < (*((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = *((Matrix *) v[0]) < (*((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::lessOrEqual(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0]) <= (*((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = *((Matrix *) v[0]) <= (*((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::equal(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0]) == (*((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = *((Matrix *) v[0]) == (*((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::notEqual(QList<Type *> v) {
     switch (v.size()) {
-        case 2:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1])) {
-                Matrix m = *((Matrix *) v[0]) != (*((Matrix *) v[1]));
-                Matrix *r = new Matrix(m);
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = *((Matrix *) v[0]) != (*((Matrix *) v[1]));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 
 Type *::Kernel::index(QList<Type *> v) {
     switch (v.size()) {
-        case 1:
-            // TODO: Error
-        case 2:
-            // TODO: Index of an array
-        case 3:
-            if (dynamic_cast<Matrix *>(v[0]) and dynamic_cast<Matrix *>(v[1]) and dynamic_cast<Matrix *>(v[2]))
-                return new Matrix(
-                        ((Matrix *) v[0])->element((int) ((Matrix *) v[1])->element(1, 1),
-                                                   (int) ((Matrix *) v[2])->element(1, 1)));
-        default:
-            break;
+    case 1:
+    // TODO: Error
+    case 2:
+    // TODO: Index of an array
+    case 3:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])and dynamic_cast<Matrix *>(v[2]))
+            return new Matrix(
+                    ((Matrix *) v[0])->element((int) ((Matrix *) v[1])->element(1, 1),
+                                               (int) ((Matrix *) v[2])->element(1, 1)));
+    default:
+        break;
     }
 }
 
 Type *::Kernel::getRows(QList<Type *> v) {
     switch (v.size()) {
-        case 1:
-            if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix m = *((Matrix *) v[0]);
-                Matrix *r = new Matrix(m.getRows());
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.getRows());
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::getColumns(QList<Type *> v) {
     switch (v.size()) {
-        case 1:
-            if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix m = *((Matrix *) v[0]);
-                Matrix *r = new Matrix(m.getColumns());
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.getColumns());
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::getCountOfElements(QList<Type *> v) {
     switch (v.size()) {
-        case 1:
-            if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix m = *((Matrix *) v[0]);
-                Matrix *r = new Matrix(m.getColumns() * m.getRows());
-                return r;
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.getColumns() * m.getRows());
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::getSize(QList<Type *> v) {
     switch (v.size()) {
-        case 1:
-            if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix m = *((Matrix *) v[0]);
-                Matrix *r = new Matrix(*(new QList<QList<double>>({{(double) m.getRows()},
-                                                                     {(double) m.getColumns()}})));
-                return r;
-            }
-            if (dynamic_cast<Array *>(v[0])) {
-                return new Matrix(((Array *) v[0])->size());
-            }
-            else {
-                Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(*(new QList<QList<double> >({{(double) m.getRows()},
+                                                                {(double) m.getColumns()}})));
+            return r;
+        }
+        if (dynamic_cast<Array *>(v[0])) {
+            return new Matrix(((Array *) v[0])->size());
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
 
 Type *::Kernel::newIdentityMatrix(QList<Type *> v) {
     switch (v.size()) {
-        case 1:
-            if (dynamic_cast<Matrix *>(v[0])) {
-                Matrix *r = new Matrix(Matrix::newIdentityMatrix((int) ((Matrix *) v[0])->element(1, 1)));
-                return r;
-            }
-            else {
-                //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
-            }
-        default:
-            // TODO(hyst329): error
-            return 0;
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix *r = new Matrix(Matrix::newIdentityMatrix((int) ((Matrix *) v[0])->element(1, 1)));
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
     }
 }
