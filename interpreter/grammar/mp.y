@@ -1,10 +1,10 @@
 %{
 #include <iostream>
-#include "../../kernel/AST.h"
-#include "../../kernel/Function.h"
-#include "../../kernel/Type.h"
-#include "../../kernel/Error.h"
-#include "../../kernel/Matrix.h"
+#include "kernel/AST.h"
+#include "kernel/Function.h"
+#include "kernel/Type.h"
+#include "kernel/Error.h"
+#include "kernel/Matrix.h"
 #include <string>
 #include <vector>
 #include <map>

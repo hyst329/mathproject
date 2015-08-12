@@ -8,6 +8,8 @@ SOURCES += \
 CONFIG += lex
 CONFIG += yacc
 
+INCLUDEPATH += ..
+
 include(flex.pri)
 include(bison.pri)
 FLEXSOURCES = grammar/mp.l
