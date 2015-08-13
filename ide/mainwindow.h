@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QProcess>
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +25,7 @@ private:
     Ui::MainWindow *ui;
     bool fileUntitled, fileModified;
     QString fileName;
+    QProcess *interpreterProcess;
 };
 
 #endif // MAINWINDOW_H
