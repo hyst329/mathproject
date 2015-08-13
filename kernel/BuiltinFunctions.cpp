@@ -38,6 +38,32 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["elements"] = new BuiltinFunction(getCountOfElements);
     AST::functions["size"] = new BuiltinFunction(getSize);
     AST::functions["identity"] = new BuiltinFunction(newIdentityMatrix);
+
+    AST::functions["sin"] = new BuiltinFunction(sin);
+    AST::functions["cos"] = new BuiltinFunction(cos);
+    AST::functions["tan"] = new BuiltinFunction(tan);
+    AST::functions["cotan"] = new BuiltinFunction(cotan);
+    AST::functions["tg"] = new BuiltinFunction(tan);
+    AST::functions["ctg"] = new BuiltinFunction(cotan);
+
+    AST::functions["arcsin"] = new BuiltinFunction(asin);
+    AST::functions["arccos"] = new BuiltinFunction(acos);
+    AST::functions["arctan"] = new BuiltinFunction(atan);
+    AST::functions["arccotan"] = new BuiltinFunction(acotan);
+    AST::functions["arctg"] = new BuiltinFunction(atan);
+    AST::functions["arcctg"] = new BuiltinFunction(acotan);
+
+    AST::functions["sinh"] = new BuiltinFunction(sinh);
+    AST::functions["cosh"] = new BuiltinFunction(cosh);
+    AST::functions["tanh"] = new BuiltinFunction(tanh);
+    AST::functions["cotanh"] = new BuiltinFunction(cotanh);
+    AST::functions["tgh"] = new BuiltinFunction(tanh);
+    AST::functions["ctgh"] = new BuiltinFunction(cotanh);
+
+    AST::functions["lg"] = new BuiltinFunction(lg);
+    AST::functions["ln"] = new BuiltinFunction(ln);
+    AST::functions["log"] = new BuiltinFunction(log);
+    AST::functions["exp"] = new BuiltinFunction(exp);
 }
 
 Type *::Kernel::add(QList<Type *> v) {
@@ -439,6 +465,280 @@ Type *::Kernel::newIdentityMatrix(QList<Type *> v) {
         }
         else {
             //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::sin(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.sin());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::cos(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.cos());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::tan(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.tan());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::cotan(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.cotan());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::asin(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.asin());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::acos(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.acos());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::atan(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.atan());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::acotan(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.acotan());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::sinh(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.sinh());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::cosh(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.cosh());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::tanh(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.tanh());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::cotanh(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.cotanh());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::lg(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.lg());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::ln(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.ln());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::exp(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.exp());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::log(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        return ln(v);
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = (*((Matrix *) v[0])).log((*((Matrix *) v[1])));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
         }
     default:
         // TODO(hyst329): error

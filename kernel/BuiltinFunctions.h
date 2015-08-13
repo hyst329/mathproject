@@ -70,6 +70,38 @@ namespace Kernel {
     Type * isScalar(QList<Type *>);
 
     Type * isInt(QList<Type *>);
+
+    Type * sin(QList<Type *>);
+
+    Type * cos(QList<Type *>);
+
+    Type * tan(QList<Type *>);
+
+    Type * cotan(QList<Type *>);
+
+    Type * asin(QList<Type *>);
+
+    Type * acos(QList<Type *>);
+
+    Type * atan(QList<Type *>);
+
+    Type * acotan(QList<Type *>);
+
+    Type * sinh(QList<Type *>);
+
+    Type * cosh(QList<Type *>);
+
+    Type * tanh(QList<Type *>);
+
+    Type * cotanh(QList<Type *>);
+
+    Type * exp(QList<Type *>);
+
+    Type * lg(QList<Type *>);
+
+    Type * ln(QList<Type *>);
+
+    Type * log(QList<Type *>);
 }
 
 #endif //MATHPROJECT_BUILTINFUNCTIONS_H

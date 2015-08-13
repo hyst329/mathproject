@@ -182,15 +182,18 @@ Matrix Matrix::elemExp(Matrix &x) {
         for (int i = 0; i < sizeRow; i++)
             for (int j = 0; j < sizeColumn; j++)
                 res.array[i][j] = pow(array[i][j], degree);
-
+        return res;
     }
     if (x.sizeColumn==sizeColumn&&x.sizeRow==sizeRow) {
         for (int i = 0; i < sizeRow; i++)
             for (int j = 0; j < sizeColumn; j++)
                 res.array[i][j] = pow(array[i][j], x.array[i][j]);
+        return res;
     }
     if (x.sizeColumn!=sizeColumn||x.sizeRow!=sizeRow)
+    {
         Error::error(ET_DIMENSIONS_MISMATCH);
+    }
     return res;
 }
 
@@ -270,5 +273,155 @@ Matrix Matrix::newIdentityMatrix(int size) {
     Matrix res(size, size);
     for(int i=0;i<size;i++)
         res.array[i][i]=1;
+    return res;
+}
+
+
+Matrix Matrix::sin() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::sin(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::cos() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::cos(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::tan() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::tan(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::cotan() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=1/std::tan(array[i][j]);
+
+    return res;
+}
+
+Matrix Matrix::asin() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::asin(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::acos() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::acos(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::atan() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::atan(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::acotan() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::atan(1/array[i][j]);
+
+    return res;
+}
+
+Matrix Matrix::sinh() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::sinh(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::cosh() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::cosh(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::tanh() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::tanh(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::cotanh() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=1/std::tanh(array[i][j]);
+
+    return res;
+}
+
+Matrix Matrix::exp() {
+    Matrix res(*this);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j<sizeColumn;j++)
+            res.array[i][j]=std::exp(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::ln() {
+    Matrix res(*this);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j<sizeColumn;j++)
+            res.array[i][j]=std::log(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::lg() {
+    Matrix res(*this);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j<sizeColumn;j++)
+            res.array[i][j]=std::log10(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::log(Matrix &value) {
+    Matrix res(*this);
+    if (value.sizeColumn==1&&value.sizeRow==1)
+    {
+        double loge=std::log(value.array[0][0]);
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j<sizeColumn;j++)
+                res.array[i][j]=std::log(array[i][j])/loge;
+    }
+    if (value.sizeColumn==sizeColumn&&value.sizeRow==sizeRow)
+    {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j<sizeColumn;j++)
+                res.array[i][j]=std::log(array[i][j])/std::log(value.array[i][j]);
+    }
+    Error::error(ET_DIMENSIONS_MISMATCH);
+
     return res;
 }
