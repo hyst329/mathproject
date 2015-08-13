@@ -10,12 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // status bar labels etc.
     ui->statusbar->addPermanentWidget(ui->labelInterpreterState);
 
-    ui->actionNew->setIcon(QApplication::style()->standardIcon(QStyle::SP_FileIcon));
-    ui->actionOpen->setIcon(QApplication::style()->standardIcon(QStyle::SP_DirOpenIcon));
-    ui->actionSave->setIcon(QApplication::style()->standardIcon(QStyle::SP_DriveFDIcon));
-    ui->actionRun_interpreter->setIcon(QApplication::style()->standardIcon(QStyle::SP_MediaPlay));
-    ui->actionStop_interpreter->setIcon(QApplication::style()->standardIcon(QStyle::SP_MediaStop));
-
     //ui->plainTextEditCommand->setPrompt(""); // the prompt is provided by the interpreter
     ui->plainTextEditCommand->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
 
