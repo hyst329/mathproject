@@ -36,5 +36,5 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionRun_interpreter_triggered()
 {
-
+    QProcess p;
 }

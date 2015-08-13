@@ -18,6 +18,8 @@ public:
 private slots:
     void on_actionNew_triggered();
 
+    void on_actionRun_interpreter_triggered();
+
 private:
     Ui::MainWindow *ui;
     bool fileUntitled, fileModified;
