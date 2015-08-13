@@ -20,3 +20,6 @@ HEADERS += \
 
 # ReplWidget written by pb82
 include(replwidget/replwidget.pri)
+
+RESOURCES += \
+    icons.qrc
