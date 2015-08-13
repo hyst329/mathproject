@@ -272,3 +272,109 @@ Matrix Matrix::newIdentityMatrix(int size) {
         res.array[i][i]=1;
     return res;
 }
+
+
+Matrix Matrix::sin() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::sin(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::cos() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::cos(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::tan() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::tan(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::cotan() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=1/std::tan(array[i][j]);
+
+    return res;
+}
+
+Matrix Matrix::asin() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::asin(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::acos() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::acos(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::atan() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::atan(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::acotan() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::atan(1/array[i][j]);
+
+    return res;
+}
+
+Matrix Matrix::sinh() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::sinh(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::cosh() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::cosh(array[i][j]);
+    return res;
+}
+
+
+Matrix Matrix::tanh() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=std::tanh(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::cotanh() {
+    Matrix res(sizeRow,sizeColumn);
+    for(int i=0;i<res.getRows();i++)
+        for (int j=0;j<res.getColumns();j++)
+            res.array[i][j]=1/std::tanh(array[i][j]);
+
+    return res;
+}

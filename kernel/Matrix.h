@@ -63,6 +63,29 @@ public:
 
     Matrix operator!=(Matrix &other);
 
+    Matrix cos() ;
+
+    Matrix sin() ;
+
+    Matrix tan() ;
+
+    Matrix cotan() ;
+
+    Matrix acos() ;
+
+    Matrix asin() ;
+
+    Matrix atan() ;
+
+    Matrix acotan() ;
+
+    Matrix cosh() ;
+
+    Matrix sinh() ;
+
+    Matrix tanh() ;
+
+    Matrix cotanh() ;
     static Matrix newIdentityMatrix(int size);
 
     virtual QString toString() override;
