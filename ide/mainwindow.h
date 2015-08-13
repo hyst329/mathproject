@@ -35,6 +35,7 @@ private:
     bool fileUntitled, fileModified;
     QString fileName;
     QProcess *interpreterProcess;
+    QProcess *interpreterFileProcess;
 };
 
 #endif // MAINWINDOW_H
