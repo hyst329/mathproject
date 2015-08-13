@@ -182,15 +182,18 @@ Matrix Matrix::elemExp(Matrix &x) {
         for (int i = 0; i < sizeRow; i++)
             for (int j = 0; j < sizeColumn; j++)
                 res.array[i][j] = pow(array[i][j], degree);
-
+        return res;
     }
     if (x.sizeColumn==sizeColumn&&x.sizeRow==sizeRow) {
         for (int i = 0; i < sizeRow; i++)
             for (int j = 0; j < sizeColumn; j++)
                 res.array[i][j] = pow(array[i][j], x.array[i][j]);
+        return res;
     }
     if (x.sizeColumn!=sizeColumn||x.sizeRow!=sizeRow)
+    {
         Error::error(ET_DIMENSIONS_MISMATCH);
+    }
     return res;
 }
 
