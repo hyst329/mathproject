@@ -59,6 +59,11 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["cotanh"] = new BuiltinFunction(cotanh);
     AST::functions["tgh"] = new BuiltinFunction(tanh);
     AST::functions["ctgh"] = new BuiltinFunction(cotanh);
+
+    AST::functions["lg"] = new BuiltinFunction(lg);
+    AST::functions["ln"] = new BuiltinFunction(ln);
+    AST::functions["log"] = new BuiltinFunction(log);
+    AST::functions["exp"] = new BuiltinFunction(exp);
 }
 
 Type *::Kernel::add(QList<Type *> v) {
@@ -664,6 +669,76 @@ Type *::Kernel::cotanh(QList<Type *> v) {
         }
         else {
             //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::lg(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.lg());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::ln(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.ln());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::exp(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        if (dynamic_cast<Matrix *>(v[0])) {
+            Matrix m = *((Matrix *) v[0]);
+            Matrix *r = new Matrix(m.exp());
+            return r;
+        }
+        else {
+            //Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
+        }
+    default:
+        // TODO(hyst329): error
+        return 0;
+    }
+}
+
+Type *::Kernel::log(QList<Type *> v) {
+    switch (v.size()) {
+    case 1:
+        return ln(v);
+    case 2:
+        if (dynamic_cast<Matrix *>(v[0])and dynamic_cast<Matrix *>(v[1])) {
+            Matrix m = (*((Matrix *) v[0])).log((*((Matrix *) v[1])));
+            Matrix *r = new Matrix(m);
+            return r;
+        }
+        else {
+            Error::error(ET_INCOMPATIBLE_TYPES, {v[0]->getType(), v[1]->getType()});
         }
     default:
         // TODO(hyst329): error

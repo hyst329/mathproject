@@ -94,6 +94,14 @@ namespace Kernel {
     Type * tanh(QList<Type *>);
 
     Type * cotanh(QList<Type *>);
+
+    Type * exp(QList<Type *>);
+
+    Type * lg(QList<Type *>);
+
+    Type * ln(QList<Type *>);
+
+    Type * log(QList<Type *>);
 }
 
 #endif //MATHPROJECT_BUILTINFUNCTIONS_H

@@ -381,3 +381,47 @@ Matrix Matrix::cotanh() {
 
     return res;
 }
+
+Matrix Matrix::exp() {
+    Matrix res(*this);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j<sizeColumn;j++)
+            res.array[i][j]=std::exp(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::ln() {
+    Matrix res(*this);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j<sizeColumn;j++)
+            res.array[i][j]=std::log(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::lg() {
+    Matrix res(*this);
+    for (int i=0;i<sizeRow;i++)
+        for (int j=0;j<sizeColumn;j++)
+            res.array[i][j]=std::log10(array[i][j]);
+    return res;
+}
+
+Matrix Matrix::log(Matrix &value) {
+    Matrix res(*this);
+    if (value.sizeColumn==1&&value.sizeRow==1)
+    {
+        double loge=std::log(value.array[0][0]);
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j<sizeColumn;j++)
+                res.array[i][j]=std::log(array[i][j])/loge;
+    }
+    if (value.sizeColumn==sizeColumn&&value.sizeRow==sizeRow)
+    {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j<sizeColumn;j++)
+                res.array[i][j]=std::log(array[i][j])/std::log(value.array[i][j]);
+    }
+    Error::error(ET_DIMENSIONS_MISMATCH);
+
+    return res;
+}

@@ -86,6 +86,15 @@ public:
     Matrix tanh() ;
 
     Matrix cotanh() ;
+
+    Matrix exp();
+
+    Matrix ln();
+
+    Matrix lg();
+
+    Matrix log(Matrix &);
+
     static Matrix newIdentityMatrix(int size);
 
     virtual QString toString() override;
