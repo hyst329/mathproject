@@ -46,6 +46,9 @@ void setInputFile(QString filename) {
 }
 
 int main(int argc, char** argv) {
+    // always use non-buffered stdin
+    setvbuf(stdin,  0, _IONBF, BUFSIZ);
+    setvbuf(stdout, 0, _IONBF, BUFSIZ);
     QCoreApplication a(argc, argv);
     QCoreApplication::setApplicationName("mathproject-interpreter");
     QCoreApplication::setApplicationVersion("0.0.0");

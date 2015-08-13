@@ -26,7 +26,18 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayoutTab01">
         <item>
-         <widget class="QPlainTextEdit" name="plainTextEditCommand"/>
+         <widget class="ReplWidget" name="plainTextEditCommand">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelInterpreterState">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -188,6 +199,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ReplWidget</class>
+   <extends>QPlainTextEdit</extends>
+   <header>replwidget/replwidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

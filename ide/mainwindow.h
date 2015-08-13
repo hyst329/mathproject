@@ -17,9 +17,18 @@ public:
     ~MainWindow();
 
 private slots:
+    void interpreterStarted();
+    void interpreterStopped(int exitcode);
+    void interpreterStdout();
+    void interpreterStderr();
+    void interpreterCommand(QString cmd);
+    void interpreterStateChanged(QProcess::ProcessState ps);
+
     void on_actionNew_triggered();
 
     void on_actionRun_interpreter_triggered();
+
+    void on_actionStop_interpreter_triggered();
 
 private:
     Ui::MainWindow *ui;
