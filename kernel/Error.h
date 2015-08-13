@@ -17,7 +17,8 @@ enum ErrorType {
     ET_UNKNOWN_FUNCTION,
     ET_ASSIGNMENT_ERROR,
     ET_LOCAL_TOPLEVEL,
-    ET_INCOMPATIBLE_TYPES
+    ET_INCOMPATIBLE_TYPES,
+    ET_DIVISION_BY_ZERO
 };
 
 static QMap<ErrorType, QString> codes =
@@ -29,7 +30,8 @@ static QMap<ErrorType, QString> codes =
                 {ET_UNKNOWN_FUNCTION,    "Unknown function: %1"},
                 {ET_ASSIGNMENT_ERROR,    "Error in assignment"},
                 {ET_LOCAL_TOPLEVEL,      "Creating local variable in top-level statement"},
-                {ET_INCOMPATIBLE_TYPES,  "Incompatible types: %1 and %2"}
+                {ET_INCOMPATIBLE_TYPES,  "Incompatible types: %1 and %2"},
+                {ET_DIVISION_BY_ZERO,    "Division by zero"}
         };
 
 class Error {
