@@ -157,6 +157,7 @@ void MainWindow::on_actionOpen_triggered()
     }
     ui->textEditFile->clear();
     QString fn = QFileDialog::getOpenFileName(this, tr("Open script file"), tr(""), tr("Script files (*.hem)"));
+    if(fn.isNull()) return;
     QFile f(fn);
     if(!f.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -175,6 +176,7 @@ void MainWindow::on_actionSave_As_triggered()
 {
     QString fn = QFileDialog::getSaveFileName(this, tr("Save script file"),
                                               tr(""), tr("Script files (*.hem)"));
+    if(fn.isNull()) return;
     QFile f(fn);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
     {
@@ -195,7 +197,7 @@ void MainWindow::on_actionSave_triggered()
     QFile f(fileName);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        QMessageBox::critical(this, tr("Error"), tr("Cannot save to %1").arg(fn));
+        QMessageBox::critical(this, tr("Error"), tr("Cannot save to %1").arg(fileName));
         return;
     }
     QTextStream s(&f);
