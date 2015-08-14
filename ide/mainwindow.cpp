@@ -93,6 +93,9 @@ void MainWindow::on_actionNew_triggered()
         }
     }
     //TODO: Create new file
+    fileModified = 1;
+    fileUntitled = 1;
+    fileName = "Untitled";
 }
 
 void MainWindow::on_actionRun_interpreter_triggered()
