@@ -198,63 +198,105 @@ Matrix Matrix::elemExp(Matrix &x) {
 }
 
 Matrix Matrix::operator<(Matrix &other) {
-    Matrix res = Matrix(1,1);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            if (array[i][j]>=other.array[i][j]) {
-                res.array[0][0]=0;
-                return res;
-            }
-    res.array[0][0]=1;
-    return res;
+    if (other.sizeRow==1&&other.sizeColumn==1)
+    {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j < sizeColumn;j++)
+                if (array[i][j]>=other.array[0][0]) {
+                    return Matrix(0);
+                }
+        return Matrix(1);
+    }
+    if (other.sizeRow==sizeRow&&other.sizeColumn==sizeColumn)
+    {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j < sizeColumn;j++)
+                if (array[i][j]>=other.array[i][j]) {
+            return Matrix(0);
+        }
+        return Matrix(1);
+    }
+    Error::error(ET_DIMENSIONS_MISMATCH);
+    return Matrix(0);
 }
 
 Matrix Matrix::operator>(Matrix &other) {
-    Matrix res = Matrix(1,1);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            if (array[i][j]<=other.array[i][j]) {
-                res.array[0][0]=0;
-                return res;
-            }
-    res.array[0][0]=1;
-    return res;
+    if (other.sizeRow==1&&other.sizeColumn==1)
+    {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j < sizeColumn;j++)
+                if (array[i][j]<=other.array[0][0]) {
+                    return Matrix(0);
+                }
+        return Matrix(1);
+    }
+    if (other.sizeRow==sizeRow&&other.sizeColumn==sizeColumn)
+    {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j < sizeColumn;j++)
+                if (array[i][j]<=other.array[i][j]) {
+            return Matrix(0);
+        }
+        return Matrix(1);
+    }
+    Error::error(ET_DIMENSIONS_MISMATCH);
+    return Matrix(0);
 }
 
+
 Matrix Matrix::operator<=(Matrix &other) {
-    Matrix res = Matrix(1,1);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            if (array[i][j]>other.array[i][j]) {
-                res.array[0][0]=0;
-                return res;
-            }
-    res.array[0][0]=1;
-    return res;
+    if (other.sizeRow==1&&other.sizeColumn==1)
+    {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j < sizeColumn;j++)
+                if (array[i][j]>other.array[0][0]) {
+                    return Matrix(0);
+                }
+        return Matrix(1);
+    }
+    if (other.sizeRow==sizeRow&&other.sizeColumn==sizeColumn)
+    {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j < sizeColumn;j++)
+                if (array[i][j]>other.array[i][j]) {
+            return Matrix(0);
+        }
+        return Matrix(1);
+    }
+    Error::error(ET_DIMENSIONS_MISMATCH);
+    return Matrix(0);
 }
 
 Matrix Matrix::operator>=(Matrix &other) {
-    Matrix res = Matrix(1,1);
-    for (int i=0;i<sizeRow;i++)
-        for (int j=0;j < sizeColumn;j++)
-            if (array[i][j]<other.array[i][j]) {
-                res.array[0][0]=0;
-                return res;
-            }
-    res.array[0][0]=1;
-    return res;
+    if (other.sizeRow==1&&other.sizeColumn==1)
+    {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j < sizeColumn;j++)
+                if (array[i][j]<other.array[0][0]) {
+                    return Matrix(0);
+                }
+        return Matrix(1);
+    }
+    if (other.sizeRow==sizeRow&&other.sizeColumn==sizeColumn)
+    {
+        for (int i=0;i<sizeRow;i++)
+            for (int j=0;j < sizeColumn;j++)
+                if (array[i][j]<other.array[i][j]) {
+            return Matrix(0);
+        }
+        return Matrix(1);
+    }
+    Error::error(ET_DIMENSIONS_MISMATCH);
+    return Matrix(0);
 }
 
 Matrix Matrix::operator==(Matrix &other) {
-    Matrix res = Matrix(1,1);
     for (int i=0;i<sizeRow;i++)
         for (int j=0;j < sizeColumn;j++)
             if (array[i][j]!=other.array[i][j]) {
-                res.array[0][0]=0;
-                return res;
+                return Matrix(0);
             }
-    res.array[0][0]=1;
-    return res;
+    return Matrix(1);
 }
 
 Matrix Matrix::operator!=(Matrix &other) {
@@ -262,11 +304,9 @@ Matrix Matrix::operator!=(Matrix &other) {
     for (int i=0;i<sizeRow;i++)
         for (int j=0;j < sizeColumn;j++)
             if (array[i][j]!=other.array[i][j]) {
-                res.array[0][0]=1;
-                return res;
+                return Matrix(1);
             }
-    res.array[0][0]=0;
-    return res;
+    return Matrix(0);
 }
 
 Matrix Matrix::newIdentityMatrix(int size) {
