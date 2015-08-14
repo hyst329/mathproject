@@ -407,19 +407,21 @@ Matrix Matrix::lg() {
 }
 
 Matrix Matrix::log(Matrix &value) {
-    Matrix res(*this);
-    if (value.sizeColumn==1&&value.sizeRow==1)
+    Matrix res(value);
+    if (sizeColumn==1&&sizeRow==1)
     {
-        double loge=std::log(value.array[0][0]);
-        for (int i=0;i<sizeRow;i++)
-            for (int j=0;j<sizeColumn;j++)
-                res.array[i][j]=std::log(array[i][j])/loge;
+        double loge=std::log(array[0][0]);
+        for (int i=0;i<value.sizeRow;i++)
+            for (int j=0;j<value.sizeColumn;j++)
+                res.array[i][j]=std::log(value.array[i][j])/loge;
+        return res;
     }
     if (value.sizeColumn==sizeColumn&&value.sizeRow==sizeRow)
     {
         for (int i=0;i<sizeRow;i++)
             for (int j=0;j<sizeColumn;j++)
-                res.array[i][j]=std::log(array[i][j])/std::log(value.array[i][j]);
+                res.array[i][j]=std::log(value.array[i][j])/std::log(array[i][j]);
+        return res;
     }
     Error::error(ET_DIMENSIONS_MISMATCH);
 
