@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
-SUBDIRS = ide interpreter kernel library
+SUBDIRS = ide interpreter kernel library \
+    plotter
 interpreter.depends = kernel
 
 OTHER_FILES += \
