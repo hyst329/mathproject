@@ -243,7 +243,6 @@ Matrix Matrix::operator>(Matrix &other) {
     return Matrix(0);
 }
 
-
 Matrix Matrix::operator<=(Matrix &other) {
     if (other.sizeRow==1&&other.sizeColumn==1)
     {
@@ -316,7 +315,6 @@ Matrix Matrix::newIdentityMatrix(int size) {
     return res;
 }
 
-
 Matrix Matrix::sin() {
     Matrix res(sizeRow,sizeColumn);
     for(int i=0;i<res.getRows();i++)
@@ -325,7 +323,6 @@ Matrix Matrix::sin() {
     return res;
 }
 
-
 Matrix Matrix::cos() {
     Matrix res(sizeRow,sizeColumn);
     for(int i=0;i<res.getRows();i++)
@@ -333,7 +330,6 @@ Matrix Matrix::cos() {
             res.array[i][j]=std::cos(array[i][j]);
     return res;
 }
-
 
 Matrix Matrix::tan() {
     Matrix res(sizeRow,sizeColumn);
@@ -360,7 +356,6 @@ Matrix Matrix::asin() {
     return res;
 }
 
-
 Matrix Matrix::acos() {
     Matrix res(sizeRow,sizeColumn);
     for(int i=0;i<res.getRows();i++)
@@ -368,7 +363,6 @@ Matrix Matrix::acos() {
             res.array[i][j]=std::acos(array[i][j]);
     return res;
 }
-
 
 Matrix Matrix::atan() {
     Matrix res(sizeRow,sizeColumn);
@@ -395,7 +389,6 @@ Matrix Matrix::sinh() {
     return res;
 }
 
-
 Matrix Matrix::cosh() {
     Matrix res(sizeRow,sizeColumn);
     for(int i=0;i<res.getRows();i++)
@@ -403,7 +396,6 @@ Matrix Matrix::cosh() {
             res.array[i][j]=std::cosh(array[i][j]);
     return res;
 }
-
 
 Matrix Matrix::tanh() {
     Matrix res(sizeRow,sizeColumn);
