@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QFileDialog>
 #include <QMessageBox>
+#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -60,6 +62,7 @@ void MainWindow::interpreterCommand(QString cmd)
     interpreterProcess->waitForBytesWritten(3000);
     ui->plainTextEditCommand->append(QString("%1 bytes written!").arg(b));
     if(!interpreterProcess->waitForReadyRead(5000)) ui->plainTextEditCommand->result("No output...");
+    ui->listWidgetHistory->addItem(cmd);
 }
 
 void MainWindow::interpreterStateChanged(QProcess::ProcessState ps)
@@ -89,13 +92,23 @@ void MainWindow::on_actionNew_triggered()
         int res = QMessageBox::question(this, tr("Unsaved file"), tr("File is modified but unsaved. Save it?"));
         if(res == QMessageBox::Yes)
         {
-            //TODO: Save file
+            QString fn = QFileDialog::getSaveFileName(this, tr("Save script file"),
+                                                      tr(""), "Script files (*.hem)");
+            QFile f(fn);
+            if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
+            {
+                QMessageBox::critical(this, tr("Error"), tr("Cannot save to %1").arg(fn));
+                return;
+            }
+            QTextStream s(&f);
+            s << ui->textEditFile->toPlainText() << flush;
+            f.close();
         }
     }
-    //TODO: Create new file
     fileModified = 1;
     fileUntitled = 1;
     fileName = "Untitled";
+    ui->textEditFile->clear();
 }
 
 void MainWindow::on_actionRun_interpreter_triggered()
@@ -119,4 +132,74 @@ void MainWindow::on_actionStop_interpreter_triggered()
                               tr("Interpreter did not finished in time. Terminating..."));
         interpreterProcess->kill();
     }
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    ui->tabWidget->setCurrentIndex(1);
+    if(fileModified)
+    {
+        int res = QMessageBox::question(this, tr("Unsaved file"), tr("File is modified but unsaved. Save it?"));
+        if(res == QMessageBox::Yes)
+        {
+            QString fn = QFileDialog::getSaveFileName(this, tr("Save script file"),
+                                                      tr(""), tr("Script files (*.hem)"));
+            QFile f(fn);
+            if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
+            {
+                QMessageBox::critical(this, tr("Error"), tr("Cannot save to %1").arg(fn));
+                return;
+            }
+            QTextStream s(&f);
+            s << ui->textEditFile->toPlainText() << flush;
+            f.close();
+        }
+    }
+    ui->textEditFile->clear();
+    QString fn = QFileDialog::getOpenFileName(this, tr("Open script file"), tr(""), tr("Script files (*.hem)"));
+    QFile f(fn);
+    if(!f.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Cannot open %1").arg(fn));
+        return;
+    }
+    QTextStream s(&f);
+    ui->textEditFile->setText(s.readAll());
+    f.close();
+    fileModified = 0;
+    fileName = fn;
+    fileUntitled = 0;
+}
+
+void MainWindow::on_actionSave_As_triggered()
+{
+    QString fn = QFileDialog::getSaveFileName(this, tr("Save script file"),
+                                              tr(""), tr("Script files (*.hem)"));
+    QFile f(fn);
+    if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Cannot save to %1").arg(fn));
+        return;
+    }
+    QTextStream s(&f);
+    s << ui->textEditFile->toPlainText() << flush;
+    f.close();
+    fileModified = 0;
+    fileName = fn;
+    fileUntitled = 0;
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    if(fileUntitled) on_actionSave_As_triggered();
+    QFile f(fileName);
+    if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Cannot save to %1").arg(fn));
+        return;
+    }
+    QTextStream s(&f);
+    s << ui->textEditFile->toPlainText() << flush;
+    f.close();
+    fileModified = 0;
 }

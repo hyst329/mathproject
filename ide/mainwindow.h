@@ -30,6 +30,8 @@ private slots:
 
     void on_actionStop_interpreter_triggered();
 
+    void on_actionOpen_triggered();
+
 private:
     Ui::MainWindow *ui;
     bool fileUntitled, fileModified;
