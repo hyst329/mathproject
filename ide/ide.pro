@@ -8,7 +8,8 @@ TEMPLATE = app
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    hemsyntaxhighlighter.cpp
 
 CONFIG += windeployqt
 
@@ -16,7 +17,8 @@ FORMS += \
     mainwindow.ui
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    hemsyntaxhighlighter.h
 
 # ReplWidget written by pb82
 include(replwidget/replwidget.pri)

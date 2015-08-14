@@ -14,14 +14,24 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //ui->plainTextEditCommand->setPrompt(""); // the prompt is provided by the interpreter
     ui->plainTextEditCommand->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+    ui->plainTextEditOutput->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+    ui->textEditFile->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+
+    highlighter = new HEMSyntaxHighlighter(ui->textEditFile->document());
 
     interpreterProcess = new QProcess(this);
+    interpreterFileProcess = new QProcess(this);
     connect(interpreterProcess, SIGNAL(started()), SLOT(interpreterStarted()));
     connect(interpreterProcess, SIGNAL(finished(int)), SLOT(interpreterStopped(int)));
     connect(interpreterProcess, SIGNAL(readyReadStandardOutput()), SLOT(interpreterStdout()));
     connect(interpreterProcess, SIGNAL(readyReadStandardError()), SLOT(interpreterStderr()));
     connect(interpreterProcess, SIGNAL(stateChanged(QProcess::ProcessState)), SLOT(interpreterStateChanged(QProcess::ProcessState)));
     connect(ui->plainTextEditCommand, SIGNAL(command(QString)), SLOT(interpreterCommand(QString)));
+
+    connect(interpreterFileProcess, SIGNAL(started()), SLOT(interpreterFileStarted()));
+    connect(interpreterFileProcess, SIGNAL(finished(int)), SLOT(interpreterFileStopped(int)));
+    connect(interpreterFileProcess, SIGNAL(readyReadStandardOutput()), SLOT(interpreterFileStdout()));
+    connect(interpreterFileProcess, SIGNAL(readyReadStandardError()), SLOT(interpreterFileStderr()));
 }
 
 MainWindow::~MainWindow()
@@ -84,6 +94,34 @@ void MainWindow::interpreterStateChanged(QProcess::ProcessState ps)
     ui->labelInterpreterState->setText(tr("Interpreter: %1").arg(state));
 }
 
+void MainWindow::interpreterFileStarted()
+{
+    ui->actionRun_interpreter->setEnabled(0);
+    ui->actionStop_interpreter->setEnabled(1);
+    ui->textEditFile->setReadOnly(1);
+    ui->plainTextEditOutput->clear();
+}
+
+void MainWindow::interpreterFileStopped(int exitcode)
+{
+    ui->actionRun_interpreter->setEnabled(1);
+    ui->actionStop_interpreter->setEnabled(0);
+    ui->textEditFile->setReadOnly(0);
+    ui->plainTextEditOutput->appendHtml(tr("<b>Interpreter finished with code %1</b>").arg(exitcode));
+}
+
+void MainWindow::interpreterFileStdout()
+{
+    QString out = interpreterFileProcess->readAllStandardOutput();
+    ui->plainTextEditOutput->appendHtml(tr("%1<br>").arg(out));
+}
+
+void MainWindow::interpreterFileStderr()
+{
+    QString out = interpreterFileProcess->readAllStandardError();
+    ui->plainTextEditOutput->appendHtml(tr("<font color=\"#FF0000\">%1</font><br>").arg(out));
+}
+
 void MainWindow::on_actionNew_triggered()
 {
     ui->tabWidget->setCurrentIndex(1);
@@ -113,24 +151,42 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionRun_interpreter_triggered()
 {
-    interpreterProcess->start("interpreter.exe -i");
-    if(!interpreterProcess->waitForStarted(5000))
-        QMessageBox::critical(this, tr("Error"),
-                              tr("Interpreter cannot be started because of the following error:\n %1")
-                              .arg(interpreterProcess->error()));
-    if(!interpreterProcess->waitForReadyRead(6000))
-        QMessageBox::critical(this, tr("Error"),
-                              tr("Interpreter cannot read because of the following error:\n %1")
-                              .arg(interpreterProcess->error()));
+    switch (ui->tabWidget->currentIndex()) {
+    case 0: // Command Window
+        interpreterProcess->start("interpreter.exe -i");
+        if(!interpreterProcess->waitForStarted(5000))
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("Interpreter cannot be started because of the following error:\n %1")
+                                  .arg(interpreterProcess->error()));
+        if(!interpreterProcess->waitForReadyRead(6000))
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("Interpreter cannot read because of the following error:\n %1")
+                                  .arg(interpreterProcess->error()));
+        break;
+    case 1: // File Editor
+        on_actionSave_triggered();
+        interpreterFileProcess->start("interpreter.exe", {fileName});
+        if(!interpreterFileProcess->waitForStarted(5000))
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("Interpreter cannot be started because of the following error:\n %1")
+                                  .arg(interpreterFileProcess->error()));
+        break;
+    }
 }
 
 void MainWindow::on_actionStop_interpreter_triggered()
 {
-    interpreterProcess->write("exit(1);\n");
-    if(!interpreterProcess->waitForFinished(5000)) {
-        QMessageBox::critical(this, tr("Error"),
-                              tr("Interpreter did not finished in time. Terminating..."));
-        interpreterProcess->kill();
+    switch (ui->tabWidget->currentIndex()) {
+    case 0: // Command Window
+        interpreterProcess->write("exit(1);\n");
+        if(!interpreterProcess->waitForFinished(5000)) {
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("Interpreter did not finished in time. Terminating..."));
+            interpreterProcess->kill();
+        }
+        break;
+    case 1: // File Editor
+        break;
     }
 }
 
@@ -194,6 +250,7 @@ void MainWindow::on_actionSave_As_triggered()
 void MainWindow::on_actionSave_triggered()
 {
     if(fileUntitled) on_actionSave_As_triggered();
+    if(!fileModified) return;
     QFile f(fileName);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
     {
@@ -204,4 +261,9 @@ void MainWindow::on_actionSave_triggered()
     s << ui->textEditFile->toPlainText() << flush;
     f.close();
     fileModified = 0;
+}
+
+void MainWindow::on_textEditFile_textChanged()
+{
+    fileModified = 1;
 }
