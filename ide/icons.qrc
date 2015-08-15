@@ -11,5 +11,6 @@
         <file>icons/editcut.png</file>
         <file>icons/editdelete.png</file>
         <file>icons/editpaste.png</file>
+        <file>icons/help.png</file>
     </qresource>
 </RCC>
