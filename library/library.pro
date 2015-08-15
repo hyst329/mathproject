@@ -1,4 +1,6 @@
 TEMPLATE = aux
 
-OTHER_FILES += \
-            library.txt
+OTHER_FILES +=
+
+DISTFILES += \
+    library.hem
