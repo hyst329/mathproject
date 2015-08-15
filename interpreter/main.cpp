@@ -53,19 +53,21 @@ QString fileDir;
 void setInputFile(QString filename) {
     QFileInfo fi(filename);
     fileDir = fi.absoluteDir().absolutePath();
+    //QTextStream(stdout) << QString("Filedir set to %1").arg(fileDir);
     yyin = fopen(filename.toLocal8Bit().constData(), "r");
 }
 
 QString checkFilename(QString filename) {
-    QFileInfo fi(fileDir + filename);
+    QDir fd(fileDir);
+    QFileInfo fi(fd.absoluteFilePath(filename));
     if(fi.exists() && fi.isFile())
-        return fileDir + filename;
+        return fi.absoluteFilePath();
     for(QString p: includePaths) {
         QDir d(p);
         QString path = d.absoluteFilePath(filename);
         QFileInfo fi(path);
         if(fi.exists() && fi.isFile())
-            return path;
+            return fi.absoluteFilePath();
     }
     return filename;
 }
