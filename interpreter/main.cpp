@@ -2,6 +2,9 @@
 #include "../kernel/BuiltinFunctions.h"
 #include "../kernel/Error.h"
 #include <QCommandLineParser>
+#include <QDir>
+#include <QFileInfo>
+#include <QSet>
 
 extern int yyparse(Kernel::AST *&);
 
@@ -44,8 +47,27 @@ void interactive() {
     } while (1);
 }
 
+QSet<QString> includePaths { "library" };
+QString fileDir;
+
 void setInputFile(QString filename) {
+    QFileInfo fi(filename);
+    fileDir = fi.absoluteDir().absolutePath();
     yyin = fopen(filename.toLocal8Bit().constData(), "r");
+}
+
+QString checkFilename(QString filename) {
+    QFileInfo fi(fileDir + filename);
+    if(fi.exists() && fi.isFile())
+        return fileDir + filename;
+    for(QString p: includePaths) {
+        QDir d(p);
+        QString path = d.absoluteFilePath(filename);
+        QFileInfo fi(path);
+        if(fi.exists() && fi.isFile())
+            return path;
+    }
+    return filename;
 }
 
 int main(int argc, char** argv) {
