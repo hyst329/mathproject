@@ -16,7 +16,12 @@ private:
         QTextCharFormat format;
     };
     QVector<HighlightingRule> highlightingRules;
-    QTextCharFormat keywordFormat, functionFormat, numberFormat, matrixFormat;
+    QTextCharFormat keywordFormat, functionFormat,
+                    numberFormat, matrixFormat, includeFileFormat;
+    enum State {
+        STATE_NORMAL = 0,
+        STATE_INCLUDE = 1
+    };
 };
 
 #endif // HEMSYNTAXHIGHLIGHTER_H

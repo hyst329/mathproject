@@ -8,7 +8,7 @@ HEMSyntaxHighlighter::HEMSyntaxHighlighter(QTextDocument *parent) : QSyntaxHighl
     keywordFormat.setFontWeight(QFont::Bold);
     QStringList keywordPatterns;
     keywordPatterns << "\\bif\\b" << "\\belse\\b" << "\\bwhile\\b"
-                    << "\\bfunction\\b" << "\\breturn\\b";
+                    << "\\bfunction\\b" << "\\breturn\\b" << "\\binclude\\b";
     for (const QString &pattern : keywordPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = keywordFormat;
@@ -30,6 +30,8 @@ HEMSyntaxHighlighter::HEMSyntaxHighlighter(QTextDocument *parent) : QSyntaxHighl
     rule.pattern = QRegExp("\\b\\{[0-9\\.\\;\\,]+\\}");
     rule.format = matrixFormat;
     highlightingRules.append(rule);
+
+    includeFileFormat.setForeground(Qt::darkYellow);
 }
 
 void HEMSyntaxHighlighter::highlightBlock(const QString &text)

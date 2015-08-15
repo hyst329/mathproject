@@ -5,8 +5,9 @@
 #include "kernel/AST.h"
 #include "kernel/Type.h"
 #include "kernel/Matrix.h"
+#include "kernel/Error.h"
 #include "mpparser.hpp"
-//#include "../Token.h"
+#include <QStack>
 using namespace std;
 using namespace Kernel;
 
@@ -14,11 +15,14 @@ extern "C" int yywrap() {
     return 1;
 }
 
-extern void yyerror(Kernel::AST*, char*);
+QStack<YY_BUFFER_STATE> include_stack;
 
+extern void yyerror(Kernel::AST*, char*);
+extern void yy_switch_to_buffer(YY_BUFFER_STATE);
 
 volatile int inside = 0;
 %}
+%x incl
 %%
 [ \t\n] ;
 [0-9]+\.[0-9]+ {
@@ -50,6 +54,9 @@ function {
 return {
     //cout << "Found RETURN keyword: " << yytext << endl;
     return RETURN;
+}
+include {
+    BEGIN(incl);
 }
 [\$]?[a-zA-Z_][a-zA-Z0-9_]* {
     //cout << "Found an identifier: " << yytext << endl;
@@ -97,5 +104,26 @@ return {
 }
 . {
     yyerror(0, yytext);
+}
+<incl>[ \t]* ; /* eat the whitespace */
+<incl>[^ \t\n]+ {
+    include_stack.push(YY_CURRENT_BUFFER);
+    yyin = fopen( yytext, "r" );
+    if (!yyin)
+        Error::error(ET_FILE, {QString(yytext)});
+    yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
+    BEGIN(INITIAL);
+}
+<<EOF>> {
+    if (include_stack.empty())
+    {
+        yyterminate();
+    }
+    else
+    {
+        yy_delete_buffer( YY_CURRENT_BUFFER );
+        yy_switch_to_buffer(include_stack.top());
+        include_stack.pop();
+    }
 }
 %%
