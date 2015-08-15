@@ -12,13 +12,16 @@ extern FILE *yyin, *yyout;
 static Kernel::AST *ast = 0;
 
 void translate() {
-    yyparse(ast);
-    ast->exec();
-//    cout << "Functions:\n";
-//    cout << "UserFunction TTM: " << (int)Kernel::AST::functions["ToTriangleMatrix"] << endl;
-//    for (auto p: Kernel::AST::functions) {
-//        cout << "Name: " << p.first << "\t\tValue:" << (int)p.second << endl;
-//    }
+    static QTextStream cerr(stderr);
+    try
+    {
+        yyparse(ast);
+        ast->exec();
+    }
+    catch (Error &error)
+    {
+        cerr << "Error: " << error.getText() << endl;
+    }
 }
 
 void interactive() {
@@ -64,11 +67,9 @@ int main(int argc, char** argv) {
     });
     parser.process(a.arguments());
     const QStringList args = parser.positionalArguments();
-    cout << "This is a test";
     if (!args.empty()) {
         QString path = args.at(0);
         setInputFile(path);
-        cout << "Translating file " << path << "...\n";
         translate();
     }
     else if (parser.isSet("interactive")) {
