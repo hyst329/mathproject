@@ -47,7 +47,7 @@ void interactive() {
     } while (1);
 }
 
-QSet<QString> includePaths { "library" };
+QSet<QString> includePaths { "./library" };
 QString fileDir;
 
 void setInputFile(QString filename) {
@@ -65,6 +65,7 @@ QString checkFilename(QString filename) {
     for(QString p: includePaths) {
         QDir d(p);
         QString path = d.absoluteFilePath(filename);
+        //QTextStream(stdout) << "Checking: " << path << endl;
         QFileInfo fi(path);
         if(fi.exists() && fi.isFile())
             return fi.absoluteFilePath();

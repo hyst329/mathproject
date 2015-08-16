@@ -186,6 +186,11 @@ void MainWindow::on_actionStop_interpreter_triggered()
         }
         break;
     case 1: // File Editor
+        if(!interpreterFileProcess->waitForFinished(5000)) {
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("Interpreter did not finished in time. Terminating..."));
+            interpreterFileProcess->kill();
+        }
         break;
     }
 }

@@ -42,8 +42,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    bool fileUntitled, fileModified;
-    QString fileName;
+    bool fileUntitled = 1, fileModified = 0;
+    QString fileName = "Untitled";
     QProcess *interpreterProcess;
     QProcess *interpreterFileProcess;
     HEMSyntaxHighlighter *highlighter;

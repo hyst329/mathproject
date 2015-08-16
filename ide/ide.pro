@@ -25,3 +25,5 @@ include(replwidget/replwidget.pri)
 
 RESOURCES += \
     icons.qrc
+
+DESTDIR = ..

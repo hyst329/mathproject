@@ -24,3 +24,5 @@ INCLUDEPATH += $$PWD/../kernel
 DEPENDPATH += $$PWD/../kernel
 
 CONFIG += windeployqt
+
+DESTDIR = ..

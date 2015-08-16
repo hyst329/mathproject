@@ -112,12 +112,14 @@ include {
 <incl>[ \t]* ; /* eat the whitespace */
 <incl>[^ \t\n]+ {
     QString path = checkFilename(yytext);
+    QString error;
     if(includedFiles.contains(path)) goto begin;
     includedFiles << path;
     include_stack.push(YY_CURRENT_BUFFER);
     yyin = fopen(path.toLatin1().constData(), "r");
+    error = QString("%1 : %2").arg(QString(yytext)).arg(path);
     if (!yyin)
-        Error::error(ET_FILE, {QString(yytext)});
+        Error::error(ET_FILE, {error});
     yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
     begin:
     BEGIN(INITIAL);

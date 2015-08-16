@@ -25,3 +25,4 @@ SOURCES += \
     Type.cpp \
     Function.cpp
 
+DLLDESTDIR = ..
