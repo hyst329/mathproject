@@ -63,7 +63,7 @@ static bool last_term = 0;
 %token <str> OPERATOR
 %token SEMICOLON COMMA 
 %token LEFTPAR RIGHTPAR LEFTBRACE RIGHTBRACE LEFTBRK RIGHTBRK
-%token IF WHILE ELSE FUNCTION RETURN
+%token IF WHILE ELSE FUNCTION RETURN OPERATORKW PREC
 %type <ast> program block bracedblock instruction expression term
 %type <arglist> arglist
 %type <exprlist> exprlist
@@ -128,6 +128,16 @@ instruction: IF expression instruction %prec IFX {
                 //cout << "Function BODY: " << $2 << endl;
                 AST::functions[$2] = f;
                 $$ = new FunctionBodyAST(f);
+                if(isInteractive()) {
+                    result = $$;
+                    return 0;
+                }
+           }
+           | OPERATORKW OPERATOR PREC FLOAT LEFTPAR arglist RIGHTPAR instruction {
+                UserFunction* f = new UserFunction($8, *$6);
+                AST::functions[opMarker + $2] = f;
+                $$ = new FunctionBodyAST(f);
+                prec[opMarker + $2] = ((Matrix*)$4)->element(1,1);
                 if(isInteractive()) {
                     result = $$;
                     return 0;
@@ -233,5 +243,11 @@ row: row COMMA FLOAT {
    | FLOAT {
          $$ = new QList<double>;
          $$->append(((Matrix*)$1)->element(1, 1));
+   }
+   | row COMMA error {
+         Error::error(ET_ROW_NONCONSTANT);
+   }
+   | error {
+         Error::error(ET_ROW_NONCONSTANT);
    }
 %%

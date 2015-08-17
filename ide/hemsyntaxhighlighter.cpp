@@ -8,7 +8,8 @@ HEMSyntaxHighlighter::HEMSyntaxHighlighter(QTextDocument *parent) : QSyntaxHighl
     keywordFormat.setFontWeight(QFont::Bold);
     QStringList keywordPatterns;
     keywordPatterns << "\\bif\\b" << "\\belse\\b" << "\\bwhile\\b"
-                    << "\\bfunction\\b" << "\\breturn\\b" << "\\binclude\\b";
+                    << "\\bfunction\\b" << "\\breturn\\b" << "\\binclude\\b"
+                    << "\\boperator\\b" << "\\bprec\\b";
     for (const QString &pattern : keywordPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = keywordFormat;
@@ -50,10 +51,10 @@ void HEMSyntaxHighlighter::highlightBlock(const QString &text)
 
     int startIndex = 0;
     QRegExp include("\\binclude\\b"), newline("\\r?\\n");
+    int ilength = QString("include").length(); // 7
     if (previousBlockState() != STATE_INCLUDE)
-        startIndex = include.indexIn(text) + QString("include").length();
-
-    while (startIndex >= 0) {
+        startIndex = include.indexIn(text) + ilength;
+    while (startIndex >= ilength) {
         int endIndex = newline.indexIn(text);
         int includeLength;
         if (endIndex == -1) {

@@ -61,6 +61,14 @@ return {
     //cout << "Found RETURN keyword: " << yytext << endl;
     return RETURN;
 }
+operator {
+    //cout << "Found OPERATOR keyword: " << yytext << endl;
+    return OPERATORKW;
+}
+prec {
+    //cout << "Found PREC keyword: " << yytext << endl;
+    return PREC;
+}
 include {
     BEGIN(incl);
 }
