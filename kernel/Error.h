@@ -41,7 +41,6 @@ class Error {
 
 public:
     Error(ErrorType et, QStringList &args) {
-        //TODO: text processing of mistakes
         text = QString("[%1] %2").arg(et, 3, 10, QLatin1Char('0')).arg(codes[et]);
         for (int i = 0; i < args.size(); i++) text = text.arg(args[i]);
     }

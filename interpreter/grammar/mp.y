@@ -15,8 +15,11 @@ using namespace Kernel;
 
 extern int yylex();
 extern int yylineno;
+extern QString currentFilename;
+
 void yyerror(Kernel::AST* a, char* msg) {
-    Error::error(ET_SYNTAX, { msg });
+    QString location = QString("%1:%2").arg(currentFilename).arg(yylineno);
+    Error::error(ET_SYNTAX, { QString("%1 at %2").arg(msg).arg(location) });
 }
 
 extern FILE* yyin;

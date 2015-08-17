@@ -27,7 +27,10 @@ void translate() {
     }
 }
 
+extern QString currentFilename;
+
 void interactive() {
+    currentFilename = "(stdin)";
     yyin = stdin;
     yyout = 0;
     static QTextStream cout(stdout), cerr(stderr);
@@ -54,6 +57,7 @@ void setInputFile(QString filename) {
     QFileInfo fi(filename);
     fileDir = fi.absoluteDir().absolutePath();
     //QTextStream(stdout) << QString("Filedir set to %1").arg(fileDir);
+    currentFilename = fi.absoluteFilePath();
     yyin = fopen(filename.toLocal8Bit().constData(), "r");
 }
 

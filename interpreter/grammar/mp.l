@@ -25,6 +25,8 @@ extern QString checkFilename(QString filename);
 QSet<QString> includedFiles;
 
 volatile int inside = 0;
+QString currentFilename;
+QStack<QString> filenameStack;
 %}
 %x incl
 %%
@@ -115,6 +117,8 @@ include {
     QString error;
     if(includedFiles.contains(path)) goto begin;
     includedFiles << path;
+    currentFilename = path;
+    filenameStack.push(path);
     include_stack.push(YY_CURRENT_BUFFER);
     yyin = fopen(path.toLatin1().constData(), "r");
     error = QString("%1 : %2").arg(QString(yytext)).arg(path);
@@ -134,6 +138,8 @@ include {
         yy_delete_buffer( YY_CURRENT_BUFFER );
         yy_switch_to_buffer(include_stack.top());
         include_stack.pop();
+        currentFilename = filenameStack.top();
+        filenameStack.pop();
     }
 }
 %%
