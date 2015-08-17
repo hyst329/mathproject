@@ -164,7 +164,6 @@
    <addaction name="actionSave_As"/>
    <addaction name="separator"/>
    <addaction name="actionRun_interpreter"/>
-   <addaction name="actionStop_interpreter"/>
   </widget>
   <action name="actionRun_interpreter">
    <property name="icon">
