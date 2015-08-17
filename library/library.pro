@@ -3,7 +3,9 @@ TEMPLATE = aux
 OTHER_FILES +=
 
 DISTFILES += \
-    library.hem
+    matan.hem \
+    matrix.hem \
+    algebra.hem
 
 DESTDIR = ..
 

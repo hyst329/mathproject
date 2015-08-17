@@ -1,0 +1,31 @@
+function NumIntegration(fun,a,b)
+{
+    delta=b-a;
+    intgral0=(fun(b)-fun(a))*delta;
+    delta=delta/10;
+    integral1=(fun(b)-fun(b-delta))*delta+(fun(b-delta)-fun(a))*delta;
+    while (fabs(integral0-integral1)>epsilon)
+    {
+        sumdelta=a;
+        integral0=0;
+        while(sumdelta<b)
+        {
+            integral0=integral0+(fun(sumdelta+delta)-fun(sumdelta))*delta;
+            sumdelta=sumdelta+delta;
+        }
+        delta=delta/10;
+    }
+    return integral0;
+}
+
+function DerivateInPoint(fun,x)
+{
+    h = 0.01; df0 = f(x); df1 = f(x + h);
+    while (fabs(df0 - df1) > epsilon)
+    {
+        df1 = df0;
+        df0 = (f(x + h) - f(x)) / h;
+        h=h/10;
+    }
+    return df0;
+}
