@@ -1,0 +1,30 @@
+include matrix.hem
+
+function SolutionLinearEquations(matrix,vector) {
+    a=matrix;
+    b=vector;
+    row=rows(a);
+    size=row;
+    while (row-=1) {
+        if (a(row,row)==0)
+            return error();
+        column=row+1;
+        while(size>column) {
+            b(row,0)-=a(row,column)*b(column,0);
+            column-=1;
+        }
+        b(row,0)=b(row,0)/a(row,row);
+    }
+    return  Сonjugation(b);
+}
+
+function SolutionOfPolynomial(fun,x0,epsilon=0.000001) {
+    xOld=x0;
+    xNew=xOld-fun(xOld)/DerivateInPoint(fun,xOld);
+    while(abs(xOld-xNew)>epsilon) {
+        xOld=xNew;
+        xNew=xOld-fun(xOld)/DerivateInPoint(fun,xOld);
+    }
+    return xNew;
+}
+
