@@ -45,5 +45,26 @@ void HEMSyntaxHighlighter::highlightBlock(const QString &text)
             index = expression.indexIn(text, index + length);
         }
     }
+
+    setCurrentBlockState(STATE_NORMAL);
+
+    int startIndex = 0;
+    QRegExp include("\\binclude\\b"), newline("\\r?\\n");
+    if (previousBlockState() != STATE_INCLUDE)
+        startIndex = include.indexIn(text) + QString("include").length();
+
+    while (startIndex >= 0) {
+        int endIndex = newline.indexIn(text);
+        int includeLength;
+        if (endIndex == -1) {
+            setCurrentBlockState(STATE_INCLUDE);
+            includeLength = text.length() - startIndex;
+        } else {
+            includeLength = endIndex - startIndex
+                            + newline.matchedLength();
+        }
+        setFormat(startIndex, includeLength, includeFileFormat);
+        startIndex = include.indexIn(text, startIndex + includeLength);
+    }
 }
 
