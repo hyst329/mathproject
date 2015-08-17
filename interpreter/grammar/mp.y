@@ -58,7 +58,7 @@ static bool last_term = 0;
 
 %}
 %error-verbose
-%token <type> FLOAT
+%token <type> FLOAT STRING
 %token <str> ID
 %token <str> OPERATOR
 %token SEMICOLON COMMA 
@@ -207,6 +207,9 @@ expression: expression OPERATOR expression {
               last_term = 1;
           }
 term: FLOAT {
+        $$ = new TypeAST($1);
+    }
+    | STRING {
         $$ = new TypeAST($1);
     }
     | ID {

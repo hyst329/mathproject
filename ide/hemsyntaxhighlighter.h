@@ -16,7 +16,7 @@ private:
         QTextCharFormat format;
     };
     QVector<HighlightingRule> highlightingRules;
-    QTextCharFormat keywordFormat, functionFormat,
+    QTextCharFormat keywordFormat, functionFormat, stringFormat,
                     numberFormat, matrixFormat, includeFileFormat;
     enum State {
         STATE_NORMAL = 0,

@@ -22,6 +22,11 @@ HEMSyntaxHighlighter::HEMSyntaxHighlighter(QTextDocument *parent) : QSyntaxHighl
     rule.format = functionFormat;
     highlightingRules.append(rule);
 
+    numberFormat.setForeground(Qt::darkCyan);
+    rule.pattern = QRegExp("\\\"[^\\\"]+\\\"");
+    rule.format = numberFormat;
+    highlightingRules.append(rule);
+
     numberFormat.setForeground(Qt::darkRed);
     rule.pattern = QRegExp("\\b([0-9]+\\.)?[0-9]+");
     rule.format = numberFormat;

@@ -5,6 +5,7 @@
 #include "kernel/AST.h"
 #include "kernel/Type.h"
 #include "kernel/Matrix.h"
+#include "kernel/StringType.h"
 #include "kernel/Error.h"
 #include "mpparser.hpp"
 #include <QStack>
@@ -40,6 +41,17 @@ QStack<QString> filenameStack;
     //cout << "Found an integer: " << yytext << endl;
     yylval.type = new Matrix(atof(yytext));
     return FLOAT;
+}
+\"[^\"\n]*\"  {
+    QString withoutquotes = QString(yytext).mid(1, strlen(yytext) - 2);
+    yylval.type = new StringType(withoutquotes);
+    return STRING;
+}
+\"[^\"\n]*\n {
+    QString msg = QString("%1 at %2:%3").arg(QString(yytext)).arg(currentFilename).arg(yylineno);
+    Error::warning(WT_UNTERMINATED_STRING, {msg});
+    yylval.type = new StringType(yytext);
+    return STRING;
 }
 if {
     //cout << "Found IF keyword: " << yytext << endl;

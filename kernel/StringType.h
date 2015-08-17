@@ -2,15 +2,17 @@
 #define STRING_H
 
 #include "Type.h"
+#include <QString>
 
-class String : public Type
+class StringType : public Type
 {
 public:
-    String(QString data = QString()) : data(data) { }
+    StringType(QString data = QString()) : data(data) { }
 
-    QString &getData() {
+    QString &toQString() {
         return data;
     }
+
     // Type interface
     QString getType() {
         return "String";
@@ -20,7 +22,7 @@ public:
     }
     bool isNonzero() {
         return data.isEmpty();
-    };
+    }
     QString toString() {
         return data;
     }

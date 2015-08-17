@@ -13,7 +13,7 @@ HEADERS += \
     NullType.h \
     Type.h \
     Function.h \
-    String.h
+    StringType.h
 
 SOURCES += \
     Array.cpp \
@@ -25,6 +25,6 @@ SOURCES += \
     placeholder.cpp \
     Type.cpp \
     Function.cpp \
-    String.cpp
+    StringType.cpp
 
 DLLDESTDIR = ..
