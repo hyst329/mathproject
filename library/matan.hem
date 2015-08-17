@@ -1,4 +1,4 @@
-function NumIntegration(fun,a,b)
+function NumIntegration(fun,a,b)  //численное интегрирование
 {
     delta=b-a;
     intgral0=(fun(b)-fun(a))*delta;
@@ -18,7 +18,7 @@ function NumIntegration(fun,a,b)
     return integral0;
 }
 
-function DerivateInPoint(fun,x)
+function DerivateInPoint(fun,x)  //производная в точке
 {
     h = 0.01; df0 = f(x); df1 = f(x + h);
     while (fabs(df0 - df1) > epsilon)

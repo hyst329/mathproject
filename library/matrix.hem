@@ -148,3 +148,21 @@ function ReverseMatrix(a)
     }
     return b;
 }
+
+Function Сonjugation(matrix)  {//транспонирование
+    b=martix;
+    row=rows(b);
+    size=row;
+    column=columns(b);
+    i=0;
+    j=0;
+    while(i<size) {
+        while(j<size) {
+            b(i,j)=b(j,i);
+            j+=1;
+        }
+        i+=1;
+        j=i;
+    }
+    return b;
+}
