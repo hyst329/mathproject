@@ -23,7 +23,7 @@ void translate() {
     }
     catch (Error &error)
     {
-        cerr << "Error: " << error.getText() << endl;
+        cerr << "Fatal error: " << error.getText() << endl;
     }
 }
 
@@ -45,7 +45,7 @@ void interactive() {
             //}
         }
         catch (Error &error) {
-            cerr << "Error: " << error.getText() << endl;
+            cerr << "Fatal error: " << error.getText() << endl;
         }
     } while (1);
 }

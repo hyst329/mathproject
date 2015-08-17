@@ -8,6 +8,7 @@
 
 #include <QString>
 #include <QMap>
+#include <QTextStream>
 
 enum ErrorType {
     ET_UNKNOWN,
@@ -50,7 +51,16 @@ public:
     }
 
     static void error(ErrorType et, QStringList args = QStringList()) {
-        throw Error(et, args);
+        Error err(et, args);
+        static QTextStream cerr(stderr);
+        cerr << "Error: " << err.getText() << endl;
+        throw err;
+    }
+
+    static void warning(ErrorType et, QStringList args = QStringList()) {
+        Error err(et, args);
+        static QTextStream cerr(stderr);
+        cerr << "Warning: " << err.getText() << endl;
     }
 };
 
