@@ -81,6 +81,10 @@ prec {
     //cout << "Found PREC keyword: " << yytext << endl;
     return PREC;
 }
+ref {
+    //cout << "Found REF keyword: " << yytext << endl;
+    return REF;
+}
 include {
     BEGIN(incl);
 }

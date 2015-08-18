@@ -63,13 +63,14 @@ static bool last_term = 0;
 %token <str> OPERATOR
 %token SEMICOLON COMMA 
 %token LEFTPAR RIGHTPAR LEFTBRACE RIGHTBRACE LEFTBRK RIGHTBRK
-%token IF WHILE ELSE FUNCTION RETURN OPERATORKW PREC
+%token IF WHILE ELSE FUNCTION RETURN OPERATORKW PREC REF
 %type <ast> program block bracedblock instruction expression term
 %type <arglist> arglist
 %type <exprlist> exprlist
 %type <row> row
 %type <rowlist> rowlist
 %type <type> matrix
+%type <str> arg
 %right OPERATOR
 %right IFX ELSE
 %union
@@ -164,14 +165,20 @@ instruction: IF expression instruction %prec IFX {
                     return 0;
                 }
            }
-arglist: arglist COMMA ID {
+arglist: arglist COMMA arg {
            $1->append($3);
            $$ = $1;
        }
-       | ID {
+       | arg {
            $$ = new QStringList;
            $$->append($1);
        }
+arg: ID {
+       $$ = $1;
+   }
+   | REF ID {
+       $$ = strdup((QByteArray("ref ") + $2).constData());
+   }
 exprlist: exprlist COMMA expression {
             $1->append($3);
             $$ = $1;

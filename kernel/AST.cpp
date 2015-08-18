@@ -14,7 +14,7 @@ QMap<QString, Function *> AST::functions = QMap<QString, Function *>();
 QMap<QString, Type *> AST::variables = QMap<QString, Type *>();
 QStack<QString> AST::callstack = QStack<QString>();
 
-QList<Type *> vAstToType(QList<AST *> initial) {
+QList<Type *> vAstToType(QList<AST *> initial, QList<int> referenceVars) {
     QList<Type *> final;
     for (int i = 0; i < initial.size(); i++) {
         final << initial[i]->exec();
@@ -53,7 +53,7 @@ Type *FunctionAST::exec() {
         }
     }
     else {
-        r = functions[function]->operator()(vAstToType(arguments));
+        r = functions[function]->operator()(vAstToType(arguments, functions[function]->getReferenceVars()));
     }
     callstack.pop();
     return r;
