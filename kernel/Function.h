@@ -12,7 +12,7 @@
 class Function : public Type {
 public:
     virtual Type *operator()(QList<Type *> arguments) = 0;
-
+    QList<int> referenceVars;
 };
 
 class BuiltinFunction : public Function {

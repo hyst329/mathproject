@@ -40,7 +40,7 @@ namespace Kernel {
             return value;
         }
 
-        TypeAST(Type *v) : value(v) { };
+        TypeAST(Type *v) : value(v) { }
     };
 
     struct FunctionAST : public AST {
@@ -48,7 +48,7 @@ namespace Kernel {
         QList<AST *> arguments;
 
         FunctionAST(QString function, QList<AST *> arguments)
-                : function(function), arguments(arguments) { };
+                : function(function), arguments(arguments) { }
 
         Type *exec();
     };
@@ -57,7 +57,7 @@ namespace Kernel {
         Function *function;
 
         FunctionBodyAST(Function *function)
-                : function(function) { };
+                : function(function) { }
 
         Type *exec();
     };
@@ -66,7 +66,7 @@ namespace Kernel {
         QString name;
 
         VarAST(QString name)
-                : name(name) { };
+                : name(name) { }
 
         Type *exec() {
             return AST::variables[name];
@@ -77,7 +77,7 @@ namespace Kernel {
         AST *branchIf, *branchThen, *branchElse;
 
         ConditionalAST(AST *ifAST, AST *thenAST, AST *elseAST)
-                : branchIf(ifAST), branchThen(thenAST), branchElse(elseAST) { };
+                : branchIf(ifAST), branchThen(thenAST), branchElse(elseAST) { }
 
         Type *exec() {
             auto bif = branchIf->exec();
