@@ -8,6 +8,7 @@
 #include "Function.h"
 #include "Error.h"
 #include "Array.h"
+#include "ReferenceType.h"
 
 
 void ::Kernel::initialiseBuiltins() {
@@ -16,7 +17,7 @@ void ::Kernel::initialiseBuiltins() {
     AST::functions["$operator*"] = new BuiltinFunction(multiply);
     AST::functions["$operator/"] = new BuiltinFunction(divide);
     AST::functions["print"] = new BuiltinFunction(print);
-    AST::functions["$operator="] = new BuiltinFunction(assign);
+    AST::functions["$operator="] = new BuiltinFunction(assign, {1});
     AST::functions["pvar"] = new BuiltinFunction(pvar);
     AST::functions["pfun"] = new BuiltinFunction(pfun);
     AST::functions["exit"] = new BuiltinFunction(exit);
@@ -156,9 +157,18 @@ Type *::Kernel::print(QList<Type *> v) {
 }
 
 Type *::Kernel::assign(QList<Type *> v) {
+    ReferenceType *ref;
     switch (v.size()) {
     case 2:
-        v[0] = v[1];
+        if(!dynamic_cast<ReferenceType *>(v[0])) {
+            return NullType::getInstance();
+        }
+        ref = (ReferenceType *)v[0];
+        if(dynamic_cast<VariableReferenceType *>(ref) /*&& !ref->reference()*/) {
+            AST::variables[((VariableReferenceType *)ref)->variable()] = v[1];
+        }
+        //qDebug("Reference: %d(ref=%d) %d", v[0], ref, v[1]);
+        *(ref->reference()) = *v[1];
         return v[1];
     default:
         // TODO(hyst329): error

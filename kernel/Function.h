@@ -8,6 +8,7 @@
 #include "Type.h"
 #include "AST.h"
 #include <functional>
+#include <QStringList>
 
 class Function : public Type {
 public:
@@ -50,11 +51,8 @@ public:
 
     UserFunction(Kernel::AST *ast, QStringList arguments = QStringList())
         : ast(ast), arguments(arguments) {
-            for(int i = 0; i < arguments.size(); i++)
-                if(arguments[i].startsWith("ref ")) {
-                    arguments[i] = arguments[i].mid(4);
-                    referenceVars << (i + 1);
-                }
+            qDebug("create UF");
+            this->arguments.replaceInStrings("ref ", "", Qt::CaseInsensitive);
     }
 
     virtual bool equals(Type &type);
@@ -64,6 +62,8 @@ public:
     QString getType() {
         return "UserFunction";
     }
+private:
+    QMap<QString, QString> referenceMap;
 };
 
 

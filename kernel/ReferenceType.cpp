@@ -1,8 +1,8 @@
+#include "AST.h"
 #include "ReferenceType.h"
 
 ReferenceType::ReferenceType(Type *value) : value(value)
 {
-
 }
 
 QString ReferenceType::getType()
@@ -24,4 +24,10 @@ QString ReferenceType::toString()
 {
     return value ? value->toString() : "NULL";
 }
+
+VariableReferenceType::VariableReferenceType(QString name) : name(name), ReferenceType(0)
+{
+    value = Kernel::AST::variables.value(name, 0);
+}
+
 

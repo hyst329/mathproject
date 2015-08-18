@@ -13,9 +13,20 @@ public:
     bool equals(Type &type);
     bool isNonzero();
     QString toString();
-    Type *&reference() { return value; }
+    Type *reference() { return value; }
+protected:
+    Type* value;
+};
+
+class VariableReferenceType : public ReferenceType {
+public:
+    VariableReferenceType(QString name);
+    QString variable() const
+    {
+        return name;
+    }
 private:
-    Type *value;
+    QString name;
 };
 
 #endif // REFERENCETYPE_H

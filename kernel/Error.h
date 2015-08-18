@@ -24,6 +24,7 @@ enum ErrorType {
     ET_ROW_NONCONSTANT,
     // Warning types
     WT_UNTERMINATED_STRING,
+    WT_INVALID_REFERENCE
 };
 
 static QMap<ErrorType, QString> codes =
@@ -39,7 +40,8 @@ static QMap<ErrorType, QString> codes =
                 {ET_INCOMPATIBLE_TYPES,  "Incompatible types: %1 and %2"},
                 {ET_DIVISION_BY_ZERO,    "Division by zero"},
                 {ET_ROW_NONCONSTANT,     "Non-constant value in a matrix row"},
-                {WT_UNTERMINATED_STRING, "Unterminated string: %1"}
+                {WT_UNTERMINATED_STRING, "Unterminated string: %1"},
+                {WT_INVALID_REFERENCE,   "Reference to a temporary object: may be invalid"},
         };
 
 class Error {

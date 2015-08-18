@@ -6,6 +6,7 @@
 #include "AST.h"
 #include "Function.h"
 #include "Error.h"
+#include "ReferenceType.h"
 #include <QtDebug>
 
 
@@ -14,10 +15,20 @@ QMap<QString, Function *> AST::functions = QMap<QString, Function *>();
 QMap<QString, Type *> AST::variables = QMap<QString, Type *>();
 QStack<QString> AST::callstack = QStack<QString>();
 
+ReferenceType *createReference(AST *arg)
+{
+    if(dynamic_cast<VarAST*>(arg)) {
+        //TODO: Function references
+        return new VariableReferenceType(((VarAST*)arg)->name);
+    }
+    Error::warning(WT_INVALID_REFERENCE);
+    return new ReferenceType(arg->exec());
+}
+
 QList<Type *> vAstToType(QList<AST *> initial, QList<int> referenceVars) {
     QList<Type *> final;
     for (int i = 0; i < initial.size(); i++) {
-        final << initial[i]->exec();
+        final << (referenceVars.contains(i + 1) ? createReference(initial[i]) : initial[i]->exec());
     }
     return final;
 }
@@ -38,7 +49,7 @@ Type *FunctionAST::exec() {
     callstack.push(function);
     // TODO: temporary for assign
     Type *r = NullType::getInstance();
-    if (function == "$operator=") {
+    /*if (function == "$operator=") {
         if (dynamic_cast<VarAST *>(arguments[0]))
             if (toplevel and ((VarAST *) arguments[0])->name[0] != '$') {
                 callstack.pop();
@@ -52,9 +63,9 @@ Type *FunctionAST::exec() {
             Error::error(ET_ASSIGNMENT_ERROR);
         }
     }
-    else {
+    else*/
         r = functions[function]->operator()(vAstToType(arguments, functions[function]->getReferenceVars()));
-    }
+
     callstack.pop();
     return r;
 }
