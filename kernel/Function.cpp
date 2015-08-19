@@ -21,11 +21,11 @@ Type *UserFunction::operator()(QList<Type *> args) {
         }
         Kernel::AST::variables.insert(arguments[i], args[i]);
     }
-    //qDebug() << referenceMap;
+    qDebug() << referenceMap;
     Type *r = ast->exec();
     // References
     for(QString var : referenceMap.keys()) {
-        //qDebug() << "assigning " << var << " to " << referenceMap.value(var);
+        qDebug() << "assigning " << var << " to " << referenceMap.value(var);
         Kernel::AST::variables[referenceMap.value(var)] = Kernel::AST::variables[var];
     }
     // Delete all local variables

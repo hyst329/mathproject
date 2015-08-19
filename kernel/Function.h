@@ -9,6 +9,7 @@
 #include "AST.h"
 #include <functional>
 #include <QStringList>
+#include <QtDebug>
 
 class Function : public Type {
 public:
@@ -49,9 +50,17 @@ public:
 
     virtual Type *operator()(QList<Type *> args);
 
-    UserFunction(Kernel::AST *ast, QStringList arguments = QStringList())
+    UserFunction(Kernel::AST *ast, QStringList arguments)
         : ast(ast), arguments(arguments) {
+            qDebug() << "arguments=" << arguments << this->arguments;
             qDebug("create UF");
+            for(int i = 0; i < this->arguments.size(); i++) {
+                qDebug() << "arg " << (i + 1) << this->arguments[i];
+                if(this->arguments[i].startsWith("ref ")) {
+                    qDebug() << "ref" << (i + 1);
+                    referenceVars << (i + 1);
+                }
+            }
             this->arguments.replaceInStrings("ref ", "", Qt::CaseInsensitive);
     }
 
