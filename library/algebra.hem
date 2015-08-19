@@ -1,11 +1,9 @@
 include matrix.hem
 
-function SolutionLinearEquations(matrix,vector) {
-    a=matrix;
-    b=vector;
+function SolutionLinearEquations(a,b) {
     row=rows(a);
     size=row;
-    while (row-=1) {
+    while ((row-=1)+1) {
         if (a(row,row)==0)
             return error();
         column=row+1;
