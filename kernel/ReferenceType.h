@@ -13,7 +13,7 @@ public:
     bool equals(Type &type);
     bool isNonzero();
     QString toString();
-    Type *reference() { return value; }
+    virtual Type *reference() { return value; }
 protected:
     Type* value;
 };
@@ -21,12 +21,19 @@ protected:
 class VariableReferenceType : public ReferenceType {
 public:
     VariableReferenceType(QString name);
-    QString variable() const
+    virtual QString variable() const
     {
         return name;
     }
 private:
     QString name;
+};
+
+class IndexReferenceType : public VariableReferenceType {
+public:
+    IndexReferenceType(QString name, QList<Type *> indices);
+private:
+    QList<Type *> indices;
 };
 
 #endif // REFERENCETYPE_H
