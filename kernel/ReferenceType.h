@@ -6,16 +6,12 @@
 class ReferenceType : public Type
 {
 public:
-    ReferenceType(Type *value);
-
     // Type interface
-    QString getType();
+    QString getType() = 0;
     bool equals(Type &type);
-    bool isNonzero();
-    QString toString();
-    virtual Type *reference() { return value; }
-protected:
-    Type* value;
+    bool isNonzero() = 0;
+    QString toString() = 0;
+    virtual Type *reference() = 0;
 };
 
 class VariableReferenceType : public ReferenceType {
@@ -24,14 +20,22 @@ public:
     virtual QString variable() const
     {
         return name;
-    }
-private:
+    }    
+    // Type interface
+    QString getType();
+    bool isNonzero();
+    QString toString();
+    // ReferenceType interface
+    Type *reference();
+protected:
     QString name;
 };
 
 class IndexReferenceType : public VariableReferenceType {
 public:
     IndexReferenceType(QString name, QList<Type *> indices);
+    QList<Type *> getIndices() const;
+
 private:
     QList<Type *> indices;
 };

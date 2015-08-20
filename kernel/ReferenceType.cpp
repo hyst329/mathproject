@@ -1,33 +1,40 @@
 #include "AST.h"
 #include "ReferenceType.h"
 
-ReferenceType::ReferenceType(Type *value) : value(value)
-{
-}
-
-QString ReferenceType::getType()
-{
-    return value ? QString("Reference(%1)").arg(value->getType()) : "NullReference";
-}
-
 bool ReferenceType::equals(Type &type)
 {
     return 0;
 }
 
-bool ReferenceType::isNonzero()
+VariableReferenceType::VariableReferenceType(QString name) : name(name)
 {
-    return value ? value->isNonzero() : 0;
 }
 
-QString ReferenceType::toString()
+QString VariableReferenceType::getType()
 {
-    return value ? value->toString() : "NULL";
+    return reference() ? QString("Reference(%1)").arg(reference()->getType()) : "NullReference";
 }
 
-VariableReferenceType::VariableReferenceType(QString name) : name(name), ReferenceType(0)
+bool VariableReferenceType::isNonzero()
 {
-    value = Kernel::AST::variables.value(name, 0);
+    return reference() ? reference()->isNonzero() : 0;
 }
 
+QString VariableReferenceType::toString()
+{
+    return reference() ? reference()->toString() : "{NullReference}";
+}
+
+Type *VariableReferenceType::reference()
+{
+    return Kernel::AST::variables.value(name, 0);
+}
+
+IndexReferenceType::IndexReferenceType(QString name, QList<Type *> indices) : indices(indices), VariableReferenceType(name)
+{
+}
+QList<Type *> IndexReferenceType::getIndices() const
+{
+    return indices;
+}
 

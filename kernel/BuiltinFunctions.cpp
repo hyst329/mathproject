@@ -164,7 +164,18 @@ Type *::Kernel::assign(QList<Type *> v) {
             return NullType::getInstance();
         }
         ref = (ReferenceType *)v[0];
-        if(dynamic_cast<VariableReferenceType *>(ref) /*&& !ref->reference()*/) {
+        if(dynamic_cast<IndexReferenceType *>(ref)) {
+            if(dynamic_cast<Matrix*>(ref->reference()) && dynamic_cast<Matrix*>(v[1])) {
+                IndexReferenceType *iref = (IndexReferenceType*)ref;
+                if(dynamic_cast<Matrix*>(iref->getIndices()[0]) && dynamic_cast<Matrix*>(iref->getIndices()[1])) {
+                    int i = ((Matrix*)iref->getIndices()[0])->element(1, 1);
+                    int j = ((Matrix*)iref->getIndices()[1])->element(1, 1);
+                    ((Matrix*)(iref->reference()))->element(i, j) = ((Matrix*)(v[1]))->element(1, 1);
+                }
+                //TODO: else { error... }
+            }
+        }
+        else if(dynamic_cast<VariableReferenceType *>(ref) /*&& !ref->reference()*/) {
             AST::variables[((VariableReferenceType *)ref)->variable()] = v[1];
         }
         //qDebug("Reference: %d(ref=%d) %d", v[0], ref, v[1]);

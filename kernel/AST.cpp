@@ -15,14 +15,24 @@ QMap<QString, Function *> AST::functions = QMap<QString, Function *>();
 QMap<QString, Type *> AST::variables = QMap<QString, Type *>();
 QStack<QString> AST::callstack = QStack<QString>();
 
+QList<Type *> vAstToType(QList<AST *>, QList<int>);
+
 ReferenceType *createReference(AST *arg)
 {
     if(dynamic_cast<VarAST*>(arg)) {
         //TODO: Function references
         return new VariableReferenceType(((VarAST*)arg)->name);
     }
+    if(dynamic_cast<FunctionAST*>(arg)) {
+        FunctionAST *farg = (FunctionAST*)arg;
+        if(farg->function == "$index") {
+            VariableReferenceType *rfarg = (VariableReferenceType*)createReference(farg->arguments[0]);
+            return new IndexReferenceType(rfarg->variable(),
+                    vAstToType(farg->arguments.mid(1), {}));
+        }
+    }
     Error::warning(WT_INVALID_REFERENCE);
-    return new ReferenceType(arg->exec());
+    return 0;
 }
 
 QList<Type *> vAstToType(QList<AST *> initial, QList<int> referenceVars) {
