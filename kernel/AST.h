@@ -24,7 +24,7 @@ namespace Kernel {
         static QMap<QString, Function *> functions;
         static QMap<QString, Type *> variables;
         static QStack<QString> callstack;
-
+        static QStack<QMap<QString, Type *>> locals;
     };
 
     struct BlockAST : public AST {
