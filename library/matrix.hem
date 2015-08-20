@@ -1,19 +1,19 @@
-function ToTriangleMatrix(a)
+function ToTriangleMatrix(ref a)
 {
     row=rows(a);
     column=columns(a);
-    i=0;
-    while (i<row)
+    i=1;
+    while (i<=row)
     {
         if (a(i,i)==0)
         {
             j=i+1;
-            while (j<row)
+            while (j<=row)
             {
                 if (a(j,i)!=0)
                 {
                     k=0;
-                    while (k<column)
+                    while (k<=column)
                     {
                         tmp=a(j,k);
                         a(j,k)=a(i,k);
@@ -45,14 +45,13 @@ function ToTriangleMatrix(a)
     }
 }
 
-function DeterminateOfMatrix(a)
+function DeterminateOfMatrix(b)
 {
-    b=a;
     ToTriangleMatrix(b);
-    i=0;
+    i=1;
     row=rows(b);
     det=1;
-    while(i<row)
+    while(i<=row)
     {
         det=det*b(i, i);
         i+=1;
@@ -60,19 +59,19 @@ function DeterminateOfMatrix(a)
     return det;
 }
 
-function ReverseMatrix(a)
+function ReverseMatrix(b)
 {
-    if (DeterminateOfMatrix(a)==0)
+    if (DeterminateOfMatrix(b)==0)
     {
         error(0);
     }
-    b=a;
-    row=rows(a);
-    column=columns(a);
-    i=0;j=0;
-    while (i<row)
+
+    row=rows(b);
+    column=columns(b);
+    i=1;j=1;
+    while (i<=row)
     {
-        while (j<column)
+        while (j<=column)
         {
             if (i!=j)
             {
@@ -84,17 +83,17 @@ function ReverseMatrix(a)
             }
         }
     }
-    while (i<row)
+    while (i<=row)
     {
             if (a(i,i)==0)
             {
                 j=i+1;
-                while (j<row)
+                while (j<=row)
                 {
                     if (a(j,i)!=0)
                     {
-                        k=0;
-                        while (k<column)
+                        k=1;
+                        while (k<=column)
                         {
                             tmp=a(j, k);
                             a(j, k)=a(i, k);
@@ -111,12 +110,13 @@ function ReverseMatrix(a)
             if (a(i, i)!=0)
             {
                 j=i+1;
-                while (j<row)
+                while (j<=row)
                 {
                     if (a(j, i)!=0)
                     {
-                        k=0;r=a(j, i)/a(i, i);
-                        while (k<column)
+                        k=1;
+                        r=a(j, i)/a(i, i);
+                        while (k<=column)
                         {
                             a(j, k)=a(j, k)-r*a(i, k);
                             b(j, k)=b(j, k)-r*b(i, k);
@@ -127,15 +127,16 @@ function ReverseMatrix(a)
                 }
             }
     }
-    while (i>=0)
+    while (i>0)
     {
         j=i-1;
         while (j>=0)
         {
                if (a(j, i)!=0)
                {
-                   k=0;r=a(j, i)/a(i, i);
-                  while (k<column)
+                  k=1;
+                  r=a(j, i)/a(i, i);
+                  while (k<=column)
                   {
                        a(j, k)=a(j, k)-r*a(i, k);
                        b(j, k)=b(j, k)-r*b(i, k);
@@ -149,15 +150,14 @@ function ReverseMatrix(a)
     return b;
 }
 
-Function Сonjugation(matrix)  {//транспонирование
-    b=martix;
+Function Сonjugation(b)  {//транспонирование
     row=rows(b);
     size=row;
     column=columns(b);
-    i=0;
-    j=0;
-    while(i<size) {
-        while(j<size) {
+    i=1;
+    j=1;
+    while(i<=size) {
+        while(j<=size) {
             b(i,j)=b(j,i);
             j+=1;
         }
