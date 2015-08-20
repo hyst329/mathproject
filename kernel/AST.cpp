@@ -14,6 +14,7 @@ namespace Kernel {
 QMap<QString, Function *> AST::functions = QMap<QString, Function *>();
 QMap<QString, Type *> AST::variables = QMap<QString, Type *>();
 QStack<QString> AST::callstack = QStack<QString>();
+QStack<QMap<QString, Type *>> AST::locals = QStack<QMap<QString, Type *>>();
 
 QList<Type *> vAstToType(QList<AST *>, QList<int>);
 
@@ -57,25 +58,16 @@ Type *FunctionAST::exec() {
         Error::error(ET_UNKNOWN_FUNCTION, {function});
     bool toplevel = callstack.empty();
     callstack.push(function);
-    // TODO: temporary for assign
-    Type *r = NullType::getInstance();
-    /*if (function == "$operator=") {
-        if (dynamic_cast<VarAST *>(arguments[0]))
-            if (toplevel and ((VarAST *) arguments[0])->name[0] != '$') {
-                callstack.pop();
-                Error::error(ET_LOCAL_TOPLEVEL);
-            }
-            else {
-                variables[((VarAST *) arguments[0])->name] = arguments[1]->exec();
-            }
-        else {
-            callstack.pop();
-            Error::error(ET_ASSIGNMENT_ERROR);
-        }
-    }
-    else*/
-        r = functions[function]->operator()(vAstToType(arguments, functions[function]->getReferenceVars()));
-
+    // Push the locals
+    QMap<QString, Type *> loc;
+    for(QString var : variables.keys())
+        if(var[0] != QLatin1Char('$')) loc.insert(var, variables[var]);
+    locals.push(loc);
+    Type *r = functions[function]->operator()(vAstToType(arguments, functions[function]->getReferenceVars()));
+    // Pop the locals, restoring variables' values
+    loc = locals.top();
+    for(QString var : loc.keys())
+        variables[var] = loc[var];
     callstack.pop();
     return r;
 }
