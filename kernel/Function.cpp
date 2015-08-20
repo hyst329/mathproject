@@ -17,9 +17,15 @@ Type *UserFunction::operator()(QList<Type *> args) {
                 qDebug("!ref");
                 //Error::error();
             }
+            if(dynamic_cast<IndexReferenceType*>(ref)) {
+                // TODO: add index (problem?)
+                // continue;
+            }
             referenceMap.insert(arguments[i], ref->variable());
+            Kernel::AST::variables.insert(arguments[i], Kernel::AST::variables[ref->variable()]);
         }
-        Kernel::AST::variables.insert(arguments[i], args[i]);
+        else
+            Kernel::AST::variables.insert(arguments[i], args[i]);
     }
     qDebug() << referenceMap;
     Type *r = ast->exec();
