@@ -30,4 +30,4 @@ SOURCES += \
     StringType.cpp \
     ReferenceType.cpp
 
-DESTDIR = ..
+#DESTDIR = ..
