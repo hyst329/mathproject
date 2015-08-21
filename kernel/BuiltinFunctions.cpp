@@ -195,7 +195,7 @@ Type *::Kernel::pvar(QList<Type *> v) {
                            .arg((int) p.value())
                            .arg(p.value()->getType()).arg(p.value()->toString()))
               : (QString("%1\t:\t[******************** at addr. %2] ZERO POINTER")
-                 .arg(p.key()).arg((int) p.value())));
+                 .arg(p.key()).arg((size_t) p.value())));
         endl(s);
     }
     return NullType::getInstance();
@@ -207,7 +207,7 @@ Type *::Kernel::pfun(QList<Type *> v) {
     for (auto p = AST::functions.begin(); p != AST::functions.end(); ++p) {
         s <<
                 QString("%1 (%2)\t at addr. %3").arg(p.key()).arg(dynamic_cast<UserFunction *>(p.value()) ? "user" :
-                                                                  "built-in").arg((int) p.value());
+                                                                  "built-in").arg((size_t) p.value());
         endl(s);
 
     }

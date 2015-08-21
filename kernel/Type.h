@@ -17,7 +17,7 @@ public:
     virtual bool isNonzero() = 0;
 
     virtual QString toString() {
-        return QString("[%1 instance at address %2]").arg(getType()).arg((int) this);
+        return QString("[%1 instance at address %2]").arg(getType()).arg((size_t) this);
     }
 
     void print(QTextStream &os) {
