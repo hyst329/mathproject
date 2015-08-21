@@ -177,7 +177,7 @@ arg: ID {
        $$ = $1;
    }
    | REF ID {
-       $$ = strdup((QByteArray("ref ") + $2).constData());
+       $$ = strdup((QByteArray("ref ").append($2)).constData());
    }
 exprlist: exprlist COMMA expression {
             $1->append($3);
