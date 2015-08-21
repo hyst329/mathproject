@@ -153,7 +153,7 @@ void MainWindow::on_actionRun_interpreter_triggered()
 {
     switch (ui->tabWidget->currentIndex()) {
     case 0: // Command Window
-        interpreterProcess->start("interpreter.exe -i");
+        interpreterProcess->start("interpreter -i");
         if(!interpreterProcess->waitForStarted(5000))
             QMessageBox::critical(this, tr("Error"),
                                   tr("Interpreter cannot be started because of the following error:\n %1")
@@ -165,7 +165,7 @@ void MainWindow::on_actionRun_interpreter_triggered()
         break;
     case 1: // File Editor
         on_actionSave_triggered();
-        interpreterFileProcess->start("interpreter.exe", {fileName});
+        interpreterFileProcess->start("interpreter", {fileName});
         if(!interpreterFileProcess->waitForStarted(5000))
             QMessageBox::critical(this, tr("Error"),
                                   tr("Interpreter cannot be started because of the following error:\n %1")
