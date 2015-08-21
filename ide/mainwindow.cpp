@@ -153,7 +153,7 @@ void MainWindow::on_actionRun_interpreter_triggered()
 {
 #ifdef Q_OS_WIN32
     QString interpreterPath = "interpreter.exe";
-#elif defined(Q_OS_OSX)
+#elif defined(Q_OS_MAC)
     QString interpreterPath = "./interpreter.app/Contents/MacOS/interpreter";
 #else
     QString interpreterPath = "./interpreter";
