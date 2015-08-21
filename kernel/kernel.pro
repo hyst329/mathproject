@@ -3,6 +3,7 @@ QT += core
 CONFIG += c++11
 TARGET = kernel
 TEMPLATE = lib
+CONFIG += staticlib
 
 HEADERS += \
     Array.h \
@@ -29,5 +30,4 @@ SOURCES += \
     StringType.cpp \
     ReferenceType.cpp
 
-DLLDESTDIR = ..
 DESTDIR = ..
