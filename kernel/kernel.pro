@@ -30,3 +30,4 @@ SOURCES += \
     ReferenceType.cpp
 
 DLLDESTDIR = ..
+DESTDIR = ..
